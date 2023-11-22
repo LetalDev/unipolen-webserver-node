@@ -1,0 +1,23 @@
+<br>
+<article class="bg-unp-red-1">
+  <h1 class="bg-unp-red-1">Login</h1>
+  <form action="/login" method="post">
+    <label for="email" class="bg-unp-red-1">
+      Email
+      <input type="email" id="email" name="email" required>
+    </label>
+    <br>
+    <label for="password" class="bg-unp-red-1">
+      Senha
+      <input type="password" id="password" name="password" required>
+    </label>
+    <br>
+    <button class="unp-btn-light" type="submit">Entrar</button>
+    <span style="color: aliceblue">{{message}}</span>
+  </form>
+  <br>
+  <div>
+    Não possui uma conta?<br>
+    <a href="registrar" class="unp-link-light active">Registrar-se</a>
+  </div>
+</article>

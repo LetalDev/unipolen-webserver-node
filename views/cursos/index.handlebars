@@ -1,0 +1,29 @@
+<div>
+  <h1>Cursos</h1>
+</div>
+<!-- Search -->
+<input type="search" id="search" name="search" placeholder="Search">
+<div class="control">
+  {{#if prevPage}}<a class="unp-link-light" href="/cursos/{{prevPage}}">&lt;</a>{{/if}}
+  <h3 style="display:inline">Página: {{page}}</h3>
+  {{#if nextPage}}<a class="unp-link-light" href="/cursos/{{nextPage}}">&gt;</a>{{/if}}
+</div>
+<div id="courses">
+  {{#each courses}}
+    <div class="container bg-unp-red-1 course">
+      <h2 class="bg-unp-red-1">{{name}}</h2>
+      <div>Modalidade: {{style}}{{#unless style}}Indisponível{{/unless}}</div>
+      <div>Grau: {{degree}}{{#unless degree}}Indisponível{{/unless}}</div>
+      <div>Tipo: {{qualification}}{{#unless qualification}}Indisponível{{/unless}}</div>
+      <div>Carga Horária: {{hours}}{{#unless hours}}Indisponível{{/unless}}</div>
+      <div>{{#if duration_months}}Duração: {{duration_months}} meses{{else}}Duração: Indisponível{{/if}}</div>
+      <br>
+      <a href="{{url}}" class="unp-link-light active">Link</a>
+    </div>
+  {{/each}}
+</div>
+<div class="control">
+  {{#if prevPage}}<a class="unp-link-light" href="/cursos/{{prevPage}}">&lt;</a>{{/if}}
+  <h3 style="display:inline">Página: {{page}}</h3>
+  {{#if nextPage}}<a class="unp-link-light" href="/cursos/{{nextPage}}">&gt;</a>{{/if}}
+</div>

@@ -1,0 +1,45 @@
+<div id="sidebar" class="bg-unp-red-1">
+  <a href="#" id="sidebar-toggle">
+    <svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="48px" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </a>
+  <div id="sidebar-content">
+    <br><br><br>
+    <h2><a id="dados-btn" href="#" class="unp-link-light active">Dados</a></h2>
+    <br>
+    <h2><a id="mural-btn" href="#" class="unp-link-light">Mural</a></h2>
+    <br>
+    <h2><a id="cursos-btn" href="#" class="unp-link-light">Cursos</a></h2>
+  </div>
+</div>
+<div id="content">
+  <section id="dados">
+    <h1>Dados da Conta<hr class="hr-light"></h1>
+    <span>
+      Nome: {{user.display_name}}
+      <br><br>
+      <a href="/conta/alterar/nome"><button>Alterar</button></a>
+    </span>
+    <br>
+    <br>
+    <span>
+      Email: {{user.email}}
+      <br><br>
+      <a href="/conta/alterar/email"><button>Alterar</button></a>
+    </span>
+    <br><br><br>
+    <a href="/conta/alterar/senha"><button>Alterar Senha</button></a>
+    &nbsp;
+    <a href="/conta/apagar"><button id="delete-account" class="outline">Apagar Conta</button></a>
+  </section>
+  <section id="mural">
+    <h1>Mural de Informações<hr class="hr-light"></h1>
+  </section>
+  <section id="cursos">
+    <h1>Cursos Inscritos<hr class="hr-light"></h1>
+  </section>
+</div>
+<script src="/static/js/conta.js"></script>

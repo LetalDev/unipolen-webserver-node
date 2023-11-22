@@ -1,0 +1,151 @@
+<div id="sidebar">
+	<h1>Admin</h1>
+	<a href="#" class="nav-link active">Dashboard</a>
+	<a href="#" class="nav-link">Alterar Componentes</a>
+	<a href="#" class="nav-link">Gerenciar Polos</a>
+	<a href="#" class="nav-link">Gerenciar Processos</a>
+	<a href="#" class="nav-link">Gerenciar Cursos</a>
+	<a href="#" class="nav-link">Ferramenta SQL</a>
+	<br><br>
+	<a href="/">Voltar para Home</a>
+</div>
+<div id="content">
+	<section id="dashboard">
+		a
+	</section>
+	<section id="manage-components" hidden>
+		<h2>Alterar Componentes das Páginas</h2>
+		<h3>Textos</h3>
+		<div>
+			Nome da empresa:
+			<form action="/admin/update-component/defaults-name" method="post">
+				<input type="text" required>
+				<input type="submit">
+			</form>
+			<br>
+			Email da empresa:
+			<form action="/admin/update-component/defaults-email" method="post">
+				<input type="text" required>
+				<input type="submit">
+			</form>
+			<br>
+			Telefone da empresa (padrão):
+			<form action="/admin/update-component/defaults-phone" method="post">
+				<input type="text" required>
+				<input type="submit">
+			</form>
+			<br>
+		</div>
+		<h3>Imagens</h3>
+		<div>
+			Logo:
+			<form action="/admin/update-component/logo" method="post">
+				<input type="file" required>
+				<input type="submit">
+			</form>
+			<br>
+		</div>
+		<div>
+			Home:
+			<div>
+				Carrossel:
+				<form action="/admin/update-component/home-carrousel" method="post">
+					<input type="file" required>
+					<input type="submit">
+				</form>
+				<br>
+				Cursos em Destaque:
+				<div>
+					Curso 1:
+					<form action="/admin/update-component/highlighted-course-1" method="post">
+						<input type="file" required>
+						<input type="submit">
+					</form>
+					<br>
+					Curso 2:
+					<form action="/admin/update-component/highlighted-course-2" method="post">
+						<input type="file" required>
+						<input type="submit">
+					</form>
+					<br>
+					Curso 3:
+					<form action="/admin/update-component/highlighted-course-3" method="post">
+						<input type="file" required>
+						<input type="submit">
+					</form>
+					<br>
+				</div>
+				Polos em Destaque:
+				<div>
+					Polo 1:
+					<form action="/admin/update-component/highlighted-unit-1" method="post">
+						<input type="file" required>
+						<input type="submit">
+					</form>
+					<br>
+					Polo 2:
+					<form action="/admin/update-component/highlighted-unit-2" method="post">
+						<input type="file" required>
+						<input type="submit">
+					</form>
+					<br>
+					Polo 3:
+					<form action="/admin/update-component/highlighted-unit-3" method="post">
+						<input type="file" required>
+						<input type="submit">
+					</form>
+					<br>
+				</div>
+			</div>
+		</div>
+	</section>
+	<section id="manage-units" hidden>
+		a
+	</section>
+	<section id="manage-processes" hidden>
+		b
+	</section>
+	<section id="manage-courses" hidden>
+		<h2>Gerenciar Cursos</h2>
+		<span>Selecionar Curso: </span>
+		<select id="select-course">
+			<option disabled>Carregando..</option>
+		</select>
+		<br><br>
+		<div id="manage-course" hidden>
+			<div>Nome: <input id="course-name" type="text"></div>
+			<div>Provedor: <select id="course-provider"><option disabled>Carregando..</option></select></div>
+			<div>Duração (meses): <input id="course-months" type="number"></div>
+			<div>Duração (horas): <input id="course-hours" type="number"></div>
+			<div>URL: <input id="course-url" type="text"></div>
+			<div>Disponibilidade: <input id="course-available" type="checkbox"></div>
+			<div>Grau: <select id="course-degree">
+				<option></option>
+				<option>Graduação</option>
+				<option>Pós-Graduação</option>
+			</select></div>
+			<div>Qualificação: <select id="course-qualification">
+				<option></option>
+				<option>2ª Licenciatura</option>
+				<option>Bacharelado</option>
+				<option>Tecnólogo</option>
+			</select></div>
+			<div>Modalidade: <select id="course-style">
+				<option></option>
+				<option>A distância</option>
+			</select></div>
+			<br>
+			<button id="update-course">Atualizar Dados</button>
+		</div>
+	</section>
+	<section id="sql-tool" hidden>
+		<h2>Ferramenta SQL</h2>
+		<textarea id="query"></textarea>
+		<br>
+		<input id="query-submit" type="submit">
+		<br><br>
+		Resultado:<br>
+		<textarea readonly id="query-result"></textarea>
+	</section>
+</div>
+<script src="/static/js/admin.js"></script>

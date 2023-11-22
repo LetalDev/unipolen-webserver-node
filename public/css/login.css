@@ -1,0 +1,45 @@
+main article {
+  position: relative;
+  margin: 0 auto;
+  border-radius: 15px;
+}
+
+@media screen and (min-width: 1000px) {
+  main article {
+    max-width: 50%;
+  }
+}
+
+main form label {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+main article h1 {
+  text-align: center;
+  font-size: 2rem;
+}
+
+main form input {
+  font-size: 1.2rem;
+  border-radius: 20px;
+  background-color: revert;
+  color: revert;
+  min-height: 2rem;
+}
+
+main form button {
+  border-radius: 30px;
+  max-width: 35%;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0 auto;
+}
+
+main article div {
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: bold;
+}

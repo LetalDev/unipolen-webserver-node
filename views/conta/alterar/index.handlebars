@@ -1,0 +1,17 @@
+<h1>Alterar {{fieldName}}</h1>
+<form action="/conta/alterar/{{field}}" method="POST">
+  {{#if currentValue}}
+    <label for="current">{{fieldName}} atual:</label>
+    <input id="current" readonly value="{{currentValue}}">
+    <br>
+  {{/if}}
+  <label for="newValue">{{label}}</label>
+  <input type="{{inputType}}" name="newValue" id="newValue" required>
+  <br>
+  <label for="password">Confirme a sua senha{{#if fieldIsPass}} atual{{/if}}:</label>
+  <input type="password" name="password" id="password" required>
+  <br>
+  <span id="message">{{message}}</span>
+  <br><br>
+  <button class="" type="submit">Alterar {{fieldName}}</button>
+</form>

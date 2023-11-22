@@ -1,0 +1,59 @@
+body {
+  background-color: rgb(15,15,15);
+  color:aliceblue;
+  font-size: 1.4rem;
+}
+
+#sidebar {
+  position: absolute;
+  height: 90%;
+  border-right-style: solid;
+  border-right-width: 3px;
+  padding-inline: 20px;
+  max-width: 200px;
+  left: 0px;
+}
+
+#sidebar a {
+  display: block;
+  margin-bottom: 10px;
+}
+
+a {
+  color: aliceblue
+}
+
+a.active {
+  color: skyblue;
+}
+
+#content {
+  position: absolute;
+  left: 270px;
+}
+
+#manage-components div {
+  padding-left: 30px;
+}
+
+textarea {
+  background-color: rgb(15,15,15);
+  color:aliceblue;
+  min-width: 500px;
+  min-height: 300px;
+}
+
+#manage-course {
+  border-left-style: solid;
+  border-left-width: 3px;
+  padding-left: 20px;
+}
+
+#manage-course div {
+  margin-bottom: 8px;
+}
+
+#update-course {
+  font-size: 20px;
+  padding: 5px;
+}

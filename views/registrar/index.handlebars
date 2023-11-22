@@ -1,0 +1,33 @@
+<br>
+<article class="bg-unp-red-1">
+  <h1 class="bg-unp-red-1">Registrar</h1>
+  <form action="/registrar" method="post">
+    <label for="email" class="bg-unp-red-1">
+      Email
+      <input type="email" id="email" name="email" required>
+    </label>
+    <br>
+    <label for="name" class="bg-unp-red-1">
+      Nome
+      <input type="text" id="name" name="name" required>
+    </label>
+    <br>
+    <label for="password" class="bg-unp-red-1">
+      Senha
+      <input type="password" id="password" name="password" required>
+    </label>
+    <br>
+    <label for="passcheck" class="bg-unp-red-1">
+      Confirmar Senha
+      <input type="password" id="passcheck" required>
+    </label>
+    <br>
+    <button class="unp-btn-light" type="submit">Registrar</button>
+    <span style="color: aliceblue">{{message}}</span>
+  </form>
+  <br>
+  <div>
+    Já possui uma conta?<br>
+    <a href="/login" class="unp-link-light active">Entrar</a>
+  </div>
+</article>

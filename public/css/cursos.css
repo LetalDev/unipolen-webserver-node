@@ -1,0 +1,21 @@
+#courses {
+  padding: 3rem;
+  min-height: 200px;
+}
+
+.course {
+  border-left: 10px inset;
+  padding: 2rem 2rem 2rem 1rem;
+  border-radius: 15px;
+  border-color: var(--bg-unp-blue-2);
+  margin-bottom: 3rem;
+}
+
+main h1 {
+  text-align: center;
+}
+
+main .control {
+    text-align: center;
+    font-size: 1.5rem;
+}
