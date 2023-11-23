@@ -1,5 +1,5 @@
 const { fastify, defOpts } = require("../fastifyConfig");
-const { getUserFromJwt, updateUserEmail, updateUserDisplayName, updateUserPasswordHash } = require("../models/user");
+const { getUserFromJwt, updateUserEmail, updateUserDisplayName, updateUserPasswordHash, isUserAdmin } = require("../models/user");
 const { renderErrorPage, renderErrorPageRes } = require("./pageError");
 const bcrypt = require("bcrypt");
 
@@ -12,6 +12,7 @@ fastify.get("/conta", async (req, res) => {
   const opts = structuredClone(defOpts);
   opts.styles.push("/static/css/conta.css");
   opts.user = user;
+  opts.admin = await isUserAdmin(opts.user.id);
   return res.render("conta/index", opts);
 });
 
@@ -60,6 +61,7 @@ fastify.get("/conta/alterar/:field", async (req, res) => {
   const opts = structuredClone(defOpts);
   opts.styles.push("/static/css/conta-alterar.css");
   opts.user = user;
+  opts.admin = await isUserAdmin(opts.user.id);
   opts.fieldName = FIELD_TO_NAME[field];
   opts.field = field;
   opts.label = FIELD_TO_LABEL[field];
@@ -85,6 +87,7 @@ fastify.post("/conta/alterar/:field", async (req, res) => {
   const opts = structuredClone(defOpts);
   opts.styles.push("/static/css/conta-alterar.css");
   opts.user = user;
+  opts.admin = await isUserAdmin(opts.user.id);
   opts.fieldName = FIELD_TO_NAME[field];
   opts.field = field;
   opts.label = FIELD_TO_LABEL[field];

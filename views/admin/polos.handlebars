@@ -1,0 +1,41 @@
+<div id="sidebar">
+	<h1>Admin</h1>
+	<a href="/admin" class="nav-link">Dashboard</a>
+	<a href="/admin/componentes" class="nav-link">Alterar Componentes</a>
+	<a href="/admin/polos" class="nav-link active">Gerenciar Polos</a>
+	<a href="/admin/usuarios" class="nav-link">Gerenciar Usuários</a>
+	<a href="/admin/cursos" class="nav-link">Gerenciar Cursos</a>
+	<a href="/admin/sql" class="nav-link">Ferramenta SQL</a>
+	<br><br>
+	<a href="/">Voltar para Home</a>
+</div>
+<div id="content">
+  <section id="manage-units">
+		<h2>Gerenciar Polos</h2>
+    <table>
+      <tr>
+        <th>id</th>
+        <th>nome</th>
+        <th>telefone</th>
+        <th>cep</th>
+        <th>país</th>
+        <th>estado</th>
+        <th>cidade</th>
+        <th>endereço</th>
+      </tr>
+      {{#each units}}
+        <tr>
+          <td>{{id}}</td>
+          <td>{{name}}</td>
+          <td>{{phone}}</td>
+          <td>{{postal_code}}</td>
+          <td>{{country}}</td>
+          <td>{{state}}</td>
+          <td>{{city}}</td>
+          <td>{{address}}</td>
+        </tr>
+      {{/each}}
+    </table>
+	</section>
+</div>
+<script src="/static/js/admin.js"></script>

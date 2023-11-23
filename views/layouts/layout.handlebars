@@ -13,6 +13,9 @@
 
 <body>
   {{#if showHeader}}
+  {{#if admin}}
+    <div style="padding: 10px">ADMIN: <a href="/admin">Ir para console administrativa</a></div>
+  {{/if}}
   <header class="container-fluid bg-unp-blue-1">
     <nav>
       <ul>

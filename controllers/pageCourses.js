@@ -1,6 +1,6 @@
 const { fastify, defOpts } = require("../fastifyConfig");
 const { getActiveCoursesInRange, getActiveCourseCount } = require("../models/course");
-const { getUserFromJwt } = require("../models/user");
+const { getUserFromJwt, isUserAdmin } = require("../models/user");
 
 fastify.get("/cursos/:page", async (req, res) => {
   let { page } = req.params;
@@ -8,6 +8,7 @@ fastify.get("/cursos/:page", async (req, res) => {
   const opts = structuredClone(defOpts);
   opts.styles.push("/static/css/cursos.css");
   opts.user = await getUserFromJwt(req.cookies.jwt);
+  opts.admin = await isUserAdmin(opts.user.id);
   opts.courses = await getActiveCoursesInRange(Math.max(0, (page-1))*15, 15);
   opts.page = page;
   opts.pageCnt = await getActiveCourseCount() / 15 + 1;

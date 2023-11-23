@@ -1,0 +1,55 @@
+<div id="sidebar">
+	<h1>Admin</h1>
+	<a href="/admin" class="nav-link">Dashboard</a>
+	<a href="/admin/componentes" class="nav-link">Alterar Componentes</a>
+	<a href="/admin/polos" class="nav-link">Gerenciar Polos</a>
+	<a href="/admin/usuarios" class="nav-link">Gerenciar Usuários</a>
+	<a href="/admin/cursos" class="nav-link active">Gerenciar Cursos</a>
+	<a href="/admin/sql" class="nav-link">Ferramenta SQL</a>
+	<br><br>
+	<a href="/">Voltar para Home</a>
+</div>
+<div id="content">
+  <section id="manage-courses">
+		<h2>Gerenciar Cursos</h2>
+    <a href="/admin/adicionar-curso">Adicionar novo curso</a>
+    <br><br>
+    <table id="courses-table">
+      <tr>
+        <th>Opções</th>
+        <th>id</th>
+        <th>id do provedor</th>
+        <th>nome</th>
+        <th>duração (meses)</th>
+        <th>duração (horas)</th>
+        <th>url</th>
+        <th>inscrições abertas?</th>
+        <th>grau</th>
+        <th>qualificação</th>
+        <th>modalidade</th>
+      </tr>
+      {{#each courses}}
+        <tr>
+          <td>
+            <br>
+            <a href="/admin/alterar-curso/{{id}}">Alterar</a>
+            <br><br>
+            <a href="/admin/remover-curso/{{id}}">Remover</a>
+            <br><br>
+          </td>
+          <td>{{id}}</td>
+          <td>{{provider_id}}</td>
+          <td>{{name}}</td>
+          <td>{{duration_months}}</td>
+          <td>{{hours}}</td>
+          <td>{{url}}</td>
+          <td>{{is_available}}</td>
+          <td>{{degree}}</td>
+          <td>{{qualification}}</td>
+          <td>{{style}}</td>
+        </tr>
+      {{/each}}
+    </table>
+	</section>
+</div>
+<script src="/static/js/admin.js"></script>

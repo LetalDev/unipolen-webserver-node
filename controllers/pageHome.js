@@ -1,7 +1,7 @@
 'use strict'
 
 const { fastify, defOpts } = require("../fastifyConfig");
-const { getUserFromJwt } = require("../models/user");
+const { getUserFromJwt, isUserAdmin } = require("../models/user");
 
 fastify.get("/", async (req, res) => {
   const opts = structuredClone(defOpts);
@@ -11,5 +11,6 @@ fastify.get("/", async (req, res) => {
     .concat(opts.styles.slice(1))
     .concat("/static/css/index.css");
   opts.user = await getUserFromJwt(req.cookies.jwt);
+  opts.admin = await isUserAdmin(opts.user.id);
   return res.render("/index", opts);
 });

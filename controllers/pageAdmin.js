@@ -1,5 +1,6 @@
 'use strict'
 
+const { query } = require("../database");
 const { fastify, defOpts } = require("../fastifyConfig");
 const { getAllActiveCourses, getAllCoursesOrdered, addCourse, removeCourse, getCourse, updateCourse } = require("../models/course");
 const { getAllUnitsWithAddress, getAllUnitsWithAddressOrdered } = require("../models/unit");
@@ -16,18 +17,99 @@ fastify.get("/admin", async (req, res) => {
     return await renderErrorPageRes(res, 403);
   }
 
+  const opts = {
+    styles: ["/static/css/admin.css"],
+  };
+
+  return res.render("/admin/index", opts);
+});
+
+fastify.get("/admin/componentes", async (req, res) => {
+  const user = await getUserFromJwt(req.cookies.jwt);
+  if (user == undefined) {
+    return await renderErrorPageRes(res, 401);
+  }
+  if (!(await isUserAdmin(user.id))) {
+    return await renderErrorPageRes(res, 403);
+  }
+
+  const opts = {
+    styles: ["/static/css/admin.css"],
+  };
+
+  return res.render("/admin/componentes", opts);
+});
+
+fastify.get("/admin/cursos", async (req, res) => {
+  const user = await getUserFromJwt(req.cookies.jwt);
+  if (user == undefined) {
+    return await renderErrorPageRes(res, 401);
+  }
+  if (!(await isUserAdmin(user.id))) {
+    return await renderErrorPageRes(res, 403);
+  }
+
   const courses = await getAllCoursesOrdered();
-  const units = await getAllUnitsWithAddressOrdered();
-  const users = await getAllUsersOrdered();
 
   const opts = {
     styles: ["/static/css/admin.css"],
     courses: courses,
+  };
+
+  return res.render("/admin/cursos", opts);
+});
+
+fastify.get("/admin/polos", async (req, res) => {
+  const user = await getUserFromJwt(req.cookies.jwt);
+  if (user == undefined) {
+    return await renderErrorPageRes(res, 401);
+  }
+  if (!(await isUserAdmin(user.id))) {
+    return await renderErrorPageRes(res, 403);
+  }
+
+  const units = await getAllUnitsWithAddressOrdered();
+
+  const opts = {
+    styles: ["/static/css/admin.css"],
     units: units,
+  };
+
+  return res.render("/admin/polos", opts);
+});
+
+fastify.get("/admin/usuarios", async (req, res) => {
+  const user = await getUserFromJwt(req.cookies.jwt);
+  if (user == undefined) {
+    return await renderErrorPageRes(res, 401);
+  }
+  if (!(await isUserAdmin(user.id))) {
+    return await renderErrorPageRes(res, 403);
+  }
+
+  const users = await getAllUsersOrdered();
+
+  const opts = {
+    styles: ["/static/css/admin.css"],
     users: users,
   };
 
-  return res.render("/admin/index", opts);
+  return res.render("/admin/usuarios", opts);
+});
+
+fastify.get("/admin/sql", async (req, res) => {
+  const user = await getUserFromJwt(req.cookies.jwt);
+  if (user == undefined) {
+    return await renderErrorPageRes(res, 401);
+  }
+  if (!(await isUserAdmin(user.id))) {
+    return await renderErrorPageRes(res, 403);
+  }
+  const opts = {
+    styles: ["/static/css/admin.css"],
+  };
+
+  return res.render("/admin/sql", opts);
 });
 
 fastify.post("/admin/query", async (req, res) => {
@@ -44,7 +126,7 @@ fastify.post("/admin/query", async (req, res) => {
     .send(await query(req.body.query));
   } catch (err) {
     res.headers({"Content-Type": "application: json"})
-    .send(`{'message': 'Ocorreu um erro: ${err}'}`);
+    .send('{"message": "Ocorreu um erro: ' + err.message.replaceAll('"', "'") + '"}');
   }
 
 });
@@ -92,7 +174,7 @@ fastify.post("/admin/adicionar-curso", async (req, res) => {
       req.body.style,
       req.body.url);
 
-    return res.redirect("/admin");
+    return res.redirect("/admin/cursos");
   } catch (err) {
     opts.message = "Ocorreu um erro: " + err;
     return res.render("/admin/adicionar-curso/index", opts);
@@ -116,9 +198,9 @@ fastify.get("/admin/remover-curso/:id", async (req, res) => {
 
   try {
     await removeCourse(id);
-    return res.redirect("/admin");
+    return res.redirect("/admin/cursos");
   } catch (err) {
-    return res.redirect("/admin");
+    return res.redirect("/admin/cursos");
   }
 
 });
@@ -172,7 +254,7 @@ fastify.post("/admin/alterar-curso/:id", async (req, res) => {
       req.body.style.trim(),
       req.body.url.trim());
     
-    return res.redirect("/admin");
+    return res.redirect("/admin/cursos");
   } catch (err) {
     opts.course = await getCourse(id);
     opts.message = "Ocorreu um erro: " + err;
