@@ -17,7 +17,6 @@ async function main() {
   require("./controllers/page404");
   require("./controllers/pageHome");
   require("./controllers/pageAdmin");
-  require("./controllers/adminQuery");
   require("./controllers/pageCourses");
   require("./controllers/pageLogin");
   require("./controllers/pageRegister");

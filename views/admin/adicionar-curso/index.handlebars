@@ -1,0 +1,20 @@
+<style>
+  body {padding: 20px; font-size: 1.3rem; text-align: center}
+  input {font-size: 1.5rem}
+  #message {color: crimson}
+</style>
+
+<h1 style="text-align: center">Adicionar curso</h1>
+<form action="/admin/adicionar-curso" method="POST">
+  Nome:<br><input name="name"><br><br>
+  Id do provedor:<br><input name="provider_id"><br><br>
+  Duração (meses)<br><input name="duration_months" type="number"><br><br>
+  Duração (horas)<br><input name="hours" type="number"><br><br>
+  Inscrições Abertas?<br><input name="is_available" type="checkbox"><br><br>
+  Grau (graduação ou pós-graduação):<br><input name="degree"><br><br>
+  Qualificação (bacharelado, tecnólogo, 2ª licenciatura):<br><input name="qualification"><br><br>
+  Modalidade (presencial ou remoto):<br><input name="style"><br><br>
+  URL:<br><input name="url"><br><br>
+  <span id="message">{{message}}</span>
+  <input type="submit" value="Enviar">
+</form>

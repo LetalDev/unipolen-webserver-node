@@ -3,7 +3,7 @@
 	<a href="#" class="nav-link active">Dashboard</a>
 	<a href="#" class="nav-link">Alterar Componentes</a>
 	<a href="#" class="nav-link">Gerenciar Polos</a>
-	<a href="#" class="nav-link">Gerenciar Processos</a>
+	<a href="#" class="nav-link">Gerenciar Usuários</a>
 	<a href="#" class="nav-link">Gerenciar Cursos</a>
 	<a href="#" class="nav-link">Ferramenta SQL</a>
 	<br><br>
@@ -100,43 +100,99 @@
 		</div>
 	</section>
 	<section id="manage-units" hidden>
-		a
+		<h2>Gerenciar Polos</h2>
+    <table>
+      <tr>
+        <th>id</th>
+        <th>nome</th>
+        <th>telefone</th>
+        <th>cep</th>
+        <th>país</th>
+        <th>estado</th>
+        <th>cidade</th>
+        <th>endereço</th>
+      </tr>
+      {{#each units}}
+        <tr>
+          <td>{{id}}</td>
+          <td>{{name}}</td>
+          <td>{{phone}}</td>
+          <td>{{postal_code}}</td>
+          <td>{{country}}</td>
+          <td>{{state}}</td>
+          <td>{{city}}</td>
+          <td>{{address}}</td>
+        </tr>
+      {{/each}}
+    </table>
 	</section>
-	<section id="manage-processes" hidden>
-		b
+	<section id="manage-users" hidden>
+		<h2>Gerenciar usuários</h2>
+    <table>
+      <tr>
+        <th>id</th>
+        <th>email</th>
+        <th>nome</th>
+        <th>cep</th>
+        <th>país</th>
+        <th>estado</th>
+        <th>cidade</th>
+        <th>endereço</th>
+      </tr>
+      {{#each users}}
+        <tr>
+          <td>{{id}}</td>
+          <td>{{email}}</td>
+          <td>{{display_name}}</td>
+          <td>{{postal_code}}</td>
+          <td>{{country}}</td>
+          <td>{{state}}</td>
+          <td>{{city}}</td>
+          <td>{{address}}</td>
+        </tr>
+      {{/each}}
+    </table>
 	</section>
 	<section id="manage-courses" hidden>
 		<h2>Gerenciar Cursos</h2>
-		<span>Selecionar Curso: </span>
-		<select id="select-course">
-			<option disabled>Carregando..</option>
-		</select>
-		<br><br>
-		<div id="manage-course" hidden>
-			<div>Nome: <input id="course-name" type="text"></div>
-			<div>Provedor: <select id="course-provider"><option disabled>Carregando..</option></select></div>
-			<div>Duração (meses): <input id="course-months" type="number"></div>
-			<div>Duração (horas): <input id="course-hours" type="number"></div>
-			<div>URL: <input id="course-url" type="text"></div>
-			<div>Disponibilidade: <input id="course-available" type="checkbox"></div>
-			<div>Grau: <select id="course-degree">
-				<option></option>
-				<option>Graduação</option>
-				<option>Pós-Graduação</option>
-			</select></div>
-			<div>Qualificação: <select id="course-qualification">
-				<option></option>
-				<option>2ª Licenciatura</option>
-				<option>Bacharelado</option>
-				<option>Tecnólogo</option>
-			</select></div>
-			<div>Modalidade: <select id="course-style">
-				<option></option>
-				<option>A distância</option>
-			</select></div>
-			<br>
-			<button id="update-course">Atualizar Dados</button>
-		</div>
+    <a href="/admin/adicionar-curso">Adicionar novo curso</a>
+    <br><br>
+    <table id="courses-table">
+      <tr>
+        <th>Opções</th>
+        <th>id</th>
+        <th>id do provedor</th>
+        <th>nome</th>
+        <th>duração (meses)</th>
+        <th>duração (horas)</th>
+        <th>url</th>
+        <th>inscrições abertas?</th>
+        <th>grau</th>
+        <th>qualificação</th>
+        <th>modalidade</th>
+      </tr>
+      {{#each courses}}
+        <tr>
+          <td>
+            <br>
+            <a href="/admin/alterar-curso/{{id}}">Alterar</a>
+            <br><br>
+            <a href="/admin/remover-curso/{{id}}">Remover</a>
+            <br><br>
+          </td>
+          <td>{{id}}</td>
+          <td>{{provider_id}}</td>
+          <td>{{name}}</td>
+          <td>{{duration_months}}</td>
+          <td>{{hours}}</td>
+          <td>{{url}}</td>
+          <td>{{is_available}}</td>
+          <td>{{degree}}</td>
+          <td>{{qualification}}</td>
+          <td>{{style}}</td>
+        </tr>
+      {{/each}}
+    </table>
 	</section>
 	<section id="sql-tool" hidden>
 		<h2>Ferramenta SQL</h2>

@@ -15,7 +15,51 @@ async function getActiveCourseCount() {
   return (await preparedQuery("SELECT COUNT(*) FROM course WHERE is_available = true;")).rows[0].count;
 }
 
+async function getAllActiveCourses() {
+  return (await preparedQuery("SELECT * FROM course;")).rows;
+}
+
+async function getAllCoursesOrdered() {
+  return (await preparedQuery("SELECT * FROM course ORDER BY id ASC;")).rows;
+}
+
+async function addCourse(name, provider_id, duration_months, hours, is_available, degree, qualification, style, url) {
+  return (await preparedQuery(
+    `INSERT INTO course (name, provider_id, duration_months, hours, is_available, degree, qualification, style, url)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`, [name, provider_id, duration_months, hours, is_available, degree, qualification, style, url]));
+}
+
+async function removeCourse(id) {
+  return (await preparedQuery("DELETE FROM course WHERE id = $1", [id]));
+}
+
+async function getCourse(id) {
+  return (await preparedQuery("SELECT * FROM course WHERE id = $1", [id])).rows[0];
+}
+
+async function updateCourse(id, name, provider_id, duration_months, hours, is_available, degree, qualification, style, url) {
+  return (await preparedQuery(
+    `UPDATE course SET
+      name = $1,
+      provider_id = $2,
+      duration_months = $3,
+      hours = $4,
+      is_available = $5,
+      degree = $6,
+      qualification = $7,
+      style = $8,
+      url = $9
+      WHERE id = $10`, [name, provider_id, duration_months, hours, is_available, degree, qualification, style, url, id]
+  ));
+}
+
 module.exports = {
   getActiveCoursesInRange,
   getActiveCourseCount,
+  getAllActiveCourses,
+  getAllCoursesOrdered,
+  addCourse,
+  removeCourse,
+  getCourse,
+  updateCourse,
 }

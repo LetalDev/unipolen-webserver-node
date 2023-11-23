@@ -65,6 +65,14 @@ async function updateUserPasswordHash(userId, passwordHash) {
   )).rowCount > 0;
 }
 
+async function getAllUsers() {
+  return (await preparedQuery("SELECT * FROM public.user;")).rows;
+}
+
+async function getAllUsersOrdered() {
+  return (await preparedQuery("SELECT * FROM public.user ORDER BY id ASC;")).rows;
+}
+
 
 module.exports = {
   getUserIdFromJwt,
@@ -74,4 +82,7 @@ module.exports = {
   updateUserDisplayName,
   updateUserEmail,
   updateUserPasswordHash,
+  isUserAdmin,
+  getAllUsers,
+  getAllUsersOrdered,
 }
