@@ -1,6 +1,6 @@
 'use strict'
 
-const { fastify, defOpts } = require("../fastifyConfig")
+const { fastify, defOpts } = require("../config")
 const Fastify = require("fastify");
 
 const ERROR_MESSAGE = Object.freeze({

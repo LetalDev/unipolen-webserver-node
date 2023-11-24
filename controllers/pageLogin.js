@@ -1,5 +1,5 @@
 const { JWT_PRIVATE_KEY, JWT_ISS, DOMAIN } = require("../environment");
-const { fastify, defOpts } = require("../fastifyConfig");
+const { fastify, defOpts } = require("../config");
 const { getUserFromJwt, getUserFromEmail } = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");

@@ -1,4 +1,4 @@
-const { fastify, defOpts } = require("../fastifyConfig");
+const { fastify, defOpts } = require("../config");
 const { getAllUnits } = require("../models/unit");
 const { getUserFromJwt, isUserAdmin } = require("../models/user");
 

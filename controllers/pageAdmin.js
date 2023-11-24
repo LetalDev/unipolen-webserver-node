@@ -1,7 +1,7 @@
 'use strict'
 
 const { query } = require("../database");
-const { fastify, defOpts } = require("../fastifyConfig");
+const { fastify, defOpts } = require("../config");
 const { getAllActiveCourses, getAllCoursesOrdered, addCourse, removeCourse, getCourse, updateCourse } = require("../models/course");
 const { getAllUnitsOrdered, addUnit, getUnit, updateUnit, removeUnit } = require("../models/unit");
 const { isUserAdmin, getUserFromJwt, getAllUsers, getAllUsersOrdered } = require("../models/user");
@@ -174,6 +174,7 @@ fastify.post("/admin/adicionar-curso", async (req, res) => {
   if (qualification === "") qualification = null;
   let style = (req.body.style || "").trim();
   if (style === "") style = null;
+  let is_highlighted = req.body.is_highlighted || false;
   let url = (req.body.url || "").trim();
   if (url === "") url = null;
 
@@ -187,6 +188,7 @@ fastify.post("/admin/adicionar-curso", async (req, res) => {
       degree,
       qualification,
       style,
+      is_highlighted,
       url
       );
 
@@ -269,6 +271,7 @@ fastify.post("/admin/alterar-curso/:id", async (req, res) => {
   if (qualification === "") qualification = null;
   let style = (req.body.style || "").trim();
   if (style === "") style = null;
+  let is_highlighted = req.body.is_highlighted || false;
   let url = (req.body.url || "").trim();
   if (url === "") url = null;
 
@@ -283,6 +286,7 @@ fastify.post("/admin/alterar-curso/:id", async (req, res) => {
       degree,
       qualification,
       style,
+      is_highlighted,
       url
       );
     

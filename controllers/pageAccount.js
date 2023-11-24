@@ -1,4 +1,4 @@
-const { fastify, defOpts } = require("../fastifyConfig");
+const { fastify, defOpts } = require("../config");
 const { getUserFromJwt, updateUserEmail, updateUserDisplayName, updateUserPasswordHash, isUserAdmin } = require("../models/user");
 const { renderErrorPage, renderErrorPageRes } = require("./pageError");
 const bcrypt = require("bcrypt");

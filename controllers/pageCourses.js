@@ -1,4 +1,4 @@
-const { fastify, defOpts } = require("../fastifyConfig");
+const { fastify, defOpts } = require("../config");
 const { getActiveCoursesInRange, getActiveCourseCount } = require("../models/course");
 const { getUserFromJwt, isUserAdmin } = require("../models/user");
 

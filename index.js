@@ -1,6 +1,6 @@
 'use strict'
 
-const { updateDefOpts, setup } = require("./fastifyConfig");
+const { updateDefOpts, setup } = require("./config");
 
 async function main() {
   await setup();

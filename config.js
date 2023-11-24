@@ -4,6 +4,7 @@ const fastify = require("fastify")();
 const path = require("path");
 const { NODE_ENV, PORT } = require("./environment");
 const { query, preparedQuery } = require("./database");
+const handlebars = require("handlebars");
 
 
 async function setup() {
@@ -20,7 +21,7 @@ async function setup() {
 
   fastify.register(require("@fastify/view"), {
     engine: {
-      handlebars: require("handlebars"),
+      handlebars: handlebars,
     },
     root: path.join(__dirname, "views"), // Points to `./views` relative to the current file
     layout: "./layouts/layout", // Sets the layout to use to `./views/layouts/layout.handlebars` relative to the current file.

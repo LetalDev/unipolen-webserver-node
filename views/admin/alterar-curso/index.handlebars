@@ -11,11 +11,20 @@
     Id do provedor:<br><input name="provider_id" value="{{provider_id}}"><br><br>
     Duração (meses)<br><input name="duration_months" type="number" value="{{duration_months}}"><br><br>
     Duração (horas)<br><input name="hours" type="number" value="{{hours}}"><br><br>
-    Inscrições Abertas?<br><input name="is_available" type="checkbox" checked={{is_available}}><br><br>
+    {{#if is_available}}
+      Inscrições Abertas?<br><input name="is_available" type="checkbox" checked><br><br>
+    {{else}}
+      Inscrições Abertas?<br><input name="is_available" type="checkbox"><br><br>
+    {{/if}}
     Grau (graduação ou pós-graduação):<br><input name="degree" value="{{degree}} "><br><br>
     Qualificação (bacharelado, tecnólogo, 2ª licenciatura):<br><input name="qualification" value="{{qualification}} "><br><br>
     Modalidade (presencial ou remoto):<br><input name="style" value="{{style}} "><br><br>
     URL:<br><input name="url" value="{{url}} "><br><br>
+    {{#if is_highlighted}}
+      Em destaque?<br><input name="is_highlighted" type="checkbox" checked><br><br>
+    {{else}}
+      Em destaque?<br><input name="is_highlighted" type="checkbox"><br><br>
+    {{/if}}
     <span id="message">{{../message}}</span>
     <input type="submit" value="Enviar">
   </form>

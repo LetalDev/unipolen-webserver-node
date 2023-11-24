@@ -1,4 +1,4 @@
-const { fastify } = require("../fastifyConfig");
+const { fastify } = require("../config");
 const { getUserFromJwt } = require("../models/user");
 
 fastify.get("/logout", async (req, res) => {

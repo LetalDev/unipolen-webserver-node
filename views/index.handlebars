@@ -25,34 +25,21 @@
 <section id="cursos-destaque" class="container-fluid">
   <h2>Cursos em Destaque</h2>
   <div class="grid">
-    <div class="cursos-destaque-item">
-      <img src="">
-      <h3>Nome Curso</h3>
-    </div>
-    <div class="cursos-destaque-item">
-      <img src="">
-      <h3>Nome Curso</h3>
-    </div>
-    <div class="cursos-destaque-item">
-      <img src="">
-      <h3>Nome Curso</h3>
-    </div>
+    {{#each highlighted_courses}}
+      <div class="cursos-destaque-item">
+        <img src="/static/img/curso/{{id}}">
+        <h3>{{name}}</h3>
+      </div>
+    {{/each}}
   </div>
 </section>
 <section id="polos" class="container-fluid bg-unp-red-1">
   <h2>Polos</h2>
   <div class="grid">
-    <div class="polos-item">
-      <img src="">
-      <h3>Nome Polo <br> endereço</h3>
-    </div>
-    <div class="polos-item">
-      <img src="">
-      <h3>Nome Polo <br> endereço</h3>
-    </div>
-    <div class="polos-item">
-      <img src="">
-      <h3>Nome Polo <br> endereço</h3>
-    </div>
-  </div>
+    {{#each units}}
+      <div class="polos-item">
+        <img src="static/img/polo/{{id}}">
+        <h3>{{name}}<br>{{address}}</h3>
+      </div>
+    {{/each}}
 </section>

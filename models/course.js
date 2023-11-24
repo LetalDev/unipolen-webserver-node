@@ -23,10 +23,10 @@ async function getAllCoursesOrdered() {
   return (await preparedQuery("SELECT * FROM course ORDER BY id ASC;")).rows;
 }
 
-async function addCourse(name, provider_id, duration_months, hours, is_available, degree, qualification, style, url) {
+async function addCourse(name, provider_id, duration_months, hours, is_available, degree, qualification, style, url, is_highlighted) {
   return (await preparedQuery(
-    `INSERT INTO course (name, provider_id, duration_months, hours, is_available, degree, qualification, style, url)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`, [name, provider_id, duration_months, hours, is_available, degree, qualification, style, url]));
+    `INSERT INTO course (name, provider_id, duration_months, hours, is_available, degree, qualification, style, url, is_highlighted)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`, [name, provider_id, duration_months, hours, is_available, degree, qualification, style, url, is_highlighted]));
 }
 
 async function removeCourse(id) {
@@ -37,7 +37,7 @@ async function getCourse(id) {
   return (await preparedQuery("SELECT * FROM course WHERE id = $1", [id])).rows[0];
 }
 
-async function updateCourse(id, name, provider_id, duration_months, hours, is_available, degree, qualification, style, url) {
+async function updateCourse(id, name, provider_id, duration_months, hours, is_available, degree, qualification, style, is_highlighted, url) {
   return (await preparedQuery(
     `UPDATE course SET
       name = $1,
@@ -48,9 +48,16 @@ async function updateCourse(id, name, provider_id, duration_months, hours, is_av
       degree = $6,
       qualification = $7,
       style = $8,
-      url = $9
-      WHERE id = $10`, [name, provider_id, duration_months, hours, is_available, degree, qualification, style, url, id]
+      url = $9,
+      is_highlighted = $10
+      WHERE id = $11`, [name, provider_id, duration_months, hours, is_available, degree, qualification, style, url, is_highlighted, id]
   ));
+}
+
+async function getHighlightedCourses() {
+  return (await preparedQuery(
+    `SELECT * FROM course WHERE is_highlighted = true;`
+  )).rows;
 }
 
 module.exports = {
@@ -62,4 +69,5 @@ module.exports = {
   removeCourse,
   getCourse,
   updateCourse,
+  getHighlightedCourses
 }

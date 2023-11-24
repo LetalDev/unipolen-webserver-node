@@ -1,4 +1,4 @@
-const { fastify, defOpts } = require("../fastifyConfig");
+const { fastify, defOpts } = require("../config");
 const { createUser, getUserFromJwt, getUserFromEmail } = require("../models/user");
 const bcrypt = require("bcrypt");
 

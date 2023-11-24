@@ -1,6 +1,8 @@
 'use strict'
 
-const { fastify, defOpts } = require("../fastifyConfig");
+const { fastify, defOpts } = require("../config");
+const { getHighlightedCourses } = require("../models/course");
+const { getAllUnitsOrdered } = require("../models/unit");
 const { getUserFromJwt, isUserAdmin } = require("../models/user");
 
 fastify.get("/", async (req, res) => {
@@ -12,5 +14,7 @@ fastify.get("/", async (req, res) => {
     .concat("/static/css/index.css");
   opts.user = await getUserFromJwt(req.cookies.jwt);
   opts.admin = await isUserAdmin(opts.user.id);
+  opts.highlighted_courses = await getHighlightedCourses();
+  opts.units = await getAllUnitsOrdered();
   return res.render("/index", opts);
 });
