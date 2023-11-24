@@ -12,26 +12,28 @@
 <div id="content">
   <section id="manage-units">
 		<h2>Gerenciar Polos</h2>
+    <a href="/admin/adicionar-polo">Adicionar novo polo</a>
+    <br><br>
     <table>
       <tr>
+        <th>Opções</th>
         <th>id</th>
         <th>nome</th>
         <th>telefone</th>
-        <th>cep</th>
-        <th>país</th>
-        <th>estado</th>
-        <th>cidade</th>
         <th>endereço</th>
       </tr>
       {{#each units}}
         <tr>
+          <td>
+            <br>
+            <a href="/admin/alterar-polo/{{id}}">Alterar</a>
+            <br><br>
+            <a href="/admin/remover-polo/{{id}}">Remover</a>
+            <br><br>
+          </td>
           <td>{{id}}</td>
           <td>{{name}}</td>
           <td>{{phone}}</td>
-          <td>{{postal_code}}</td>
-          <td>{{country}}</td>
-          <td>{{state}}</td>
-          <td>{{city}}</td>
           <td>{{address}}</td>
         </tr>
       {{/each}}
