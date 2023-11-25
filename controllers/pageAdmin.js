@@ -188,8 +188,8 @@ fastify.post("/admin/adicionar-curso", async (req, res) => {
       degree,
       qualification,
       style,
-      is_highlighted,
-      url
+      url,
+      is_highlighted
       );
 
     return res.redirect("/admin/cursos");
@@ -286,8 +286,8 @@ fastify.post("/admin/alterar-curso/:id", async (req, res) => {
       degree,
       qualification,
       style,
-      is_highlighted,
-      url
+      url,
+      is_highlighted
       );
     
     return res.redirect("/admin/cursos");
@@ -332,7 +332,7 @@ fastify.post("/admin/adicionar-polo", async (req, res) => {
   if (name === "") name = null;
   let phone = (req.body.phone || "").trim();
   if (phone === "") phone = null;
-  let address = (req.body.name || "").trim();
+  let address = (req.body.address || "").trim();
   if (address === "") address = null;
 
   try {
@@ -389,7 +389,7 @@ fastify.post("/admin/alterar-polo/:id", async (req, res) => {
   if (name === "") name = null;
   let phone = (req.body.phone || "").trim();
   if (phone === "") phone = null;
-  let address = (req.body.name || "").trim();
+  let address = (req.body.address || "").trim();
   if (address === "") address = null;
 
   try {

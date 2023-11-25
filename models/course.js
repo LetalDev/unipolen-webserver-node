@@ -37,7 +37,7 @@ async function getCourse(id) {
   return (await preparedQuery("SELECT * FROM course WHERE id = $1", [id])).rows[0];
 }
 
-async function updateCourse(id, name, provider_id, duration_months, hours, is_available, degree, qualification, style, is_highlighted, url) {
+async function updateCourse(id, name, provider_id, duration_months, hours, is_available, degree, qualification, style, url, is_highlighted) {
   return (await preparedQuery(
     `UPDATE course SET
       name = $1,
