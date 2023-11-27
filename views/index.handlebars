@@ -1,46 +1,49 @@
-<div class="container">
-  <div id="homecarousel" class="carousel slide" data-ride="carousel">
-    <ol class="carousel-indicators">
-      <!-- <li data-target="#homecarousel" data-slide-to="0" class="active"></li>
-      <li data-target="#homecarousel" data-slide-to="1"></li>
-      <li data-target="#homecarousel" data-slide-to="2"></li> -->
-    </ol>
+<div class="container mt-3 mb-3">
+  <div id="homeCarousel" class="carousel slide">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <img class="d-block w-100" src="" alt="First slide">
+        <img src="/static/img/carousel-1" class="d-block w-100 bg-secondary-subtle" height="300">
       </div>
       <div class="carousel-item">
-        <img class="d-block w-100" src="" alt="Second slide">
+        <img src="/static/img/carousel-2" class="d-block w-100 bg-secondary-subtle" height="300">
       </div>
       <div class="carousel-item">
-        <img class="d-block w-100" src="" alt="Third slide">
+        <img src="/static/img/carousel-3" class="d-block w-100 bg-secondary-subtle" height="300">
       </div>
     </div>
-    <a class="carousel-control-prev" href="#homecarousel" role="button" data-slide="prev">
+    <button class="carousel-control-prev" type="button" data-bs-target="#homeCarousel" data-bs-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    </a>
-    <a class="carousel-control-next" href="#homecarousel" role="button" data-slide="next">
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#homeCarousel" data-bs-slide="next">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    </a>
+      <span class="visually-hidden">Next</span>
+    </button>
   </div>
-  <section id="cursos-destaque" class="container-fluid">
-    <h2>Cursos em Destaque</h2>
-    <div class="grid">
+  <section class="text-center mt-5">
+    <h3>Cursos em Destaque</h3>
+    <br>
+    <div class="row justify-content-around">
       {{#each highlightedCourses}}
-        <div class="cursos-destaque-item">
-          <img src="/static/img/curso/{{id}}">
-          <h3>{{name}}</h3>
+        <div class="col-6 col-md-3">
+          <img src="/static/img/curso/{{id}}" class="bg-secondary-subtle" width="200" height="200">
+          <h5>{{name}}</h5>
         </div>
       {{/each}}
     </div>
   </section>
-  <section id="polos" class="container-fluid bg-unp-red-1">
-    <h2>Polos</h2>
-    <div class="grid">
+  <section class="text-center bg-danger mt-5 pb-4 pt-4 text-light">
+    <h3>Polos</h3>
+    <div class="row justify-content-around">
       {{#each units}}
-        <div class="polos-item">
-          <img src="static/img/polo/{{id}}">
-          <h3>{{name}}<br>{{address}}</h3>
+        <div class="col-6 col-md-3">
+          <img src="static/img/polo/{{id}}" class="bg-secondary-subtle" width="200" height="200">
+          <h5>{{name}}<br>{{address}}</h5>
         </div>
       {{/each}}
   </section>
