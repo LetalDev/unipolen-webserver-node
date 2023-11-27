@@ -6,7 +6,7 @@ fastify.get("/polos", async (req, res) => {
   const opts = structuredClone(defOpts);
   opts.styles.push("/static/css/polos.css");
   opts.user = await getUserFromJwt(req.cookies.jwt);
-  opts.admin = await isUserAdmin(opts.user.id);
+  opts.admin = await isUserAdmin(opts.user?.id);
   opts.units = await getAllUnits();
   return res.render("polos/index", opts);
 });

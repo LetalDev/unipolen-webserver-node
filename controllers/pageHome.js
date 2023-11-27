@@ -13,7 +13,7 @@ fastify.get("/", async (req, res) => {
     .concat(opts.styles.slice(1))
     .concat("/static/css/index.css");
   opts.user = await getUserFromJwt(req.cookies.jwt);
-  opts.admin = await isUserAdmin(opts.user.id);
+  opts.admin = await isUserAdmin(opts.user?.id);
   opts.highlighted_courses = await getHighlightedCourses();
   opts.units = await getAllUnitsOrdered();
   return res.render("/index", opts);

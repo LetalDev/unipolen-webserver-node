@@ -11,7 +11,7 @@ fastify.get("/cursos/:page", async (req, res) => {
   if (page == undefined || page < 0 || page > opts.pageCnt) page = 0;
   opts.styles.push("/static/css/cursos.css");
   opts.user = await getUserFromJwt(req.cookies.jwt);
-  opts.admin = await isUserAdmin(opts.user.id);
+  opts.admin = await isUserAdmin(opts.user?.id);
   opts.courses = await getActiveCoursesInRange(Math.max(0, (page-1))*15, 15);
   opts.page = page;
   if (page-1 > 0) opts.prevPage = page-1;
