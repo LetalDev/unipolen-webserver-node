@@ -4,7 +4,7 @@ const { User } = require("../models/user");
 
 fastify.get("/cursos/:page", async (req, res) => {
   const opts = structuredClone(defOpts);
-  opts.pageCnt = await Course.count({where: {isAvailable: true}}) / 15 + 1;
+  opts.pageCnt = Math.floor(await Course.count({where: {isAvailable: true}}) / 15) + 1;
 
   let { page } = req.params;
   page = Number.parseInt(page);

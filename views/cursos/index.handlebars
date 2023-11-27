@@ -1,40 +1,100 @@
-<div class="container">
-  <div class="text-center mt-5 mb-4">
+<div class="container my-5">
+  <div class="text-center mb-5">
     <h1>Cursos</h1>
   </div>
-  <div class="text-center">
-    {{#if prevPage}}<a class="text-dark link-underline link-underline-opacity-0" href="/cursos/{{prevPage}}"><h2 class="d-inline">&lt;</h2></a>{{else}}&nbsp&nbsp{{/if}}
-    &nbsp&nbsp<h3 style="display:inline">Página: {{page}}</h3>&nbsp&nbsp
-    {{#if nextPage}}<a class="text-dark link-underline link-underline-opacity-0" href="/cursos/{{nextPage}}"><h2 class="d-inline">&gt;</h2></a>{{else}}&nbsp&nbsp{{/if}}
-  </div>
-  <div class="row row-cols-3 mt-5 justify-content-around">
+  <nav>
+    <ul class="pagination pagination-lg justify-content-center">
+      {{#if prevPage}}
+        <li class="page-item">
+          <a class="page-link" href="/cursos/1" aria-label="First">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="/cursos/{{prevPage}}" aria-label="Previous">
+            <span aria-hidden="true">&lt;</span>
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="/cursos/{{prevPage}}">{{prevPage}}</a>
+        </li>
+      {{/if}}
+
+      <li class="page-item">
+        <a class="page-link" href="#">{{page}}</a>
+      </li>
+      
+      {{#if nextPage}}
+        <li class="page-item">
+          <a class="page-link" href="/cursos/{{nextPage}}">{{nextPage}}</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="/cursos/{{nextPage}}" aria-label="Next">
+            <span aria-hidden="true">&gt;</span>
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="/cursos/{{pageCnt}}" aria-label="Last">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      {{/if}}
+    </ul>
+  </nav>
+  <div class="row row-cols-3 my-5 justify-content-around">
     {{#each courses}}
       <div class="col p-3">
-        <div class="card bg-secondary-subtle">
-          <div class="row g-0">
-            <div class="col-md-4">
-              <img src="/static/img/course/{{id}}" class="img-fluid rounded-start bg-secondary" width="100%" height="100%">
-            </div>
-            <div class="col-md-8">
-              <div class="card-body">
-                <h4 class=" card-title">{{name}}</h4>
-                <div>Modalidade: {{style}}{{#unless style}}Indisponível{{/unless}}</div>
-                <div>Grau: {{degree}}{{#unless degree}}Indisponível{{/unless}}</div>
-                <div>Tipo: {{qualification}}{{#unless qualification}}Indisponível{{/unless}}</div>
-                <div>Carga Horária: {{hours}}{{#unless hours}}Indisponível{{/unless}}</div>
-                <div>{{#if durationMonths}}Duração: {{durationMonths}} meses{{else}}Duração: Indisponível{{/if}}</div>
-                <br>
-                <a href="{{url}}" class="btn btn-primary">Visitar</a>
-              </div>
-            </div>
+        <div class="card bg-secondary-subtle" style="min-height: 480px">
+          <img src="/static/img/course/{{id}}" class="card-img-top bg-secondary" width="100%" height="180">
+          <div class="card-body">
+            <h4 class=" card-title">{{name}}</h4>
+            <div>Modalidade: {{style}}{{#unless style}}Indisponível{{/unless}}</div>
+            <div>Grau: {{degree}}{{#unless degree}}Indisponível{{/unless}}</div>
+            <div>Tipo: {{qualification}}{{#unless qualification}}Indisponível{{/unless}}</div>
+            <div>Carga Horária: {{hours}}{{#unless hours}}Indisponível{{/unless}}</div>
+            <div>{{#if durationMonths}}Duração: {{durationMonths}} meses{{else}}Duração: Indisponível{{/if}}</div>
+            <br>
+            {{#if url}}
+              <a href="{{url}}" class="btn btn-primary">Visitar</a>
+            {{else}}
+              <a href="#" class="btn btn-primary disabled" aria-disabled="true">Visitar</a>
+            {{/if}}
           </div>
         </div>
       </div>
     {{/each}}
   </div>
-  <div class="text-center mb-5">
-    {{#if prevPage}}<a class="text-dark link-underline link-underline-opacity-0" href="/cursos/{{prevPage}}"><h2 class="d-inline">&lt;</h2></a>{{else}}&nbsp&nbsp{{/if}}
-    &nbsp&nbsp<h3 style="display:inline">Página: {{page}}</h3>&nbsp&nbsp
-    {{#if nextPage}}<a class="text-dark link-underline link-underline-opacity-0" href="/cursos/{{nextPage}}"><h2 class="d-inline">&gt;</h2></a>{{else}}&nbsp&nbsp{{/if}}
-  </div>
+  <nav>
+    <ul class="pagination pagination-lg justify-content-center">
+      {{#if prevPage}}
+        <li class="page-item">
+          <a class="page-link" href="/cursos/1" aria-label="First">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="/cursos/{{prevPage}}" aria-label="Previous">
+            <span aria-hidden="true">&lt;</span>
+          </a>
+        </li>
+        <li class="page-item"><a class="page-link" href="/cursos/{{prevPage}}">{{prevPage}}</a></li>
+      {{/if}}
+
+      <li class="page-item"><a class="page-link" href="#">{{page}}</a></li>
+      
+      {{#if nextPage}}
+        <li class="page-item"><a class="page-link" href="/cursos/{{nextPage}}">{{nextPage}}</a></li>
+        <li class="page-item">
+          <a class="page-link" href="/cursos/{{nextPage}}" aria-label="Next">
+            <span aria-hidden="true">&gt;</span>
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="/cursos/{{pageCnt}}" aria-label="Last">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      {{/if}}
+    </ul>
+  </nav>
 </div>
