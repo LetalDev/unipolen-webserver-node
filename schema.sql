@@ -27,7 +27,6 @@ CREATE TABLE IF NOT EXISTS public."user"
     address_id bigint,
     CONSTRAINT user_pkey PRIMARY KEY (id),
     CONSTRAINT user__email_unique UNIQUE (email),
-    CONSTRAINT user__token_unique UNIQUE (auth_token),
     CONSTRAINT user__user_name_unique UNIQUE (user_name),
     CONSTRAINT user__address_fkey FOREIGN KEY (address_id)
         REFERENCES public.user_address (id) MATCH SIMPLE
