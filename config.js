@@ -5,6 +5,7 @@ const path = require("path");
 const { NODE_ENV, PORT } = require("./environment");
 const { query, preparedQuery } = require("./database");
 const handlebars = require("handlebars");
+const fs = require("fs");
 
 
 async function setup() {
@@ -57,6 +58,9 @@ async function setup() {
   fastify.use(require('hsts')())
   fastify.use(require('ienoopen')())
   fastify.use(require('x-xss-protection')())
+
+  const schema = fs.readFileSync("./schema.sql", {encoding: "utf-8"});
+  await query(schema);
 
   fastify.listen({port: PORT, host: "0.0.0.0"}, (err, address) => {
     if (err) {
