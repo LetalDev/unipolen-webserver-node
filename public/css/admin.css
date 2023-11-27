@@ -1,30 +1,23 @@
 body {
-  background-color: rgb(15,15,15);
-  color:aliceblue;
+  color:black;
   font-size: 1.3rem;
 }
 
 #sidebar {
   position: absolute;
-  height: 90%;
+  height: 120%;
   border-right-style: solid;
   border-right-width: 3px;
   padding-inline: 20px;
   max-width: 200px;
   left: 0px;
+  font-size: 15px;
 }
 
 #sidebar a {
   display: block;
   margin-bottom: 10px;
-}
-
-a {
-  color: aliceblue
-}
-
-a.active {
-  color: skyblue;
+  font-weight: bold;
 }
 
 #content {
@@ -37,10 +30,11 @@ a.active {
 }
 
 textarea {
-  background-color: rgb(15,15,15);
-  color:aliceblue;
+  background-color: rgb(200,200,200);
+  color:black;
   min-width: 500px;
   min-height: 300px;
+  font-size: 20px;
 }
 
 #manage-course {
@@ -60,19 +54,24 @@ table {
 }
 
 td, th {
-  border: 1px solid #dddddd;
+  border: 1px solid black;
   text-align: left;
   padding: 8px;
+  max-width: 200px;
 }
 
 tr:nth-child(even) {
-  background-color: #212121;
+  background-color: #BABABA;
 }
 
 button {
-  font-size: 16px;
+  font-size: 14px;
 }
 
 input {
-  font-size: 16px;
+  font-size: 14px;
+}
+
+input[type=submit] {
+  width: fit-content;
 }

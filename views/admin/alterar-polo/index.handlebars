@@ -1,16 +1,18 @@
 <style>
-  body {padding: 20px; font-size: 1.3rem; text-align: center}
-  input {font-size: 1.5rem}
+  input {font-size: 1rem}
   #message {color: crimson}
+  input[type=submit] {width: fit-content}
 </style>
 
-{{#with unit}}
-  <h1 style="text-align: center">Alterar curso</h1>
-  <form action="/admin/alterar-polo/{{id}}" method="POST">
-    Nome:<br><input name="name" value="{{name}} "><br><br>
-    Telefone:<br><input name="phone" value="{{phone}} "><br><br>
-    Endereço:<br><input name="address" value="{{address}} "><br><br>
-    <span id="message">{{../message}}</span>
-    <input type="submit" value="Enviar">
-  </form>
-{{/with}}
+<div class="container">
+  {{#with unit}}
+    <h1 style="text-align: center">Alterar polo</h1>
+    <form action="/admin/alterar-polo/{{id}}" method="POST">
+      Nome:<br><input name="name" value="{{name}} "><br><br>
+      Telefone:<br><input name="phone" value="{{phone}} "><br><br>
+      Endereço:<br><input name="address" value="{{address}} "><br><br>
+      <span id="message">{{../message}}</span>
+      <input type="submit" value="Enviar">
+    </form>
+  {{/with}}
+</div>

@@ -1,14 +1,16 @@
 <style>
-  body {padding: 20px; font-size: 1.3rem; text-align: center}
-  input {font-size: 1.5rem}
+  input {font-size: 1rem}
   #message {color: crimson}
+  input[type=submit] {width: fit-content}
 </style>
 
-<h1 style="text-align: center">Adicionar curso</h1>
-<form action="/admin/adicionar-polo" method="POST">
-  Nome:<br><input name="name"><br><br>
-  Telefone:<br><input name="phone"><br><br>
-  Endereço<br><input name="address"><br><br>
-  <span id="message">{{message}}</span>
-  <input type="submit" value="Enviar">
-</form>
+<div class="container">
+  <h1 style="text-align: center">Adicionar curso</h1>
+  <form action="/admin/adicionar-polo" method="POST">
+    Nome:<br><input name="name"><br><br>
+    Telefone:<br><input name="phone"><br><br>
+    Endereço<br><input name="address"><br><br>
+    <span id="message">{{message}}</span>
+    <input type="submit" value="Enviar">
+  </form>
+</div>

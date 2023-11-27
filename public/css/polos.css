@@ -6,7 +6,6 @@
 .unit {
   border-left: 10px inset;
   padding: 2rem 2rem 2rem 1rem;
-  border-radius: 15px;
   border-color: var(--bg-unp-blue-2);
   margin-bottom: 3rem;
 }

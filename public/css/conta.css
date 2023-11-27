@@ -63,11 +63,11 @@ main {
   border-style: solid;
   border-width: 0 0 0 5px;
   padding: 0.2rem 0 0.2rem 1rem;
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 #dados button {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   display: inline-block;
   width: fit-content;
   font-weight: bold;
@@ -75,11 +75,11 @@ main {
 
 @media screen and (min-width: 800px) {
   #dados span {
-    font-size: 1.3rem;
+    font-size: 1rem;
   }
 
   #dados button {
-    font-size: 1rem;
+    font-size: 0.8rem;
   }
 }
 

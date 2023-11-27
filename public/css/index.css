@@ -1,6 +1,6 @@
 #homecarousel .carousel-item {
-    width: 100vw;
-    margin-bottom: 0.5vw;
+    width: 100%;
+    margin-bottom: 1rem;
 }
 
 #homecarousel~h2 {
@@ -8,8 +8,8 @@
 }
 
 #homecarousel img {
-  width: 100vw;
-  height: 30vw;
+  width: 800px;
+  height: 300px;
 }
 
 section {
@@ -25,20 +25,20 @@ section h2 {
   margin-bottom: 2%;
   padding-top: 1%;
   text-align: center;
-  font-size: 2rem;
+  font-size: 1.1rem;
 }
 
 section h3 {
-  font-size: 1.4rem
+  font-size: 0.7rem
 }
 
 section img {
-  width: 20rem;
-  height: 20rem;
+  width: 14rem;
+  height: 14rem;
 }
 
 section .grid div {
-  margin: 1rem;
+  margin: 0.6rem;
 }
 
 main {

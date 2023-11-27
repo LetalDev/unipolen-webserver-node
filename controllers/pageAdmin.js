@@ -17,9 +17,8 @@ fastify.get("/admin", async (req, res) => {
     return await renderErrorPageRes(res, 403);
   }
 
-  const opts = {
-    styles: ["/static/css/admin.css"],
-  };
+  const opts = structuredClone(defOpts); opts.showFooter = false;
+  opts.styles.push("/static/css/admin.css");
 
   return res.render("/admin/index", opts);
 });
@@ -33,9 +32,8 @@ fastify.get("/admin/componentes", async (req, res) => {
     return await renderErrorPageRes(res, 403);
   }
 
-  const opts = {
-    styles: ["/static/css/admin.css"],
-  };
+  const opts = structuredClone(defOpts); opts.showFooter = false;
+  opts.styles.push("/static/css/admin.css");
 
   return res.render("/admin/componentes", opts);
 });
@@ -51,10 +49,9 @@ fastify.get("/admin/cursos", async (req, res) => {
 
   const courses = await Course.findAll({order: [["updatedAt", "DESC"]]});
 
-  const opts = {
-    styles: ["/static/css/admin.css"],
-    courses: courses.map(course => course.dataValues),
-  };
+  const opts = structuredClone(defOpts); opts.showFooter = false;
+  opts.styles.push("/static/css/admin.css");
+  opts.courses = courses.map(course => course.dataValues);
 
   return res.render("/admin/cursos", opts);
 });
@@ -70,10 +67,9 @@ fastify.get("/admin/polos", async (req, res) => {
 
   const units = await Unit.findAll({order: [["updatedAt", "DESC"]]});
 
-  const opts = {
-    styles: ["/static/css/admin.css"],
-    units: units.map(unit => unit.dataValues),
-  };
+  const opts = structuredClone(defOpts); opts.showFooter = false;
+  opts.styles.push("/static/css/admin.css");
+  opts.units = units.map(unit => unit.dataValues);
 
   return res.render("/admin/polos", opts);
 });
@@ -89,10 +85,9 @@ fastify.get("/admin/usuarios", async (req, res) => {
 
   const users = await User.findAll();
 
-  const opts = {
-    styles: ["/static/css/admin.css"],
-    users: users.map(user => user.dataValues),
-  };
+  const opts = structuredClone(defOpts); opts.showFooter = false;
+  opts.styles.push("/static/css/admin.css");
+  opts.users = users.map(user => user.dataValues);
 
   return res.render("/admin/usuarios", opts);
 });
@@ -105,9 +100,9 @@ fastify.get("/admin/sql", async (req, res) => {
   if (!(await User.isAdmin(user))) {
     return await renderErrorPageRes(res, 403);
   }
-  const opts = {
-    styles: ["/static/css/admin.css"],
-  };
+  
+  const opts = structuredClone(defOpts); opts.showFooter = false;
+  opts.styles.push("/static/css/admin.css");
 
   return res.render("/admin/sql", opts);
 });
@@ -141,9 +136,8 @@ fastify.get("/admin/adicionar-curso", async (req, res) => {
     return await renderErrorPageRes(res, 403);
   }
 
-  const opts = {
-    styles: ["/static/css/admin.css"],
-  };
+  const opts = structuredClone(defOpts); opts.showFooter = false;
+  opts.styles.push("/static/css/admin.css");
 
   return res.render("admin/adicionar-curso/index", opts);
 
@@ -158,9 +152,8 @@ fastify.post("/admin/adicionar-curso", async (req, res) => {
     return await renderErrorPageRes(res, 403);
   }
 
-  const opts = {
-    styles: ["/static/css/admin.css"],
-  };
+  const opts = structuredClone(defOpts); opts.showFooter = false;
+  opts.styles.push("/static/css/admin.css");
 
   let name = (req.body.name || "").trim();
   if (name === "") name = null;
@@ -206,9 +199,8 @@ fastify.get("/admin/remover-curso/:id", async (req, res) => {
     return await renderErrorPageRes(res, 403);
   }
 
-  const opts = {
-    styles: ["/static/css/admin.css"],
-  };
+  const opts = structuredClone(defOpts); opts.showFooter = false;
+  opts.styles.push("/static/css/admin.css");
 
   const { id } = req.params;
 
@@ -235,10 +227,9 @@ fastify.get("/admin/alterar-curso/:id", async (req, res) => {
 
   const course = await Course.findByPk(id);
   
-  const opts = {
-    styles: ["/static/css/admin.css"],
-    course: course.dataValues,
-  };
+  const opts = structuredClone(defOpts); opts.showFooter = false;
+  opts.styles.push("/static/css/admin.css");
+  opts.course = course.dataValues;
 
   return res.render("admin/alterar-curso/index", opts);
 });
@@ -254,9 +245,8 @@ fastify.post("/admin/alterar-curso/:id", async (req, res) => {
 
   const { id } = req.params;
 
-  const opts = {
-    styles: ["/static/css/admin.css"],
-  };
+  const opts = structuredClone(defOpts); opts.showFooter = false;
+  opts.styles.push("/static/css/admin.css");
 
   let name = (req.body.name || "").trim();
   if (name === "") name = null;
@@ -305,9 +295,8 @@ fastify.get("/admin/adicionar-polo", async (req, res) => {
     return await renderErrorPageRes(res, 403);
   }
 
-  const opts = {
-    styles: ["/static/css/admin.css"],
-  };
+  const opts = structuredClone(defOpts); opts.showFooter = false;
+  opts.styles.push("/static/css/admin.css");
 
   return res.render("admin/adicionar-polo/index", opts);
 
@@ -322,9 +311,8 @@ fastify.post("/admin/adicionar-polo", async (req, res) => {
     return await renderErrorPageRes(res, 403);
   }
 
-  const opts = {
-    styles: ["/static/css/admin.css"],
-  };
+  const opts = structuredClone(defOpts); opts.showFooter = false;
+  opts.styles.push("/static/css/admin.css");
 
   let name = (req.body.name || "").trim();
   if (name === "") name = null;
@@ -360,10 +348,9 @@ fastify.get("/admin/alterar-polo/:id", async (req, res) => {
 
   const unit = await Unit.findByPk(id);
   
-  const opts = {
-    styles: ["/static/css/admin.css"],
-    unit: unit.dataValues,
-  };
+  const opts = structuredClone(defOpts); opts.showFooter = false;
+  opts.styles.push("/static/css/admin.css");
+  opts.unit = unit.dataValues;
 
   return res.render("admin/alterar-polo/index", opts);
 });
@@ -379,9 +366,8 @@ fastify.post("/admin/alterar-polo/:id", async (req, res) => {
 
   const { id } = req.params;
 
-  const opts = {
-    styles: ["/static/css/admin.css"],
-  };
+  const opts = structuredClone(defOpts); opts.showFooter = false;
+  opts.styles.push("/static/css/admin.css");
 
   let name = (req.body.name || "").trim();
   if (name === "") name = null;
@@ -416,9 +402,8 @@ fastify.get("/admin/remover-polo/:id", async (req, res) => {
     return await renderErrorPageRes(res, 403);
   }
 
-  const opts = {
-    styles: ["/static/css/admin.css"],
-  };
+  const opts = structuredClone(defOpts); opts.showFooter = false;
+  opts.styles.push("/static/css/admin.css");
 
   const { id } = req.params;
 
