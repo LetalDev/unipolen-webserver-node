@@ -1,10 +1,11 @@
 const { fastify, defOpts } = require("../config");
-const { createUser, getUserFromJwt, getUserFromEmail } = require("../models/user");
+const { PASS_SALTS } = require("../environment");
+const { User } = require("../models/user");
 const bcrypt = require("bcrypt");
 
 fastify.get("/registrar", async (req, res) => {
-  const user = await getUserFromJwt(req.cookies.jwt);
-  if (user != undefined) {
+  const user = await User.findByJwt(req.cookies.jwt);
+  if (user) {
     return res.redirect("/");
   }
 
@@ -14,27 +15,31 @@ fastify.get("/registrar", async (req, res) => {
 });
 
 fastify.post("/registrar", async (req, res) => {
-  let user = await getUserFromJwt(req.cookies.jwt);
-  if (user != undefined) {
+  let user = await User.findByJwt(req.cookies.jwt);
+  if (user) {
     return res.redirect("/");
   }
 
   const opts = structuredClone(defOpts);
   opts.styles.push("/static/css/login.css");
 
-  if (req.body.email == undefined || req.body.password == undefined || req.body.name == undefined) {
+  if (!req.body.email || !req.body.password || !req.body.name) {
     opts.message = "Entrada Inválida";
     return res.render("registrar/index", opts);
   }
 
-  user = await getUserFromEmail(req.body.email);
+  user = await User.findByEmail(req.body.email);
 
-  if (user != undefined) {
+  if (user) {
     opts.message = "Já existe um usuário com este email";
     return res.render("registrar/index", opts);
   }
 
-  if (await createUser(req.body.email, req.body.name, await bcrypt.hash(req.body.password, 12))) {
+  if (await User.create({
+    email: req.body.email,
+    displayName: req.body.name,
+    passwordHash: await bcrypt.hash(req.body.password, PASS_SALTS),
+  })) {
     return res.redirect("/login");
   } else {
     opts.message = "Falha ao registrar, tente novamente mais tarde";

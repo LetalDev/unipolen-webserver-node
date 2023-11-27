@@ -25,6 +25,7 @@
     "ienoopen": "^1.1.1",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.11.3",
+    "sequelize": "^6.35.1",
     "x-xss-protection": "^2.0.0"
   }
 }

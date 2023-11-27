@@ -2,6 +2,7 @@
 
 require("dotenv").config();
 
+const NODE_ENV = process.env.NODE_ENV;
 const JWT_PRIVATE_KEY = process.env.JWT_PRIVATE_KEY || "";
 const DOMAIN = process.env.NODE_ENV == "development" ? "localhost" : process.env.DOMAIN || "";
 const JWT_ISS = "unipolen";
@@ -11,7 +12,9 @@ const DB_HOST = process.env.DB_HOST || "";
 const DB_NAME = process.env.DB_NAME || "";
 const DB_PASS = process.env.DB_PASS || "";
 const DB_PORT = Number.parseInt(process.env.DB_PORT || "-1");
-const NODE_ENV = process.env.NODE_ENV;
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "";
+const ADMIN_PASS = process.env.ADMIN_PASS || "";
+const PASS_SALTS = Number.parseInt(process.env.PASS_SALTS || "14");
 
 if (JWT_PRIVATE_KEY == "") {
   throw Error("JWT_PRIVATE_KEY environment variable not set.");
@@ -41,8 +44,17 @@ if (DB_PORT == -1) {
   throw Error("DB_PORT environment variable not set.");
 }
 
+if (ADMIN_EMAIL == "") {
+  throw Error("ADMIN_EMAIL environment variable not set.");
+}
+
+if (ADMIN_PASS == "") {
+  throw Error("ADMIN_PASS environment variable not set.");
+}
+
 
 module.exports = {
+  NODE_ENV,
   JWT_PRIVATE_KEY,
   DOMAIN,
   JWT_ISS,
@@ -52,5 +64,7 @@ module.exports = {
   DB_NAME,
   DB_PASS,
   DB_PORT,
-  NODE_ENV,
+  ADMIN_EMAIL,
+  ADMIN_PASS,
+  PASS_SALTS,
 }

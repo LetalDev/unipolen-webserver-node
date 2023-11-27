@@ -1,16 +1,20 @@
 'use strict'
 
-const { updateDefOpts, setup } = require("./config");
+const { updateDefOpts, setup, listen } = require("./config");
+const { setupDatabase, syncDatabase } = require("./database");
+const { NODE_ENV } = require("./environment");
+const { setupModels, addDefaultAdminAccount } = require("./models/setup");
 
 async function main() {
+  console.log("Starting unipolen server in " + NODE_ENV);
+
+  await setupDatabase();
   await setup();
 
-  //base
-  require("./environment");
-  require("./database");
-
-  //middleware
-  // require("./middleware/authenticator");
+  //models
+  await setupModels();
+  await syncDatabase();
+  await addDefaultAdminAccount();
 
   //controllers
   require("./controllers/pageError");
@@ -26,10 +30,12 @@ async function main() {
 
   async function routine() {
     updateDefOpts();
-    setTimeout(routine, 10000);
+    setTimeout(routine, 30000);
   }
 
   await routine();
+
+  listen();
 }
 
 main();

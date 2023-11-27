@@ -1,12 +1,12 @@
 const { JWT_PRIVATE_KEY, JWT_ISS, DOMAIN } = require("../environment");
 const { fastify, defOpts } = require("../config");
-const { getUserFromJwt, getUserFromEmail } = require("../models/user");
+const { User } = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 fastify.get("/login", async (req, res) => {
-  const user = await getUserFromJwt(req.cookies.jwt);
-  if (user != undefined) {
+  const user = await User.findByJwt(req.cookies.jwt);
+  if (user) {
     return res.redirect("/");
   }
 
@@ -16,27 +16,27 @@ fastify.get("/login", async (req, res) => {
 });
 
 fastify.post("/login", async (req, res) => {
-  let user = await getUserFromJwt(req.cookies.jwt);
-  if (user != undefined) {
+  let user = await User.findByJwt(req.cookies.jwt);
+  if (user) {
     return res.redirect("/");
   }
 
   const opts = structuredClone(defOpts);
   opts.styles.push("/static/css/login.css");
 
-  if (req.body.email == undefined || req.body.password == undefined) {
+  if (!req.body.email || !req.body.password) {
     opts.message = "Entrada Inválida";
     return res.render("login/index", opts);
   }
 
-  user = await getUserFromEmail(req.body.email);
+  user = await User.findByEmail(req.body.email);
 
-  if (user == undefined) {
+  if (!user) {
     opts.message = "Não existe usuário com este email";
     return res.render("login/index", opts);
   }
 
-  if (await bcrypt.compare(req.body.password.toString(), user.password_hash.toString())) {
+  if (await bcrypt.compare(req.body.password.toString(), user.passwordHash.toString())) {
     let token = jwt.sign({
       iss: JWT_ISS,
       sub: user.id

@@ -1,9 +1,9 @@
 'use strict'
 
 const { fastify, defOpts } = require("../config");
-const { getHighlightedCourses } = require("../models/course");
-const { getAllUnitsOrdered } = require("../models/unit");
-const { getUserFromJwt, isUserAdmin } = require("../models/user");
+const { Course } = require("../models/course");
+const { Unit } = require("../models/unit");
+const { User } = require("../models/user");
 
 fastify.get("/", async (req, res) => {
   const opts = structuredClone(defOpts);
@@ -12,9 +12,15 @@ fastify.get("/", async (req, res) => {
     .concat("https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css")
     .concat(opts.styles.slice(1))
     .concat("/static/css/index.css");
-  opts.user = await getUserFromJwt(req.cookies.jwt);
-  opts.admin = await isUserAdmin(opts.user?.id);
-  opts.highlighted_courses = await getHighlightedCourses();
-  opts.units = await getAllUnitsOrdered();
+  const user = await User.findByJwt(req.cookies.jwt);
+  opts.user = user?.dataValues;
+  opts.admin = await User.isAdmin(user);
+  opts.highlightedCourses = (await Course.findAll({
+    where: {
+      isAvailable: true,
+      isHighlighted: true,
+    }
+  })).map(course => course.dataValues);
+  opts.units = (await Unit.findAll()).map(unit => unit.dataValues);
   return res.render("/index", opts);
 });

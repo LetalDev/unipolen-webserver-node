@@ -3,9 +3,10 @@
 const fastify = require("fastify")();
 const path = require("path");
 const { NODE_ENV, PORT } = require("./environment");
-const { query, preparedQuery } = require("./database");
+const { query, preparedQuery, sequelize } = require("./database");
 const handlebars = require("handlebars");
 const fs = require("fs");
+const { Defaults } = require("./models/defaults");
 
 
 async function setup() {
@@ -58,10 +59,9 @@ async function setup() {
   fastify.use(require('hsts')())
   fastify.use(require('ienoopen')())
   fastify.use(require('x-xss-protection')())
+}
 
-  const schema = fs.readFileSync("./schema.sql", {encoding: "utf-8"});
-  await query(schema);
-
+function listen() {
   fastify.listen({port: PORT, host: "0.0.0.0"}, (err, address) => {
     if (err) {
       console.error(err)
@@ -72,9 +72,9 @@ async function setup() {
 }
 
 async function updateDefOpts() {
-  const rows = (await query("SELECT * FROM defaults")).rows
+  const rows = await Defaults.findAll();
   defOpts.defaults = {};
-  for (let row of rows) {
+  for(let row of rows) {
     defOpts.defaults[row.key] = row.value;
   }
 }
@@ -95,4 +95,5 @@ module.exports = {
   fastify,
   defOpts,
   updateDefOpts,
+  listen,
 };
