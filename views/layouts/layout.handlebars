@@ -13,10 +13,10 @@
 
 <body>
   {{#if showHeader}}
-  {{#if admin}}
-    <div style="padding: 10px">ADMIN: <a href="/admin">Ir para console administrativa</a></div>
-  {{/if}}
   <header class="container-fluid bg-unp-blue-1">
+    {{#if admin}}
+      <div style="padding:10px; background-color:rgb(200,200,200); color:black">ADMIN: <a href="/admin">Ir para console administrativa</a></div>
+    {{/if}}
     <nav>
       <ul>
         <li><a href="/"><img src="" alt="Logo"></a></li>
