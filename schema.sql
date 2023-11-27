@@ -55,11 +55,7 @@ CREATE TABLE IF NOT EXISTS public.unit
     name character varying(64) COLLATE pg_catalog."default" NOT NULL,
     address text,
     phone character varying(32) COLLATE pg_catalog."default",
-    CONSTRAINT unit_pkey PRIMARY KEY (id),
-    CONSTRAINT unit__address_fkey FOREIGN KEY (address_id)
-        REFERENCES public.unit_address (id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
+    CONSTRAINT unit_pkey PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS public.provider
