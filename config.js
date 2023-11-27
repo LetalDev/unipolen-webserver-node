@@ -85,6 +85,9 @@ const defOpts = {
     "https://fonts.googleapis.com/css?family=Montserrat",
     "/static/css/base.css",
   ],
+  scripts: [
+    "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js",
+  ],
   showHeader: true,
   showFooter: true,
   defaults: {},
