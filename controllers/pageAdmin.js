@@ -19,6 +19,7 @@ fastify.get("/admin", async (req, res) => {
 
   const opts = structuredClone(defOpts); opts.showFooter = false;
   opts.styles.push("/static/css/admin.css");
+  opts.user = user;
 
   return res.render("/admin/index", opts);
 });
@@ -34,6 +35,7 @@ fastify.get("/admin/componentes", async (req, res) => {
 
   const opts = structuredClone(defOpts); opts.showFooter = false;
   opts.styles.push("/static/css/admin.css");
+  opts.user = user;
 
   return res.render("/admin/componentes", opts);
 });
@@ -51,6 +53,7 @@ fastify.get("/admin/cursos", async (req, res) => {
 
   const opts = structuredClone(defOpts); opts.showFooter = false;
   opts.styles.push("/static/css/admin.css");
+  opts.user = user;
   opts.courses = courses.map(course => course.dataValues);
 
   return res.render("/admin/cursos", opts);
@@ -69,6 +72,7 @@ fastify.get("/admin/polos", async (req, res) => {
 
   const opts = structuredClone(defOpts); opts.showFooter = false;
   opts.styles.push("/static/css/admin.css");
+  opts.user = user;
   opts.units = units.map(unit => unit.dataValues);
 
   return res.render("/admin/polos", opts);
@@ -87,6 +91,7 @@ fastify.get("/admin/usuarios", async (req, res) => {
 
   const opts = structuredClone(defOpts); opts.showFooter = false;
   opts.styles.push("/static/css/admin.css");
+  opts.user = user;
   opts.users = users.map(user => user.dataValues);
 
   return res.render("/admin/usuarios", opts);
@@ -103,6 +108,7 @@ fastify.get("/admin/sql", async (req, res) => {
   
   const opts = structuredClone(defOpts); opts.showFooter = false;
   opts.styles.push("/static/css/admin.css");
+  opts.user = user;
 
   return res.render("/admin/sql", opts);
 });
@@ -138,6 +144,7 @@ fastify.get("/admin/adicionar-curso", async (req, res) => {
 
   const opts = structuredClone(defOpts); opts.showFooter = false;
   opts.styles.push("/static/css/admin.css");
+  opts.user = user;
 
   return res.render("admin/adicionar-curso/index", opts);
 
@@ -154,6 +161,7 @@ fastify.post("/admin/adicionar-curso", async (req, res) => {
 
   const opts = structuredClone(defOpts); opts.showFooter = false;
   opts.styles.push("/static/css/admin.css");
+  opts.user = user;
 
   let name = (req.body.name || "").trim();
   if (name === "") name = null;
@@ -201,6 +209,7 @@ fastify.get("/admin/remover-curso/:id", async (req, res) => {
 
   const opts = structuredClone(defOpts); opts.showFooter = false;
   opts.styles.push("/static/css/admin.css");
+  opts.user = user;
 
   const { id } = req.params;
 
@@ -229,6 +238,7 @@ fastify.get("/admin/alterar-curso/:id", async (req, res) => {
   
   const opts = structuredClone(defOpts); opts.showFooter = false;
   opts.styles.push("/static/css/admin.css");
+  opts.user = user;
   opts.course = course.dataValues;
 
   return res.render("admin/alterar-curso/index", opts);
@@ -247,6 +257,7 @@ fastify.post("/admin/alterar-curso/:id", async (req, res) => {
 
   const opts = structuredClone(defOpts); opts.showFooter = false;
   opts.styles.push("/static/css/admin.css");
+  opts.user = user;
 
   let name = (req.body.name || "").trim();
   if (name === "") name = null;
@@ -297,6 +308,7 @@ fastify.get("/admin/adicionar-polo", async (req, res) => {
 
   const opts = structuredClone(defOpts); opts.showFooter = false;
   opts.styles.push("/static/css/admin.css");
+  opts.user = user;
 
   return res.render("admin/adicionar-polo/index", opts);
 
@@ -313,6 +325,7 @@ fastify.post("/admin/adicionar-polo", async (req, res) => {
 
   const opts = structuredClone(defOpts); opts.showFooter = false;
   opts.styles.push("/static/css/admin.css");
+  opts.user = user;
 
   let name = (req.body.name || "").trim();
   if (name === "") name = null;
@@ -350,6 +363,7 @@ fastify.get("/admin/alterar-polo/:id", async (req, res) => {
   
   const opts = structuredClone(defOpts); opts.showFooter = false;
   opts.styles.push("/static/css/admin.css");
+  opts.user = user;
   opts.unit = unit.dataValues;
 
   return res.render("admin/alterar-polo/index", opts);
@@ -368,6 +382,7 @@ fastify.post("/admin/alterar-polo/:id", async (req, res) => {
 
   const opts = structuredClone(defOpts); opts.showFooter = false;
   opts.styles.push("/static/css/admin.css");
+  opts.user = user;
 
   let name = (req.body.name || "").trim();
   if (name === "") name = null;
@@ -404,6 +419,7 @@ fastify.get("/admin/remover-polo/:id", async (req, res) => {
 
   const opts = structuredClone(defOpts); opts.showFooter = false;
   opts.styles.push("/static/css/admin.css");
+  opts.user = user;
 
   const { id } = req.params;
 

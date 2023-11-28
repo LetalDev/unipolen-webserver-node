@@ -8,7 +8,12 @@ fastify.get("/logout", async (req, res) => {
   }
 
   res.setCookie("jwt", "", {
-    maxAge: 0
+    domain: DOMAIN,
+    path: "/",
+    secure: true,
+    httpOnly: true,
+    maxAge: 0,
+    sameSite: "strict"
   });
 
   res.redirect("/");
