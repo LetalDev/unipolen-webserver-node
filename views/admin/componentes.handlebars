@@ -10,91 +10,21 @@
 	<a href="/">Voltar para Home</a>
 </div>
 <div id="content">
-  <section id="manage-components">
+  <div>
     <h2>Alterar Componentes das Páginas</h2>
-    <h3>Textos</h3>
-    <div>
-      Nome da empresa:
-      <form action="/admin/update-component/defaults-name" method="post">
-        <input type="text" required>
-        <input type="submit">
+    <div class="container p-3 mx-2 mt-5 bg-secondary-subtle">
+      <h3>Informações Base</h3>
+      <form class="mt-5" action="/admin/alterar-informacoes" method="POST">
+        <label class="form-label" for="name">Nome da empresa</label>
+        <input class="form-control" name="name" id="name" value="{{defaults.name}} ">
+        <label class="form-label mt-3" for="phone">Telefone Padrão</label>
+        <input class="form-control" name="phone" id="phone" value="{{defaults.phone}} ">
+        <label class="form-label mt-3" for="email">Email de contato</label>
+        <input class="form-control" name="email" id="email" value="{{defaults.email}} ">
+        <div class="text-danger mt-3">{{message}}</div>
+        <input class="btn btn-primary mt-3" type="submit">
       </form>
-      <br>
-      Email da empresa:
-      <form action="/admin/update-component/defaults-email" method="post">
-        <input type="text" required>
-        <input type="submit">
-      </form>
-      <br>
-      Telefone da empresa (padrão):
-      <form action="/admin/update-component/defaults-phone" method="post">
-        <input type="text" required>
-        <input type="submit">
-      </form>
-      <br>
     </div>
-    <h3>Imagens</h3>
-    <div>
-      Logo:
-      <form action="/admin/update-component/logo" method="post">
-        <input type="file" required>
-        <input type="submit">
-      </form>
-      <br>
-    </div>
-    <div>
-      Home:
-      <div>
-        Carrossel:
-        <form action="/admin/update-component/home-carrousel" method="post">
-          <input type="file" required>
-          <input type="submit">
-        </form>
-        <br>
-        Cursos em Destaque:
-        <div>
-          Curso 1:
-          <form action="/admin/update-component/highlighted-course-1" method="post">
-            <input type="file" required>
-            <input type="submit">
-          </form>
-          <br>
-          Curso 2:
-          <form action="/admin/update-component/highlighted-course-2" method="post">
-            <input type="file" required>
-            <input type="submit">
-          </form>
-          <br>
-          Curso 3:
-          <form action="/admin/update-component/highlighted-course-3" method="post">
-            <input type="file" required>
-            <input type="submit">
-          </form>
-          <br>
-        </div>
-        Polos em Destaque:
-        <div>
-          Polo 1:
-          <form action="/admin/update-component/highlighted-unit-1" method="post">
-            <input type="file" required>
-            <input type="submit">
-          </form>
-          <br>
-          Polo 2:
-          <form action="/admin/update-component/highlighted-unit-2" method="post">
-            <input type="file" required>
-            <input type="submit">
-          </form>
-          <br>
-          Polo 3:
-          <form action="/admin/update-component/highlighted-unit-3" method="post">
-            <input type="file" required>
-            <input type="submit">
-          </form>
-          <br>
-        </div>
-      </div>
-    </div>
-  </section>
+  </div>
 </div>
 <script src="/static/js/admin.js"></script>
