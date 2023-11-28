@@ -81,9 +81,12 @@ async function updateDefOpts() {
 
 const defOpts = {
   styles: [
-    "https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css",
+    "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css",
     "https://fonts.googleapis.com/css?family=Montserrat",
     "/static/css/base.css",
+  ],
+  scripts: [
+    "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js",
   ],
   showHeader: true,
   showFooter: true,

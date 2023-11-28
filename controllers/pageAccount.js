@@ -12,7 +12,6 @@ fastify.get("/conta", async (req, res) => {
   const opts = structuredClone(defOpts);
   opts.styles.push("/static/css/conta.css");
   opts.user = user.dataValues;
-  console.log(user);
   opts.admin = await User.isAdmin(user);
   return res.render("conta/index", opts);
 });
