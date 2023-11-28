@@ -43,7 +43,7 @@ const FIELD_TO_PROPS = Object.freeze({
 fastify.get("/conta/alterar/:field", async (req, res) => {
   const user = await User.findByJwt(req.cookies.jwt);
   if (!user) {
-    return res.status(401).send();
+    return await renderErrorPageRes(res, 401);
   }
 
   const { field } = req.params;
@@ -71,7 +71,7 @@ fastify.get("/conta/alterar/:field", async (req, res) => {
 fastify.post("/conta/alterar/:field", async (req, res) => {
   const user = await User.findByJwt(req.cookies.jwt);
   if (!user) {
-    return await renderErrorPageRes(res, 404);
+    return await renderErrorPageRes(res, 401);
   }
 
   const { field } = req.params;
@@ -119,4 +119,37 @@ fastify.post("/conta/alterar/:field", async (req, res) => {
 
   return res.redirect("/conta");
 
+});
+
+fastify.get("/conta/apagar", async (req, res) => {
+  const user = await User.findByJwt(req.cookies.jwt);
+  if (!user) {
+    return await renderErrorPageRes(res, 404);
+  }
+
+  const opts = structuredClone(defOpts);
+  opts.styles.push("/static/css/conta-alterar.css");
+  opts.user = user.dataValues;
+
+  return res.render("/conta/apagar/index", opts);
+});
+
+fastify.post("/conta/apagar", async (req, res) => {
+  const user = await User.findByJwt(req.cookies.jwt);
+  if (!user) {
+    return await renderErrorPageRes(res, 404);
+  }
+
+  const opts = structuredClone(defOpts);
+  opts.styles.push("/static/css/conta-alterar.css");
+  opts.user = user.dataValues;
+
+  if (!(await bcrypt.compare(req.body.password, user.password))) {
+    opts.message = "Senha Incorreta";
+    return res.render("/conta/apagar/index", opts)
+  }
+
+  await user.destroy();
+
+  return res.redirect("/logout");
 });

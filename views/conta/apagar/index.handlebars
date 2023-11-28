@@ -1,9 +1,13 @@
-<h1>Apagar Conta</h1>
-<form action="/conta/apagar" method="POST">
-  <label for="password">Confirme a sua senha:</label>
-  <input type="password" name="password" id="password" required>
-  <br>
-  <span id="message">{{message}}</span>
-  <br>
-  <button class="outline" id="delete-account" type="submit">Apagar conta</button>
-</form>
+<div class="container py-5 w-50">
+  <h1 class="text-center">Apagar Conta</h1>
+  <form class="d-flex" style="flex-direction:column; gap:1rem" action="/conta/apagar" method="POST">
+    <div>
+      <label class="form-label" for="password">Confirme a sua senha:</label>
+      <input class="form-control" type="password" name="password" id="password" required>
+    </div>
+    <span id="message">{{message}}</span>
+    <div>
+      <button class="btn btn-danger" id="delete-account" type="submit">Apagar conta</button>
+    </div>
+  </form>
+</div>
