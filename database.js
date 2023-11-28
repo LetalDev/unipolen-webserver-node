@@ -24,6 +24,7 @@ const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
     },
     timestamps: true,
   },
+  logging: false,
 });
 
 async function setupDatabase() {
