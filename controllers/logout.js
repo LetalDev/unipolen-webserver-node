@@ -1,4 +1,5 @@
 const { fastify } = require("../config");
+const { DOMAIN } = require("../environment");
 const { User } = require("../models/user");
 
 fastify.get("/logout", async (req, res) => {
