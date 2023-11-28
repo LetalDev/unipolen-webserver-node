@@ -3,14 +3,14 @@
 const { fastify, defOpts } = require("../config");
 const { Course } = require("../models/course");
 const { Unit } = require("../models/unit");
-const { User } = require("../models/user");
+const { User, findUserByJwt, findUserByEmail, isUserAdmin } = require("../models/user");
 
 fastify.get("/", async (req, res) => {
   const opts = structuredClone(defOpts);
   opts.styles.push("/static/css/index.css");
-  const user = await User.findByJwt(req.cookies.jwt);
+  const user = await findUserByJwt(req.cookies.jwt);
   opts.user = user?.dataValues;
-  opts.admin = await User.isAdmin(user);
+  opts.admin = await isUserAdmin(user);
   opts.highlightedCourses = (await Course.findAll({
     where: {
       isAvailable: true,

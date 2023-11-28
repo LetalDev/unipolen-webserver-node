@@ -14,21 +14,14 @@
 		<h2>Gerenciar Cursos</h2>
     <a href="/admin/adicionar-curso">Adicionar novo curso</a>
     <br><br>
-    <table id="courses-table" class="table table-striped table-bordered">
+    <table class="table table-striped table-bordered">
       <tr>
         <th>Opções</th>
-        <th>id</th>
-        <th>em destaque?</th>
-        <th>nome</th>
-        <th>duração (meses)</th>
-        <th>duração (horas)</th>
-        <th>url</th>
-        <th>inscrições abertas?</th>
-        <th>grau</th>
-        <th>qualificação</th>
-        <th>modalidade</th>
+        {{#each fields}}
+          <th>{{this}}</th>
+        {{/each}}
       </tr>
-      {{#each courses}}
+      {{#each rows}}
         <tr>
           <td>
             <br>
@@ -37,16 +30,9 @@
             <a href="/admin/remover-curso/{{id}}">Remover</a>
             <br><br>
           </td>
-          <td>{{id}}</td>
-          <td>{{isHighlighted}}</td>
-          <td>{{name}}</td>
-          <td>{{durationMonths}}</td>
-          <td>{{hours}}</td>
-          <td>{{url}}</td>
-          <td>{{isAvailable}}</td>
-          <td>{{degree}}</td>
-          <td>{{qualification}}</td>
-          <td>{{style}}</td>
+          {{#each values}}
+            <td>{{this}}</td>
+          {{/each}}
         </tr>
       {{/each}}
     </table>

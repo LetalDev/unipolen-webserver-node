@@ -1,10 +1,12 @@
+'use strict'
+
 const { fastify, defOpts } = require("../config");
 const { PASS_SALTS } = require("../environment");
-const { User } = require("../models/user");
+const { User, findUserByJwt, findUserByEmail, isUserAdmin } = require("../models/user");
 const bcrypt = require("bcrypt");
 
 fastify.get("/registrar", async (req, res) => {
-  const user = await User.findByJwt(req.cookies.jwt);
+  const user = await findUserByJwt(req.cookies.jwt);
   if (user) {
     return res.redirect("/");
   }
@@ -15,7 +17,7 @@ fastify.get("/registrar", async (req, res) => {
 });
 
 fastify.post("/registrar", async (req, res) => {
-  let user = await User.findByJwt(req.cookies.jwt);
+  let user = await findUserByJwt(req.cookies.jwt);
   if (user) {
     return res.redirect("/");
   }
@@ -28,7 +30,7 @@ fastify.post("/registrar", async (req, res) => {
     return res.render("registrar/index", opts);
   }
 
-  user = await User.findByEmail(req.body.email);
+  user = await findUserByEmail(req.body.email);
 
   if (user) {
     opts.message = "Já existe um usuário com este email";

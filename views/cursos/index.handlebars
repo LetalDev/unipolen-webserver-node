@@ -53,12 +53,12 @@
             <div>Tipo: {{qualification}}{{#unless qualification}}Indisponível{{/unless}}</div>
             <div>Carga Horária: {{hours}}{{#unless hours}}Indisponível{{/unless}}</div>
             <div>{{#if durationMonths}}Duração: {{durationMonths}} meses{{else}}Duração: Indisponível{{/if}}</div>
-            <br>
-            {{#if url}}
-              <a href="{{url}}" class="btn btn-primary">Visitar</a>
-            {{else}}
-              <a href="#" class="btn btn-primary disabled" aria-disabled="true">Visitar</a>
-            {{/if}}
+            <div class="mt-4">
+              <a href="/curso/{{id}}" class="btn btn-primary">Saiba mais</a>
+              {{#if url}}
+                <a href="{{url}}" class="btn btn-primary">Site Oficial</a>
+              {{/if}}
+            </div>
           </div>
         </div>
       </div>

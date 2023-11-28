@@ -1,3 +1,5 @@
+'use strict'
+
 const { DataTypes } = require("sequelize");
 const { preparedQuery } = require("../database");
 
@@ -14,13 +16,16 @@ const Unit = sequelize.define("Unit", {
     type: DataTypes.TEXT,
     allowNull: false,
     unique: true,
+    label: "nome",
   },
   phone: {
     type: DataTypes.TEXT,
+    label: "telefone",
   },
   address: {
     type: DataTypes.TEXT,
     allowNull: false,
+    label: "endereço",
   },
 });
 

@@ -1,10 +1,12 @@
+'use strict'
+
 const { fastify, defOpts } = require("../config");
-const { User } = require("../models/user");
+const { User, findUserByJwt, findUserByEmail, isUserAdmin } = require("../models/user");
 const { renderErrorPage, renderErrorPageRes } = require("./pageError");
 const bcrypt = require("bcrypt");
 
 fastify.get("/conta", async (req, res) => {
-  const user = await User.findByJwt(req.cookies.jwt);
+  const user = await findUserByJwt(req.cookies.jwt);
   if (!user) {
     return await renderErrorPageRes(res, 401);
   }
@@ -12,7 +14,7 @@ fastify.get("/conta", async (req, res) => {
   const opts = structuredClone(defOpts);
   opts.styles.push("/static/css/conta.css");
   opts.user = user.dataValues;
-  opts.admin = await User.isAdmin(user);
+  opts.admin = await isUserAdmin(user);
   return res.render("conta/index", opts);
 });
 
@@ -41,7 +43,7 @@ const FIELD_TO_PROPS = Object.freeze({
 });
 
 fastify.get("/conta/alterar/:field", async (req, res) => {
-  const user = await User.findByJwt(req.cookies.jwt);
+  const user = await findUserByJwt(req.cookies.jwt);
   if (!user) {
     return await renderErrorPageRes(res, 401);
   }
@@ -57,7 +59,7 @@ fastify.get("/conta/alterar/:field", async (req, res) => {
   const opts = structuredClone(defOpts);
   opts.styles.push("/static/css/conta-alterar.css");
   opts.user = user.dataValues;
-  opts.admin = await User.isAdmin(user);
+  opts.admin = await isUserAdmin(user);
   opts.fieldName = props.NAME;
   opts.field = field;
   opts.label = props.LABEL;
@@ -69,7 +71,7 @@ fastify.get("/conta/alterar/:field", async (req, res) => {
 });
 
 fastify.post("/conta/alterar/:field", async (req, res) => {
-  const user = await User.findByJwt(req.cookies.jwt);
+  const user = await findUserByJwt(req.cookies.jwt);
   if (!user) {
     return await renderErrorPageRes(res, 401);
   }
@@ -85,7 +87,7 @@ fastify.post("/conta/alterar/:field", async (req, res) => {
   const opts = structuredClone(defOpts);
   opts.styles.push("/static/css/conta-alterar.css");
   opts.user = user.dataValues;
-  opts.admin = await User.isAdmin(user);
+  opts.admin = await isUserAdmin(user);
   opts.fieldName = props.NAME;
   opts.field = field;
   opts.label = props.LABEL;
@@ -122,7 +124,7 @@ fastify.post("/conta/alterar/:field", async (req, res) => {
 });
 
 fastify.get("/conta/apagar", async (req, res) => {
-  const user = await User.findByJwt(req.cookies.jwt);
+  const user = await findUserByJwt(req.cookies.jwt);
   if (!user) {
     return await renderErrorPageRes(res, 404);
   }
@@ -135,7 +137,7 @@ fastify.get("/conta/apagar", async (req, res) => {
 });
 
 fastify.post("/conta/apagar", async (req, res) => {
-  const user = await User.findByJwt(req.cookies.jwt);
+  const user = await findUserByJwt(req.cookies.jwt);
   if (!user) {
     return await renderErrorPageRes(res, 404);
   }

@@ -22,10 +22,12 @@ async function main() {
   require("./controllers/pageHome");
   require("./controllers/pageAdmin");
   require("./controllers/pageCourses");
+  require("./controllers/pageCourse");
   require("./controllers/pageLogin");
   require("./controllers/pageRegister");
   require("./controllers/logout");
   require("./controllers/pageUnits");
+  require("./controllers/pageUnit");
   require("./controllers/pageAccount");
 
   async function routine() {

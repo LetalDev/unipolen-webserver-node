@@ -1,5 +1,7 @@
+'use strict'
+
 const { Role } = require("./role");
-const { User } = require("./user");
+const { User, findUserByEmail } = require("./user");
 const { Unit } = require("./unit");
 const { Course } = require("./course");
 const { Defaults } = require("./defaults");
@@ -16,7 +18,7 @@ async function setupModels() {
 }
 
 async function addDefaultAdminAccount() {
-  if (await User.findByEmail(ADMIN_EMAIL)) return;
+  if (await findUserByEmail(ADMIN_EMAIL)) return;
 
   const user = await User.create({
     email: ADMIN_EMAIL,

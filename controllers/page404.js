@@ -1,3 +1,5 @@
+'use strict'
+
 const { fastify } = require("../config");
 const { renderErrorPageRes } = require("./pageError");
 

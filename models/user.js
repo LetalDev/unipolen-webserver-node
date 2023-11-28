@@ -28,7 +28,7 @@ const User = sequelize.define("User", {
   },
 });
 
-User.findByJwt = async (jwtStr) => {
+async function findUserByJwt(jwtStr) {
   if (!jwtStr || jwtStr == "") {
     return null;
   }
@@ -44,22 +44,25 @@ User.findByJwt = async (jwtStr) => {
   }
 
   return await User.findByPk(token.sub);
-};
+}
 
-User.findByEmail = async (email) => {
+async function findUserByEmail(email) {
   if (!email || email == "") return null;
   return await User.findOne({ where: {email: email} });
-};
+}
 
-User.isAdmin = async (user) => {
+async function isUserAdmin(user) {
   if (!(user instanceof User)) return false;
   const roles = await user.getRoles();
   for (let role of roles) {
     if (role.name == "admin") return true;
   }
   return false;
-};
+}
 
 module.exports = {
-  User
+  User,
+  findUserByJwt,
+  findUserByEmail,
+  isUserAdmin,
 };

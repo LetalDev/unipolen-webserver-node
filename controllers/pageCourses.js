@@ -1,6 +1,8 @@
+'use strict'
+
 const { fastify, defOpts } = require("../config");
 const { Course } = require("../models/course");
-const { User } = require("../models/user");
+const { User, findUserByJwt, findUserByEmail, isUserAdmin } = require("../models/user");
 
 fastify.get("/cursos/:page", async (req, res) => {
   const opts = structuredClone(defOpts);
@@ -10,12 +12,18 @@ fastify.get("/cursos/:page", async (req, res) => {
   page = Number.parseInt(page);
   if (page == undefined || page < 0 || page > opts.pageCnt) page = 0;
   opts.styles.push("/static/css/cursos.css");
-  const user = await User.findByJwt(req.cookies.jwt);
+  const user = await findUserByJwt(req.cookies.jwt);
   opts.user = user?.dataValues;
-  opts.admin = await User.isAdmin(user);
+  opts.admin = await isUserAdmin(user);
   opts.courses = (await Course.findAll({
+    where: {
+      isAvailable: true,
+    },
     offset: Math.max(0, (page-1))*15,
     limit: 15,
+    order: [
+      ["name", "ASC"]
+    ]
   })).map(course => course.dataValues);
   opts.page = page;
   if (page-1 > 0) opts.prevPage = page-1;

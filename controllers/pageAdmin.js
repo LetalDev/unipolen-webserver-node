@@ -1,19 +1,19 @@
 'use strict'
 
-const { query, sequelize } = require("../database");
+const { query, sequelize, getFieldsArrayFromModel, getValuesArrayFromRowFields, getFieldsTypeArrayFromModelFields } = require("../database");
 const { fastify, defOpts } = require("../config");
 const { Course } = require("../models/course");
 const { Unit } = require("../models/unit");
-const { User } = require("../models/user");
+const { User, findUserByJwt, findUserByEmail, isUserAdmin } = require("../models/user");
 const { renderErrorPage, renderErrorPageRes } = require("./pageError");
- 
+const { Model } = require("sequelize");
 
 fastify.get("/admin", async (req, res) => {
-  const user = await User.findByJwt(req.cookies.jwt);
+  const user = await findUserByJwt(req.cookies.jwt);
   if (!user) {
     return await renderErrorPageRes(res, 401);
   }
-  if (!(await User.isAdmin(user))) {
+  if (!(await isUserAdmin(user))) {
     return await renderErrorPageRes(res, 403);
   }
 
@@ -25,11 +25,11 @@ fastify.get("/admin", async (req, res) => {
 });
 
 fastify.get("/admin/componentes", async (req, res) => {
-  const user = await User.findByJwt(req.cookies.jwt);
+  const user = await findUserByJwt(req.cookies.jwt);
   if (!user) {
     return await renderErrorPageRes(res, 401);
   }
-  if (!(await User.isAdmin(user))) {
+  if (!(await isUserAdmin(user))) {
     return await renderErrorPageRes(res, 403);
   }
 
@@ -41,30 +41,38 @@ fastify.get("/admin/componentes", async (req, res) => {
 });
 
 fastify.get("/admin/cursos", async (req, res) => {
-  const user = await User.findByJwt(req.cookies.jwt);
+  const user = await findUserByJwt(req.cookies.jwt);
   if (!user) {
     return await renderErrorPageRes(res, 401);
   }
-  if (!(await User.isAdmin(user))) {
+  if (!(await isUserAdmin(user))) {
     return await renderErrorPageRes(res, 403);
   }
 
-  const courses = await Course.findAll({order: [["updatedAt", "DESC"]]});
+  const courses = await Course.findAll({order: [["name", "ASC"]]});
 
   const opts = structuredClone(defOpts); opts.showFooter = false;
   opts.styles.push("/static/css/admin.css");
   opts.user = user;
-  opts.courses = courses.map(course => course.dataValues);
+  
+  const fields = getFieldsArrayFromModel(Course, {"description":true});
+  opts.fields = fields.map(field => (field.label || field.fieldName));
+  opts.rows = courses.map(course => {
+    return {
+      id: course.id,
+      values: getValuesArrayFromRowFields(course, fields)
+    }
+  });
 
   return res.render("/admin/cursos", opts);
 });
 
 fastify.get("/admin/polos", async (req, res) => {
-  const user = await User.findByJwt(req.cookies.jwt);
+  const user = await findUserByJwt(req.cookies.jwt);
   if (!user) {
     return await renderErrorPageRes(res, 401);
   }
-  if (!(await User.isAdmin(user))) {
+  if (!(await isUserAdmin(user))) {
     return await renderErrorPageRes(res, 403);
   }
 
@@ -73,17 +81,25 @@ fastify.get("/admin/polos", async (req, res) => {
   const opts = structuredClone(defOpts); opts.showFooter = false;
   opts.styles.push("/static/css/admin.css");
   opts.user = user;
-  opts.units = units.map(unit => unit.dataValues);
+  
+  const fields = getFieldsArrayFromModel(Unit, {"description":true});
+  opts.fields = fields.map(field => (field.label || field.fieldName));
+  opts.rows = units.map(unit => {
+    return {
+      id: unit.id,
+      values: getValuesArrayFromRowFields(unit, fields)
+    }
+  });
 
   return res.render("/admin/polos", opts);
 });
 
 fastify.get("/admin/usuarios", async (req, res) => {
-  const user = await User.findByJwt(req.cookies.jwt);
+  const user = await findUserByJwt(req.cookies.jwt);
   if (!user) {
     return await renderErrorPageRes(res, 401);
   }
-  if (!(await User.isAdmin(user))) {
+  if (!(await isUserAdmin(user))) {
     return await renderErrorPageRes(res, 403);
   }
 
@@ -92,17 +108,25 @@ fastify.get("/admin/usuarios", async (req, res) => {
   const opts = structuredClone(defOpts); opts.showFooter = false;
   opts.styles.push("/static/css/admin.css");
   opts.user = user;
-  opts.users = users.map(user => user.dataValues);
+
+  const fields = getFieldsArrayFromModel(User, {"passwordHash":true});
+  opts.fields = fields.map(field => (field.label || field.fieldName));
+  opts.rows = users.map(user => {
+    return {
+      id: user.id,
+      values: getValuesArrayFromRowFields(user, fields)
+    }
+  });
 
   return res.render("/admin/usuarios", opts);
 });
 
 fastify.get("/admin/sql", async (req, res) => {
-  const user = await User.findByJwt(req.cookies.jwt);
+  const user = await findUserByJwt(req.cookies.jwt);
   if (!user) {
     return await renderErrorPageRes(res, 401);
   }
-  if (!(await User.isAdmin(user))) {
+  if (!(await isUserAdmin(user))) {
     return await renderErrorPageRes(res, 403);
   }
   
@@ -114,11 +138,11 @@ fastify.get("/admin/sql", async (req, res) => {
 });
 
 fastify.post("/admin/query", async (req, res) => {
-  const user = await User.findByJwt(req.cookies.jwt);
+  const user = await findUserByJwt(req.cookies.jwt);
   if (!user) {
     return res.status(401).send();
   }
-  if (!(await User.isAdmin(user))) {
+  if (!(await isUserAdmin(user))) {
     return res.status(403).send();
   }
 
@@ -134,11 +158,11 @@ fastify.post("/admin/query", async (req, res) => {
 
 
 fastify.get("/admin/adicionar-curso", async (req, res) => {
-  const user = await User.findByJwt(req.cookies.jwt);
+  const user = await findUserByJwt(req.cookies.jwt);
   if (!user) {
     return await renderErrorPageRes(res, 401);
   }
-  if (!(await User.isAdmin(user))) {
+  if (!(await isUserAdmin(user))) {
     return await renderErrorPageRes(res, 403);
   }
 
@@ -151,11 +175,11 @@ fastify.get("/admin/adicionar-curso", async (req, res) => {
 });
 
 fastify.post("/admin/adicionar-curso", async (req, res) => {
-  const user = await User.findByJwt(req.cookies.jwt);
+  const user = await findUserByJwt(req.cookies.jwt);
   if (!user) {
     return await renderErrorPageRes(res, 401);
   }
-  if (!(await User.isAdmin(user))) {
+  if (!(await isUserAdmin(user))) {
     return await renderErrorPageRes(res, 403);
   }
 
@@ -199,11 +223,11 @@ fastify.post("/admin/adicionar-curso", async (req, res) => {
 });
 
 fastify.get("/admin/remover-curso/:id", async (req, res) => {
-  const user = await User.findByJwt(req.cookies.jwt);
+  const user = await findUserByJwt(req.cookies.jwt);
   if (!user) {
     return await renderErrorPageRes(res, 401);
   }
-  if (!(await User.isAdmin(user))) {
+  if (!(await isUserAdmin(user))) {
     return await renderErrorPageRes(res, 403);
   }
 
@@ -224,11 +248,11 @@ fastify.get("/admin/remover-curso/:id", async (req, res) => {
 });
 
 fastify.get("/admin/alterar-curso/:id", async (req, res) => {
-  const user = await User.findByJwt(req.cookies.jwt);
+  const user = await findUserByJwt(req.cookies.jwt);
   if (!user) {
     return await renderErrorPageRes(res, 401);
   }
-  if (!(await User.isAdmin(user))) {
+  if (!(await isUserAdmin(user))) {
     return await renderErrorPageRes(res, 403);
   }
 
@@ -245,11 +269,11 @@ fastify.get("/admin/alterar-curso/:id", async (req, res) => {
 });
 
 fastify.post("/admin/alterar-curso/:id", async (req, res) => {
-  const user = await User.findByJwt(req.cookies.jwt);
+  const user = await findUserByJwt(req.cookies.jwt);
   if (!user) {
     return await renderErrorPageRes(res, 401);
   }
-  if (!(await User.isAdmin(user))) {
+  if (!(await isUserAdmin(user))) {
     return await renderErrorPageRes(res, 403);
   }
 
@@ -298,11 +322,11 @@ fastify.post("/admin/alterar-curso/:id", async (req, res) => {
 });
 
 fastify.get("/admin/adicionar-polo", async (req, res) => {
-  const user = await User.findByJwt(req.cookies.jwt);
+  const user = await findUserByJwt(req.cookies.jwt);
   if (!user) {
     return await renderErrorPageRes(res, 401);
   }
-  if (!(await User.isAdmin(user))) {
+  if (!(await isUserAdmin(user))) {
     return await renderErrorPageRes(res, 403);
   }
 
@@ -315,11 +339,11 @@ fastify.get("/admin/adicionar-polo", async (req, res) => {
 });
 
 fastify.post("/admin/adicionar-polo", async (req, res) => {
-  const user = await User.findByJwt(req.cookies.jwt);
+  const user = await findUserByJwt(req.cookies.jwt);
   if (!user) {
     return await renderErrorPageRes(res, 401);
   }
-  if (!(await User.isAdmin(user))) {
+  if (!(await isUserAdmin(user))) {
     return await renderErrorPageRes(res, 403);
   }
 
@@ -349,11 +373,11 @@ fastify.post("/admin/adicionar-polo", async (req, res) => {
 });
 
 fastify.get("/admin/alterar-polo/:id", async (req, res) => {
-  const user = await User.findByJwt(req.cookies.jwt);
+  const user = await findUserByJwt(req.cookies.jwt);
   if (!user) {
     return await renderErrorPageRes(res, 401);
   }
-  if (!(await User.isAdmin(user))) {
+  if (!(await isUserAdmin(user))) {
     return await renderErrorPageRes(res, 403);
   }
 
@@ -370,11 +394,11 @@ fastify.get("/admin/alterar-polo/:id", async (req, res) => {
 });
 
 fastify.post("/admin/alterar-polo/:id", async (req, res) => {
-  const user = await User.findByJwt(req.cookies.jwt);
+  const user = await findUserByJwt(req.cookies.jwt);
   if (!user) {
     return await renderErrorPageRes(res, 401);
   }
-  if (!(await User.isAdmin(user))) {
+  if (!(await isUserAdmin(user))) {
     return await renderErrorPageRes(res, 403);
   }
 
@@ -409,11 +433,11 @@ fastify.post("/admin/alterar-polo/:id", async (req, res) => {
 });
 
 fastify.get("/admin/remover-polo/:id", async (req, res) => {
-  const user = await User.findByJwt(req.cookies.jwt);
+  const user = await findUserByJwt(req.cookies.jwt);
   if (!user) {
     return await renderErrorPageRes(res, 401);
   }
-  if (!(await User.isAdmin(user))) {
+  if (!(await isUserAdmin(user))) {
     return await renderErrorPageRes(res, 403);
   }
 

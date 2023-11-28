@@ -15,11 +15,7 @@
               <div>Endereço: {{address}} {{#if address}}{{else}}Indisponível{{/if}}</div>
               <div>Telefone: {{#if phone}}{{phone}}{{else}}{{../defaults.phone}}{{/if}}</div>
               <br>
-              {{#if url}}
-                <a href="{{url}}" class="btn btn-primary">Visitar</a>
-              {{else}}
-                <a href="#" class="btn btn-primary disabled" aria-disabled="true">Visitar</a>
-              {{/if}}
+              <a href="/polo/{{id}}" class="btn btn-primary">Conhecer Polo</a>
             </div>
           </div>
         </div>

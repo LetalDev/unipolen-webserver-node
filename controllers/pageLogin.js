@@ -1,11 +1,13 @@
+'use strict'
+
 const { JWT_PRIVATE_KEY, JWT_ISS, DOMAIN } = require("../environment");
 const { fastify, defOpts } = require("../config");
-const { User } = require("../models/user");
+const { User, findUserByJwt, findUserByEmail, isUserAdmin } = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 fastify.get("/login", async (req, res) => {
-  const user = await User.findByJwt(req.cookies.jwt);
+  const user = await findUserByJwt(req.cookies.jwt);
   if (user) {
     return res.redirect("/");
   }
@@ -16,7 +18,7 @@ fastify.get("/login", async (req, res) => {
 });
 
 fastify.post("/login", async (req, res) => {
-  let user = await User.findByJwt(req.cookies.jwt);
+  let user = await findUserByJwt(req.cookies.jwt);
   if (user) {
     return res.redirect("/");
   }
@@ -29,7 +31,7 @@ fastify.post("/login", async (req, res) => {
     return res.render("login/index", opts);
   }
 
-  user = await User.findByEmail(req.body.email);
+  user = await findUserByEmail(req.body.email);
 
   if (!user) {
     opts.message = "Não existe usuário com este email";
