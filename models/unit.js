@@ -27,6 +27,10 @@ const Unit = sequelize.define("Unit", {
     allowNull: false,
     label: "endereço",
   },
+  description: {
+    type: DataTypes.TEXT,
+    label: "descrição"
+  }
 });
 
 module.exports = {

@@ -53,7 +53,11 @@
           <input class="form-check-input" name="isHighlighted" type="checkbox">
         {{/if}}
       </div>
-      <span id="message">{{message}}</span>
+      <div>
+        <label class="form-label" for="description">Descrição</label>
+        <textarea class="form-control" name="description" id="description" rows="10">{{description}}</textarea>
+      </div>
+      <span class="text-danger">{{../message}}</span>
       <input class="btn btn-primary" type="submit" value="Enviar">
     </form>
   </div>

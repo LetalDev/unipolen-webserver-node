@@ -8,7 +8,7 @@
 {{#with unit}}
   <div class="container w-50">
     <h1 style="text-align: center">Alterar Polo</h1>
-    <form class="d-flex" action="/admin/alterar-polo" method="POST">
+    <form class="d-flex" action="/admin/alterar-polo/{{id}}" method="POST">
       <div>
         <label class="form-label" for="name">Nome:</label>
         <input value="{{name}} " class="form-control" name="name" id="name">
@@ -21,7 +21,11 @@
         <label class="form-label" for="address">Endereço:</label>
         <input value="{{address}} " class="form-control" name="address" id="address">
       </div>
-      <span id="message">{{message}}</span>
+      <div>
+        <label class="form-label" for="description">Descrição</label>
+        <textarea class="form-control" name="description" id="description" rows="10"></textarea>
+      </div>
+      <span id="message">{{../message}}</span>
       <input class="btn btn-primary" type="submit" value="Enviar">
     </form>
   </div>

@@ -20,7 +20,6 @@ async function main() {
   require("./controllers/pageError");
   require("./controllers/page404");
   require("./controllers/pageHome");
-  require("./controllers/pageAdmin");
   require("./controllers/pageCourses");
   require("./controllers/pageCourse");
   require("./controllers/pageLogin");
@@ -29,6 +28,12 @@ async function main() {
   require("./controllers/pageUnits");
   require("./controllers/pageUnit");
   require("./controllers/pageAccount");
+  require("./controllers/pageAdmin/components");
+  require("./controllers/pageAdmin/courses");
+  require("./controllers/pageAdmin/index")
+  require("./controllers/pageAdmin/sql")
+  require("./controllers/pageAdmin/units")
+  require("./controllers/pageAdmin/users")
 
   async function routine() {
     updateDefOpts();
