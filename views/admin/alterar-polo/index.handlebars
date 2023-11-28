@@ -1,18 +1,28 @@
 <style>
-  input {font-size: 1rem}
-  #message {color: crimson}
-  input[type=submit] {width: fit-content}
+  input {font-size: 1rem;}
+  #message {color: crimson;}
+  input[type=submit] {width: fit-content;}
+  form {flex-direction: column; gap: 1rem}
 </style>
 
-<div class="container">
-  {{#with unit}}
-    <h1 style="text-align: center">Alterar polo</h1>
-    <form action="/admin/alterar-polo/{{id}}" method="POST">
-      Nome:<br><input name="name" value="{{name}} "><br><br>
-      Telefone:<br><input name="phone" value="{{phone}} "><br><br>
-      Endereço:<br><input name="address" value="{{address}} "><br><br>
-      <span id="message">{{../message}}</span>
-      <input type="submit" value="Enviar">
+{{#with unit}}
+  <div class="container w-50">
+    <h1 style="text-align: center">Alterar Polo</h1>
+    <form class="d-flex" action="/admin/alterar-polo" method="POST">
+      <div>
+        <label class="form-label" for="name">Nome:</label>
+        <input value="{{name}} " class="form-control" name="name" id="name">
+      </div>
+      <div>
+        <label class="form-label" for="phone">Telefone:</label>
+        <input value="{{phone}} " class="form-control" name="phone" id="phone">
+      </div>
+      <div>
+        <label class="form-label" for="address">Endereço:</label>
+        <input value="{{address}} " class="form-control" name="address" id="address">
+      </div>
+      <span id="message">{{message}}</span>
+      <input class="btn btn-primary" type="submit" value="Enviar">
     </form>
-  {{/with}}
-</div>
+  </div>
+{{/with}}

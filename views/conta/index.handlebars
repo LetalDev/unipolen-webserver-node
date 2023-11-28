@@ -1,45 +1,21 @@
-<div id="sidebar" class="bg-unp-red-1">
-  <a href="#" id="sidebar-toggle">
-    <svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="48px" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <line x1="3" y1="12" x2="21" y2="12"></line>
-      <line x1="3" y1="6" x2="21" y2="6"></line>
-      <line x1="3" y1="18" x2="21" y2="18"></line>
-    </svg>
-  </a>
-  <div id="sidebar-content">
-    <br><br><br>
-    <h3><a id="dados-btn" href="#" class="unp-link-light active">Dados</a></h3>
-    <br>
-    <h3><a id="mural-btn" href="#" class="unp-link-light">Mural</a></h3>
-    <br>
-    <h3><a id="cursos-btn" href="#" class="unp-link-light">Cursos</a></h3>
-  </div>
-</div>
-<div id="content">
-  <section id="dados">
-    <h1>Dados da Conta<hr class="hr-dark"></h1>
+<div class="container p-5">
+  <section>
+    <h1>Dados da Conta<hr></h1>
     <span>
       Nome: {{user.displayName}}
-      <br><br>
-      <a href="/conta/alterar/nome"><button>Alterar</button></a>
+      <br>
+      <a href="/conta/alterar/nome" class="btn btn-primary">Alterar</a>
     </span>
     <br>
     <br>
     <span>
       Email: {{user.email}}
-      <br><br>
-      <a href="/conta/alterar/email"><button>Alterar</button></a>
+      <br>
+      <a href="/conta/alterar/email" class="btn btn-primary">Alterar</a>
     </span>
     <br><br><br>
-    <a href="/conta/alterar/senha"><button>Alterar Senha</button></a>
+    <a href="/conta/alterar/senha" class="btn btn-primary">Alterar Senha</a>
     &nbsp;
-    <a href="/conta/apagar"><button id="delete-account" class="outline">Apagar Conta</button></a>
-  </section>
-  <section id="mural">
-    <h1>Mural de Informações<hr class="hr-dark"></h1>
-  </section>
-  <section id="cursos">
-    <h1>Cursos Inscritos<hr class="hr-dark"></h1>
+    <a href="/conta/apagar" class="btn btn-danger">Apagar Conta</a>
   </section>
 </div>
-<script src="/static/js/conta.js"></script>

@@ -1,22 +1,50 @@
 <style>
-  input {font-size: 1rem}
-  #message {color: crimson}
-  input[type=submit] {width: fit-content}
+  input {font-size: 1rem;}
+  #message {color: crimson;}
+  input[type=submit] {width: fit-content;}
+  form {flex-direction: column; gap: 1rem}
 </style>
 
-<div class="container">
+<div class="container w-50">
   <h1 style="text-align: center">Adicionar curso</h1>
-  <form action="/admin/adicionar-curso" method="POST">
-    Nome:<br><input name="name"><br><br>
-    Duração (meses)<br><input name="durationMonths" type="number"><br><br>
-    Duração (horas)<br><input name="hours" type="number"><br><br>
-    Inscrições Abertas?<br><input name="isAvailable" type="checkbox"><br><br>
-    Grau (graduação ou pós-graduação):<br><input name="degree"><br><br>
-    Qualificação (bacharelado, tecnólogo, 2ª licenciatura):<br><input name="qualification"><br><br>
-    Modalidade (presencial ou remoto):<br><input name="style"><br><br>
-    URL:<br><input name="url"><br><br>
-    Em destaque?<br><input name="isHighlighted" type="checkbox"><br><br>
+  <form class="d-flex" action="/admin/adicionar-curso" method="POST">
+    <div>
+      <label class="form-label" for="name">Nome:</label>
+      <input class="form-control" name="name" id="name">
+    </div>
+    <div>
+      <label class="form-label" for="durationMonths">Duração (meses):</label>
+      <input class="form-control" name="durationMonths" id="durationMonths" type="number">
+    </div>
+    <div>
+      <label class="form-label" for="hours">Duração (horas):</label>
+      <input class="form-control" name="hours" id="hours" type="number">
+    </div>
+    <div class="form-check">
+      <label class="form-check-label" for="isAvailable">Inscrições Abertas?</label>
+      <input class="form-check-input" name="isAvailable" id="isAvailable" type="checkbox">
+    </div>
+    <div>
+      <label class="form-label" for="degree">Grau (graduação ou pós-graduação):</label>
+      <input class="form-control" name="degree" id="degree">
+    </div>
+    <div>
+      <label class="form-label" for="qualification">Qualificação (bacharelado, tecnólogo, 2ª licenciatura):</label>
+      <input class="form-control" name="qualification" id="qualification">
+    </div>
+    <div>
+      <label class="form-label" for="style">Modalidade (presencial ou remoto):</label>
+      <input class="form-control" name="style" id="style">
+    </div>
+    <div>
+      <label class="form-label" for="url">URL:</label>
+      <input class="form-control" name="url" id="url">
+    </div>
+    <div class="form-check">
+      <label class="form-check-label" id="isHighlighted">Em destaque?</label>
+      <input class="form-check-input" name="isHighlighted" type="checkbox">
+    </div>
     <span id="message">{{message}}</span>
-    <input type="submit" value="Enviar">
+    <input class="btn btn-primary" type="submit" value="Enviar">
   </form>
 </div>

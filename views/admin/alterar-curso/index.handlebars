@@ -1,32 +1,60 @@
 <style>
-  input {font-size: 1rem}
-  #message {color: crimson}
-  input[type=submit] {width: fit-content}
+  input {font-size: 1rem;}
+  #message {color: crimson;}
+  input[type=submit] {width: fit-content;}
+  form {flex-direction: column; gap: 1rem}
 </style>
 
-<div class="container">
-  {{#with course}}
+{{#with course}}
+  <div class="container w-50">
     <h1 style="text-align: center">Alterar curso</h1>
-    <form action="/admin/alterar-curso/{{id}}" method="POST">
-      Nome:<br><input name="name" value="{{name}} "><br><br>
-      Duração (meses)<br><input name="durationMonths" type="number" value="{{durationMonths}}"><br><br>
-      Duração (horas)<br><input name="hours" type="number" value="{{hours}}"><br><br>
-      {{#if isAvailable}}
-        Inscrições Abertas?<br><input name="isAvailable" type="checkbox" checked><br><br>
-      {{else}}
-        Inscrições Abertas?<br><input name="isAvailable" type="checkbox"><br><br>
-      {{/if}}
-      Grau (graduação ou pós-graduação):<br><input name="degree" value="{{degree}} "><br><br>
-      Qualificação (bacharelado, tecnólogo, 2ª licenciatura):<br><input name="qualification" value="{{qualification}} "><br><br>
-      Modalidade (presencial ou remoto):<br><input name="style" value="{{style}} "><br><br>
-      URL:<br><input name="url" value="{{url}} "><br><br>
-      {{#if isHighlighted}}
-        Em destaque?<br><input name="isHighlighted" type="checkbox" checked><br><br>
-      {{else}}
-        Em destaque?<br><input name="isHighlighted" type="checkbox"><br><br>
-      {{/if}}
-      <span id="message">{{../message}}</span>
-      <input type="submit" value="Enviar">
+    <form class="d-flex" action="/admin/alterar-curso/{{id}}" method="POST">
+      <div>
+        <label class="form-label" for="name">Nome:</label>
+        <input value="{{name}} " class="form-control" name="name" id="name">
+      </div>
+      <div>
+        <label class="form-label" for="durationMonths">Duração (meses):</label>
+        <input value="{{durationMonths}} " class="form-control" name="durationMonths" id="durationMonths" type="number">
+      </div>
+      <div>
+        <label class="form-label" for="hours">Duração (horas):</label>
+        <input value="{{hours}} " class="form-control" name="hours" id="hours" type="number">
+      </div>
+      <div class="form-check">
+        <label class="form-check-label" for="isAvailable">Inscrições Abertas?</label>
+        {{#if isAvailable}}
+          <input checked class="form-check-input" name="isAvailable" id="isAvailable" type="checkbox">
+        {{else}}
+          <input class="form-check-input" name="isAvailable" id="isAvailable" type="checkbox">
+        {{/if}}
+      </div>
+      <div>
+        <label class="form-label" for="degree">Grau (graduação ou pós-graduação):</label>
+        <input value="{{degree}} " class="form-control" name="degree" id="degree">
+      </div>
+      <div>
+        <label class="form-label" for="qualification">Qualificação (bacharelado, tecnólogo, 2ª licenciatura):</label>
+        <input value="{{qualification}} " class="form-control" name="qualification" id="qualification">
+      </div>
+      <div>
+        <label class="form-label" for="style">Modalidade (presencial ou remoto):</label>
+        <input value="{{style}} " class="form-control" name="style" id="style">
+      </div>
+      <div>
+        <label class="form-label" for="url">URL:</label>
+        <input value="{{url}} " class="form-control" name="url" id="url">
+      </div>
+      <div class="form-check">
+        <label class="form-check-label" id="isHighlighted">Em destaque?</label>
+        {{#if isHighlighted}}
+          <input checked class="form-check-input" name="isHighlighted" type="checkbox">
+        {{else}}
+          <input class="form-check-input" name="isHighlighted" type="checkbox">
+        {{/if}}
+      </div>
+      <span id="message">{{message}}</span>
+      <input class="btn btn-primary" type="submit" value="Enviar">
     </form>
-  {{/with}}
-</div>
+  </div>
+{{/with}}

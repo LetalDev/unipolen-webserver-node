@@ -3,7 +3,7 @@
     <h1>Cursos</h1>
   </div>
   <nav>
-    <ul class="pagination pagination-lg justify-content-center">
+    <ul class="pagination justify-content-center">
       {{#if prevPage}}
         <li class="page-item">
           <a class="page-link" href="/cursos/1" aria-label="First">
@@ -41,7 +41,7 @@
       {{/if}}
     </ul>
   </nav>
-  <div class="row row-cols-3 my-5 justify-content-around">
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 my-5 justify-content-around">
     {{#each courses}}
       <div class="col p-3">
         <div class="card bg-secondary-subtle" style="min-height: 480px">
@@ -65,7 +65,7 @@
     {{/each}}
   </div>
   <nav>
-    <ul class="pagination pagination-lg justify-content-center">
+    <ul class="pagination justify-content-center">
       {{#if prevPage}}
         <li class="page-item">
           <a class="page-link" href="/cursos/1" aria-label="First">
