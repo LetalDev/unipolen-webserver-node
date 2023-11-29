@@ -1,0 +1,44 @@
+<div class="row justify-content-center mb-5">
+  <div class="col-12 col-md-9 col-lg-7 bg-secondary-subtle p-5">
+    <h3 class="text-center mb-4">Criar Conta</h3>
+    <form class="d-flex" style="flex-direction: column; gap:1rem" action="/registrar" method="post">
+      <div class="row g-3">
+        <div class="col-12 col-xxl-6">
+          <label class="form-label" for="fullLegalName" class="bg-unp-red-1">Nome Completo (como consta no RG/CPF) <span class="text-danger">*</span></label>
+          <input class="form-control" type="text" id="fullLegalName" name="fullLegalName" required>
+        </div>
+        <div class="col-12 col-xxl-6">
+          <label class="form-label" for="displayName" class="bg-unp-red-1">Nome Social (opcional)</label>
+          <input class="form-control" type="text" id="displayName" name="displayName">
+        </div>
+      </div>
+      <div class="w-75">
+        <label class="form-label" for="email" class="bg-unp-red-1">Email <span class="text-danger">*</span></label>
+        <input class="form-control" type="email" id="email" name="email" required>
+      </div>
+      <div class="w-75">
+        <label class="form-label" for="phone" class="bg-unp-red-1">Telefone <span class="text-danger">*</span></label>
+        <input class="form-control" type="text" id="phone" name="phone" required>
+      </div>
+      <div class="row g-3 mt-5">
+        <div class="col-12 col-lg-6">
+          <label class="form-label" for="password" class="bg-unp-red-1">Senha <span class="text-danger">*</span></label>
+          <input class="form-control" type="password" id="password" name="password" required>
+        </div>
+        <div class="col-12 col-lg-6">
+          <label class="form-label" for="passwordConfirm" class="bg-unp-red-1">Confirmar Senha <span class="text-danger">*</span></label>
+          <input class="form-control" type="password" id="passwordConfirm" name="passwordConfirm" required>
+        </div>
+      </div>
+      <div>
+        <input class="btn btn-primary btn-lg" type="submit" value="Criar conta">
+      </div>
+      <span class="text-danger">{{message}}</span>
+    </form>
+    <br>
+    <div>
+      Já possui uma conta?<br>
+      <a href="/login" class="unp-link-light active">Entrar</a>
+    </div>
+  </div>
+</div>

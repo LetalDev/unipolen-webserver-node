@@ -2,23 +2,40 @@
 
 const fastify = require("fastify")();
 const path = require("path");
-const { NODE_ENV, PORT } = require("./environment");
+const { NODE_ENV, PORT, NOREPLY_EMAIL, NOREPLY_PASS } = require("./environment");
 const { query, preparedQuery, sequelize } = require("./database");
 const handlebars = require("handlebars");
 const fs = require("fs");
 const { Defaults } = require("./models/defaults");
+const minifier = require('html-minifier');
+const nodemailer = require("nodemailer");
 
+const mailTransporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  secure: true,
+  auth: {
+    user: NOREPLY_EMAIL,
+    pass: NOREPLY_PASS,
+  }
+});;
+
+// optionally defined the html-minifier options
+const minifierOpts = {
+  removeComments: true,
+  removeCommentsFromCDATA: true,
+  collapseWhitespace: true,
+  collapseBooleanAttributes: true,
+  removeAttributeQuotes: true,
+  removeEmptyAttributes: true
+}
 
 async function setup() {
-  const minifier = require('html-minifier')
-  // optionally defined the html-minifier options
-  const minifierOpts = {
-    removeComments: true,
-    removeCommentsFromCDATA: true,
-    collapseWhitespace: true,
-    collapseBooleanAttributes: true,
-    removeAttributeQuotes: true,
-    removeEmptyAttributes: true
+  
+  try {
+    await mailTransporter.verify();
+    console.log("Mail transporter ready");
+  } catch (err) {
+    console.error("Mail transport failed: " + err);
   }
 
   fastify.register(require("@fastify/view"), {
@@ -99,4 +116,5 @@ module.exports = {
   defOpts,
   updateDefOpts,
   listen,
+  mailTransporter,
 };

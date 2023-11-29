@@ -1,20 +1,26 @@
 'use strict'
 
-const { Role } = require("./role");
 const { User, findUserByEmail } = require("./user");
 const { Unit } = require("./unit");
 const { Course } = require("./course");
 const { Defaults } = require("./defaults");
+const { CustomerUser } = require("./customerUser");
 const { ADMIN_EMAIL, ADMIN_PASS, PASS_SALTS } = require("../environment");
 const bcrypt = require("bcrypt");
+const { AdminUser } = require("./adminUser");
 
 async function setupModels() {
-  User.hasMany(Role);
-  Role.belongsToMany(User, {
-    through: 'UserRole',
-    onDelete: 'RESTRICT',
-    onUpdate: 'RESTRICT',
+  User.hasOne(AdminUser, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
   });
+  AdminUser.belongsTo(User);
+
+  User.hasOne(CustomerUser, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  });
+  CustomerUser.belongsTo(User);
 }
 
 async function addDefaultAdminAccount() {
@@ -22,15 +28,10 @@ async function addDefaultAdminAccount() {
 
   const user = await User.create({
     email: ADMIN_EMAIL,
-    displayName: "admin",
     passwordHash: await bcrypt.hash(ADMIN_PASS, PASS_SALTS),
   });
 
-  let role = await Role.findOne({where: {name: "admin"}});
-  
-  if (!role) role = await Role.create({name: "admin"});
-
-  await user.addRole(role);
+  await user.createAdmin();
 }
 
 module.exports = {

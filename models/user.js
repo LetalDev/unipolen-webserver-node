@@ -4,7 +4,6 @@ const { sequelize } = require("../database");
 const { DataTypes } = require("sequelize");
 const jwt = require("jsonwebtoken");
 const { JWT_PRIVATE_KEY, JWT_ISS } = require("../environment");
-const { Role } = require("./role");
 
 const User = sequelize.define("User", {
   id: {
@@ -17,10 +16,6 @@ const User = sequelize.define("User", {
     type: DataTypes.TEXT,
     allowNull: false,
     unique: true,
-  },
-  displayName: {
-    type: DataTypes.TEXT,
-    allowNull: false,
   },
   passwordHash: {
     type: DataTypes.TEXT,
@@ -53,11 +48,7 @@ async function findUserByEmail(email) {
 
 async function isUserAdmin(user) {
   if (!(user instanceof User)) return false;
-  const roles = await user.getRoles();
-  for (let role of roles) {
-    if (role.name == "admin") return true;
-  }
-  return false;
+  return user.getAdmin() ? true : false;
 }
 
 module.exports = {

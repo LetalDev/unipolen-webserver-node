@@ -15,6 +15,8 @@ const DB_PORT = Number.parseInt(process.env.DB_PORT || "-1");
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "";
 const ADMIN_PASS = process.env.ADMIN_PASS || "";
 const PASS_SALTS = Number.parseInt(process.env.PASS_SALTS || "14");
+const NOREPLY_EMAIL = process.env.NOREPLY_EMAIL || "";
+const NOREPLY_PASS = process.env.NOREPLY_PASS || "";
 
 if (JWT_PRIVATE_KEY == "") {
   throw Error("JWT_PRIVATE_KEY environment variable not set.");
@@ -52,6 +54,14 @@ if (ADMIN_PASS == "") {
   throw Error("ADMIN_PASS environment variable not set.");
 }
 
+if (NOREPLY_EMAIL == "") {
+  throw Error("NOREPLY_EMAIL environment variable not set.");
+}
+
+if (NOREPLY_PASS == "") {
+  throw Error("NOREPLY_PASS environment variable not set");
+}
+
 
 module.exports = {
   NODE_ENV,
@@ -67,4 +77,6 @@ module.exports = {
   ADMIN_EMAIL,
   ADMIN_PASS,
   PASS_SALTS,
+  NOREPLY_EMAIL,
+  NOREPLY_PASS,
 }
