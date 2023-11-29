@@ -146,7 +146,7 @@ fastify.post("/conta/apagar", async (req, res) => {
   opts.styles.push("/static/css/conta-alterar.css");
   opts.user = user.dataValues;
 
-  if (!(await bcrypt.compare(req.body.password, user.password))) {
+  if (!(await bcrypt.compare(req.body.password, user.passwordHash))) {
     opts.message = "Senha Incorreta";
     return res.render("/conta/apagar/index", opts)
   }

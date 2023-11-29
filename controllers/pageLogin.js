@@ -34,7 +34,7 @@ fastify.post("/login", async (req, res) => {
   user = await findUserByEmail(req.body.email);
 
   if (!user) {
-    opts.message = "Não existe usuário com este email";
+    opts.message = "Email ou senha incorretos";
     return res.render("login/index", opts);
   }
 
@@ -56,7 +56,7 @@ fastify.post("/login", async (req, res) => {
     return res.redirect("/");
     
   } else {
-    opts.message = "Senha Incorreta";
+    opts.message = "Email ou senha incorretos";
     return res.render("login/index", opts);
   }
 
