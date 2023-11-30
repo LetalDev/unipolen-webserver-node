@@ -72,7 +72,6 @@ function getValuesArrayFromRowFields(row, fields) {
   }
   return values;
 }
- 
 
 module.exports = {
   sequelize,

@@ -31,7 +31,7 @@ async function addDefaultAdminAccount() {
     passwordHash: await bcrypt.hash(ADMIN_PASS, PASS_SALTS),
   });
 
-  await user.createAdmin();
+  await user.createAdminUser();
 }
 
 module.exports = {

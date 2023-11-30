@@ -3,7 +3,8 @@ const { sequelize } = require("../database");
 
 const CustomerUser = sequelize.define("CustomerUser", {
   id: {
-    type: DataTypes.TEXT,
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
     allowNull: false,
     primaryKey: true,
   },

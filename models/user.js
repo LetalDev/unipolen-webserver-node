@@ -48,7 +48,7 @@ async function findUserByEmail(email) {
 
 async function isUserAdmin(user) {
   if (!(user instanceof User)) return false;
-  return user.getAdmin() ? true : false;
+  return (await user.getAdminUser()) ? true : false;
 }
 
 module.exports = {

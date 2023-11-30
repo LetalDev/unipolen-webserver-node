@@ -1,7 +1,7 @@
 'use strict'
 
 const { fastify, defOpts, mailTransporter } = require("../config");
-const { PASS_SALTS, NOREPLY_EMAIL, NODE_ENV, DOMAIN } = require("../environment");
+const { PASS_SALTS, NOREPLY_EMAIL, NODE_ENV, DOMAIN, PORT } = require("../environment");
 const { User, findUserByJwt, findUserByEmail, isUserAdmin } = require("../models/user");
 const bcrypt = require("bcrypt");
 const { object, string, boolean, date } = require("yup");
@@ -27,14 +27,23 @@ const stage2FormSchema = object({
   birthDate: string().required("Insira sua data de nascimento")
     .min(new Date(1900, 0, 1), "Data de nascimento inválida")
     .max(Date.now(), "Data de nascimento inválida"),
-  cpf: string().required("Insira seu CPF").trim(),
-  rg: string().required("Insira seu RG").trim(),
+  cpf: string().required("Insira seu CPF").trim()
+    .transform(val => val.replace(".", "")),
+  rg: string().required("Insira seu RG").trim()
+    .transform(val => val.replace(".", "")),
   country: string().required("Insira seu país de residência").trim(),
   state: string().required("Insira seu estado de residência").trim(),
   city: string().required("Insira sua cidade de residência").trim(),
+  postalCode: string().required("Insira o seu CEP").trim()
+    .transform(val => val.replace("-", "")),
   allowNewsletter: boolean().required().transform(val => val === "on" ? true : false).default(false),
   getToKnowCompanyDesc: string().required().trim().default(""),
   specialNeeds: boolean().required().transform(val => val === "on" ? true : false).default(false),
+});
+
+const stage3FormSchema = object({
+  password: string().required("Por favor insira a sua senha"),
+  passwordConfirm: string().required("Por favor, insira sua confirmação de senha"),
 });
 
 const intermediateRegistry = {}
@@ -67,7 +76,9 @@ fastify.post("/registrar", async (req, res) => {
       length: 64,
     });
 
-    const link = (NODE_ENV=="development"?"http":"https") + `://${DOMAIN}/registrar/2/${registerToken}`
+    const link = `${NODE_ENV=="development"?"http":"https"}`+
+    `://${DOMAIN}:${NODE_ENV=="development"?PORT:""}`+
+    `/registrar/2/${registerToken}`;
 
     await mailTransporter.sendMail({
       from: NOREPLY_EMAIL,
@@ -146,6 +157,7 @@ fastify.post("/registrar/2/:token", async (req, res) => {
     const opts = structuredClone(defOpts);
     opts.styles.push("/static/css/login.css");
     opts.message = err;
+    opts.token = token;
     return res.render("/registrar/passo2", opts);
   }
   
@@ -169,4 +181,41 @@ fastify.get("/registrar/3/:token", async (req, res) => {
   opts.token = token;
 
   return res.render("registrar/passo3", opts);
+});
+
+
+fastify.post("/registrar/3/:token", async (req, res) => {
+  let user = await findUserByJwt(req.cookies.jwt);
+  if (user) {
+    return res.redirect("/");
+  }
+
+  const { token } = req.params;
+
+  if (!intermediateRegistry[token]) {
+    return res.render("/registrar/passo2Erro", opts);
+  }
+  
+  const opts = structuredClone(defOpts);
+  opts.styles.push("/static/css/login.css");
+  opts.token = token;
+
+  try {
+    const parsed = stage3FormSchema.cast(req.body);
+    
+    if (parsed.password != parsed.passwordConfirm) {
+      opts.message = "As senhas diferem.";
+      return res.render("/registrar/passo3", opts);
+    }
+
+    intermediateRegistry[token]["passwordHash"] = await bcrypt.hash(parsed.password, PASS_SALTS);
+
+    const user = await User.create(intermediateRegistry[token]);
+    await user.createCustomerUser(intermediateRegistry[token]);
+
+    return res.render("/registrar/passo3Sucesso", opts);
+  } catch (err) {
+    opts.message = err;
+    return res.render("/registrar/passo3", opts);
+  }
 });

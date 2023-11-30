@@ -38,9 +38,9 @@ if (DB_NAME == "") {
   throw Error("DB_NAME environment variable not set.");
 }
 
-if (DB_PASS == "") {
-  throw Error("DB_PASS environment variable not set.");
-}
+// if (DB_PASS == "") {
+//   throw Error("DB_PASS environment variable not set.");
+// }
 
 if (DB_PORT == -1) {
   throw Error("DB_PORT environment variable not set.");
