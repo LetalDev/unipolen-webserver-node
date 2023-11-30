@@ -95,8 +95,6 @@ fastify.post("/registrar", async (req, res) => {
 
     intermediateRegistry[registerToken] = parsed;
 
-    console.log(intermediateRegistry[registerToken]);
-
     setTimeout(() => {
       if (intermediateRegistry[registerToken]) intermediateRegistry[registerToken] = undefined;
     }, 1000*60*60*24); //1 day
@@ -148,8 +146,6 @@ fastify.post("/registrar/2/:token", async (req, res) => {
     for (const field in parsed) {
       intermediateRegistry[token][field] = parsed[field];
     }
-
-    console.log(intermediateRegistry[token]);
 
     return res.redirect(`/registrar/3/${token}`);
 
@@ -212,6 +208,8 @@ fastify.post("/registrar/3/:token", async (req, res) => {
 
     const user = await User.create(intermediateRegistry[token]);
     await user.createCustomerUser(intermediateRegistry[token]);
+
+    intermediateRegistry[token] = undefined;
 
     return res.render("/registrar/passo3Sucesso", opts);
   } catch (err) {

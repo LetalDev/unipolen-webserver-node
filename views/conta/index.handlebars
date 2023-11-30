@@ -1,21 +1,90 @@
-<div class="container p-5">
-  <section>
-    <h1>Dados da Conta<hr></h1>
-    <span>
-      Nome: {{user.displayName}}
-      <br>
-      <a href="/conta/alterar/nome" class="btn btn-primary">Alterar</a>
-    </span>
-    <br>
-    <br>
-    <span>
-      Email: {{user.email}}
-      <br>
-      <a href="/conta/alterar/email" class="btn btn-primary">Alterar</a>
-    </span>
-    <br><br><br>
-    <a href="/conta/alterar/senha" class="btn btn-primary">Alterar Senha</a>
-    &nbsp;
-    <a href="/conta/apagar" class="btn btn-danger">Apagar Conta</a>
-  </section>
+<div class="row g-2 mb-5 justify-content-around">
+  <div class="p-4 col-12 col-md-3">
+
+  </div>
+  <div class="p-4 col-12 col-md-8">
+    <h2 class="ps-3">Minha Conta</h2>
+    <hr>
+    {{#with user}}
+    <form class="d-flex px-4" style="flex-direction: column; gap: 1rem" action="/conta/atualizar-dados" method="POST">
+      <div>
+        <label class="form-label" for="email">Email</label>
+        <input class="form-control w-75" type="email" name="email" id="email" value="{{email}} " required>
+      </div>
+      {{#if customer}}
+      {{#with customer}}
+      <div>
+        <label class="form-label" for="fullLegalName">Nome completo (como consta no RG/CPF)</label>
+        <input class="form-control" style="width:fit-content" id="fullLegalName" value="{{fullLegalName}} " disabled>
+      </div>
+      <div>
+        <label class="form-label" for="displayName">Nome social</label>
+        <input class="form-control w-75" name="displayName" id="displayName" value="{{displayName}} ">
+      </div>
+      <div>
+        <label class="form-label" for="legalGender">Sexo (como consta no RG/CPF)</label>
+        <input class="form-control" style="width:fit-content" id="legalGender" value="{{legalGender}} " disabled>
+      </div>
+      <div>
+        <label class="form-label" for="birthDate">Data de nascimento</label>
+        <input class="form-control" style="width:fit-content" type="date" id="birthDate" disabled value={{birthDate}}>
+      </div>
+      <div class="row justify-content-around g-3">
+        <div class="col-12 col-md-6">
+          <label class="form-label" for="country">País de residência</label>
+          <input class="form-control" name="country" id="country" value="{{country}} " required>
+        </div>
+        <div class="col-12 col-md-6">
+          <label class="form-label" for="state">Estado de residência</label>
+          <input class="form-control" name="state" id="state" value="{{state}} " required>
+        </div>
+        <div class="col-12 col-md-6">
+          <label class="form-label" for="city">Cidade de residência</label>
+          <input class="form-control" name="city" id="city" value="{{city}} " required>
+        </div>
+        <div class="col-12 col-md-6">
+          <label class="form-label" for="postalCode">CEP</label>
+          <input class="form-control" name="postalCode" id="postalCode" value="{{postalCode}} " required>
+        </div>
+        <div class="col-12 col-md-6">
+          <label class="form-label" for="nationality">Nacionalidade</label>
+          <input class="form-control" id="nationality" value="{{nationality}} " disabled>
+        </div>
+        <div class="col-12 col-md-6">
+          <label class="form-label" for="naturality">Naturalidade</label>
+          <input class="form-control" id="naturality" value="{{naturality}} " disabled>
+        </div>
+      </div>
+      <div class="form-check">
+        <label class="form-check-label" for="specialNeeds">É portador(a) de necessidades especiais?</label>
+        <input class="form-check-input" type="checkbox" name="specialNeeds" id="specialNeeds" value="{{specialNeeds}}">
+      </div>
+      <div class="row g-3 justify-content-around">
+        <div class="col-12 col-md-6">
+          <label class="form-label" for="phone">Telefone de contato</label>
+          <input class="form-control" name="phone" id="phone" value="{{phone}} " required>
+        </div>
+        <div class="col-12 col-md-6">
+          <label class="form-label" for="phoneExtra">Telefone adicional</label>
+          <input class="form-control" name="phoneExtra" id="phoneExtra" value="{{phoneExtra}} ">
+        </div>
+      </div>
+      <div class="form-check">
+        <label class="form-check-label" for="allowNewsletter">Permitir que Unipolen e parceiros envie informações por email?</label>
+        <input class="form-check-input" type="checkbox" name="allowNewsletter" id="allowNewsletter" value="{{allowNewsletter}}">
+      </div>
+      {{/with}}
+      {{/if}}
+      <div class="mt-4">
+        <input class="btn btn-success" type="submit" value="Atualizar dados"> 
+      </div>
+      {{#if customer}}
+      <small>• Para alterar os dados indisponíveis nesta página, por favor contate o suporte com a documentação necessária.</small>
+      {{/if}}
+    </form>
+    <hr class="mt-4">
+    <a class="mx-4 btn btn-danger mt-3" href="/conta/alterar-senha">Alterar senha</a>
+    <a class="mx-4 btn btn-danger mt-3" href="/conta/apagar-conta">Apagar conta</a>
+    {{/with}}
+  </div>
 </div>
