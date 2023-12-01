@@ -15,7 +15,7 @@ const stage1FormSchema = object({
   email: string().required("Insira seu email").trim().email("Email inválido"),
   phone: string().required("Insira seu telefone")
     .typeError("o telefone inserido é inválido").trim()
-    .transform(val => phone(val).phoneNumber),
+    .transform(val => phone(val)?.phoneNumber),
 });
 
 const stage2FormSchema = object({
@@ -70,6 +70,11 @@ fastify.post("/registrar", async (req, res) => {
 
   try {
     const parsed = stage1FormSchema.cast(req.body);
+
+    if (await findUserByEmail(parsed.email)) {
+      opts.message = "Já existe um usuário com este email.";
+      return res.render("/registrar/passo1", opts);
+    }
 
     const registerToken = randomstring.generate({
       charset: 'alphanumeric',
