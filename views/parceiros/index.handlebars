@@ -1,0 +1,26 @@
+<div class="container mt-5 mb-5">
+  <div class="text-center mb-4">
+    <h1>Parceiros</h1>
+  </div>
+  <div class="row g-3 my-5">
+    {{#each providers}}
+      <div class="col-12 col-md-8 p-4 bg-secondary-subtle mx-auto mb-4" style="max-width:540px;">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img src="/static/img/parceiros/{{id}}" class="img-fluid rounded-start bg-secondary">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h4 class=" card-title">{{name}}</h4>
+              <br>
+              {{description}}
+              {{#if url}}
+              <a href="{{url}}" class="btn btn-primary">Conhecer Parceiro</a>
+              {{/if}}
+            </div>
+          </div>
+        </div>
+      </div>
+    {{/each}}
+  </div>
+</div>

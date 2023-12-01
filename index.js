@@ -28,6 +28,7 @@ async function main() {
   require("./controllers/logout");
   require("./controllers/pageUnits");
   require("./controllers/pageUnit");
+  require("./controllers/pagePartners");
   require("./controllers/pageAccount");
   require("./controllers/pageAdmin/components");
   require("./controllers/pageAdmin/courses");
