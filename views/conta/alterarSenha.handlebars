@@ -1,0 +1,21 @@
+<div class="row justify-content-center my-5">
+  <div class="col-12 col-md-9 col-lg-6 bg-secondary-subtle p-4">
+    <h4>Alterar senha</h4>
+    <form class="d-flex" style="flex-direction: column; gap: 1rem" action="/conta/alterar-senha" method="POST">
+      <div>
+        <label class="form-label" for="password">Insira a nova senha</label>
+        <input class="form-control" type="password" name="password" id="password">
+      </div>
+      <div>
+        <label class="form-label" for="passwordConfirm">Confirme sua senha</label>
+        <input class="form-control" type="password" name="passwordConfirm" id="passwordConfirm">
+      </div>
+      <div>
+        <input class="btn btn-success" type="submit" value="Alterar senha">
+      </div>
+      <div class="text-danger">
+        {{message}}
+      </div>
+    </form>
+  </div>
+</div>

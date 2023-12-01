@@ -6,7 +6,7 @@ const { User, findUserByJwt, findUserByEmail, isUserAdmin } = require("../models
 const { renderErrorPage, renderErrorPageRes } = require("./pageError");
 const bcrypt = require("bcrypt");
 const { object, boolean, string } = require("yup");
-const { NOREPLY_EMAIL } = require("../environment");
+const { NOREPLY_EMAIL, PASS_SALTS } = require("../environment");
 const randomstring = require("randomstring");
 
 
@@ -28,8 +28,13 @@ const updateInfoFormSchemaCustomer = object({
   phoneExtra: string().nullable().trim().default(null),
 });
 
-const authCodeRegistry = {};
+const updatePasswordFormSchema = object({
+  password: string().required("Por favor insira a senha").trim(),
+  passwordConfirm: string().required("Por favor confirme a senha").trim(),
+});
 
+const infoAuthCodeRegistry = {};
+const passAuthCodeRegistry = {};
 
 fastify.get("/conta", async (req, res) => {
   const user = await findUserByJwt(req.cookies.jwt);
@@ -65,7 +70,7 @@ fastify.post("/conta/atualizar-dados", async (req, res) => {
   }
 
   const opts = structuredClone(defOpts);
-
+  opts.user = user;
 
   const customerUser = await user.getCustomerUser();
 
@@ -92,13 +97,14 @@ fastify.post("/conta/atualizar-dados", async (req, res) => {
       text: text, 
     });
 
-    authCodeRegistry[user.id] = {
+    infoAuthCodeRegistry[user.id] = {
       user: parsedUser,
       customer: parsedCustomer,
+      authCode: authCode,
     };
     setTimeout(() => {
-      if (authCodeRegistry[user.id])
-        authCodeRegistry[user.id] = undefined;
+      if (infoAuthCodeRegistry[user.id])
+        infoAuthCodeRegistry[user.id] = undefined;
     }, 1000*60*30); //30 minutes
 
     opts.email = user.email;
@@ -117,20 +123,110 @@ fastify.post("/conta/atualizar-dados-confirmar", async (req, res) => {
   }
 
   const opts = structuredClone(defOpts);
+  opts.email = user.email;
+  opts.user = user;
 
   const customerUser = await user.getCustomerUser();
 
   const { authCode } = req.body;
 
-  if (authCodeRegistry[user.id] != authCode) {
+  if (infoAuthCodeRegistry[user.id].authCode != authCode) {
     opts.message = "O código inserido é inválido"
     return res.render("/conta/alterar", opts) 
   }
 
-  await user.update(authCodeRegistry[user.id].user);
-  await customerUser.update(authCodeRegistry[user.id].customerUser);
+  await user.update(infoAuthCodeRegistry[user.id].user);
+  await customerUser.update(infoAuthCodeRegistry[user.id].customer);
 
-  authCodeRegistry[user.id] = undefined;
+  infoAuthCodeRegistry[user.id] = undefined;
 
   return res.redirect("/conta");
+});
+
+
+fastify.get("/conta/alterar-senha", async (req, res) => {
+  const user = await findUserByJwt(req.cookies.jwt);
+  if (!user) {
+    return renderErrorPageRes(res, 401);
+  }
+
+  const opts = structuredClone(defOpts);
+  opts.email = user.email;
+  opts.user = user;
+
+  return res.render("/conta/alterarSenha", opts);
+});
+
+fastify.post("/conta/alterar-senha", async (req, res) => {
+  const user = await findUserByJwt(req.cookies.jwt);
+  if (!user) {
+    return renderErrorPageRes(res, 401);
+  }
+
+  const opts = structuredClone(defOpts);
+  opts.email = user.email;
+  opts.user = user;
+
+  try {
+    const parsed = updatePasswordFormSchema.cast(req.body);
+
+    if (parsed.password != parsed.passwordConfirm) {
+      opts.message = "Senhas diferem.";
+      return res.render("/conta/alterarSenha", opts);
+    }
+
+    const passwordHash = await bcrypt.hash(parsed.password, PASS_SALTS);
+    const authCode = randomstring.generate({
+      charset: "numeric",
+      length: 8,
+    });
+
+    passAuthCodeRegistry[user.id] = {
+      passwordHash: passwordHash,
+      authCode: authCode,
+    }
+
+    setTimeout(() => {
+      if (passAuthCodeRegistry[user.id])
+        passAuthCodeRegistry[user.id] = undefined;
+    }, 1000*60*30); //30 minutes
+
+    mailTransporter.sendMail({
+      from: NOREPLY_EMAIL,
+      to: user.email,
+      subject: "Alterar Senha em Unipolen",
+      text: "Houve uma tentativa de alteração de senha no seu cadastro em Unipolen, "+
+        `este é o código de confirmação: ${authCode}\n\nO código é válido por 30 minutos`,
+    });
+
+    return res.render("/conta/alterarSenhaConfirm", opts);
+
+  } catch (err) {
+    opts.message = err;
+    return res.render("/conta/alterarSenha", opts);
+  }
+});
+
+fastify.post("/conta/alterar-senha-confirm", async (req, res) => {
+  const user = await findUserByJwt(req.cookies.jwt);
+  if (!user) {
+    return renderErrorPageRes(res, 401);
+  }
+
+  const opts = structuredClone(defOpts);
+  opts.email = user.email;
+  opts.user = user;
+
+  const { authCode } = req.body;
+
+  if (passAuthCodeRegistry[user.id].authCode != authCode) {
+    opts.message = "O código inserido é inválido";
+    return res.render("/conta/alterarSenhaConfirm", opts);
+  }
+
+  await user.update({
+    passwordHash: passAuthCodeRegistry[user.id].passwordHash,
+  });
+
+  return res.render("/conta/alterarSenhaSuccess", opts);
 });
