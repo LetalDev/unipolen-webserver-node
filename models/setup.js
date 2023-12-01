@@ -8,6 +8,7 @@ const { CustomerUser } = require("./customerUser");
 const { ADMIN_EMAIL, ADMIN_PASS, PASS_SALTS } = require("../environment");
 const bcrypt = require("bcrypt");
 const { AdminUser } = require("./adminUser");
+const { Provider } = require("./provider");
 
 async function setupModels() {
   User.hasOne(AdminUser, {
@@ -21,6 +22,12 @@ async function setupModels() {
     onUpdate: "CASCADE",
   });
   CustomerUser.belongsTo(User);
+
+  Provider.hasMany(Course, {
+    onDelete: "RESTRICT",
+    onUpdate: "RESTRICT",
+  });
+  Course.belongsTo(Provider);
 }
 
 async function addDefaultAdminAccount() {

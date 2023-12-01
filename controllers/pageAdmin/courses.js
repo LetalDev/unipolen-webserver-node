@@ -8,6 +8,7 @@ const { User, findUserByJwt, findUserByEmail, isUserAdmin } = require("../../mod
 const { renderErrorPage, renderErrorPageRes } = require("../pageError");
 const { Model } = require("sequelize");
 const { object, string, boolean, number } = require("yup");
+const { Provider } = require("../../models/provider");
 
 
 
@@ -23,6 +24,7 @@ const courseFormSchema = object({
   type: string().nullable().trim(),
   style: string().required().trim(),
   description: string().nullable().trim(),
+  ProviderId: string().nullable().trim().transform(val => val === "" ? null : val),
 });
 
 
@@ -35,20 +37,52 @@ fastify.get("/admin/cursos", async (req, res) => {
     return await renderErrorPageRes(res, 403);
   }
 
-  const courses = await Course.findAll({order: [["name", "ASC"]]});
+  const courses = await Course.findAll({
+    order: [["name", "ASC"]],
+    include: Provider
+  });
 
   const opts = structuredClone(defOpts); opts.showFooter = false;
   opts.styles.push("/static/css/admin.css");
   opts.user = user;
   
-  const fields = getFieldsArrayFromModel(Course, {"description":true});
-  opts.fields = fields.map(field => (field.label || field.fieldName));
-  opts.rows = courses.map(course => {
-    return {
+  opts.fields = [
+    "id",
+    "nome",
+    "provedor",
+    "em destaque",
+    "duração (meses)",
+    "carga horária",
+    "url",
+    "disponibilidade",
+    "grau",
+    "tipo",
+    "modalidade",
+    "criado em",
+    "atualizado em"
+  ];
+
+  opts.rows = []
+
+  for (const course of courses) {
+    opts.rows.push({
       id: course.id,
-      values: getValuesArrayFromRowFields(course, fields)
-    }
-  });
+      values: [
+        course.id,
+        course.name,
+        course.Provider?.name,
+        course.isHighlighted,
+        course.durationMonths,
+        course.hours,
+        course.url,
+        course.isAvailable,
+        course.degree,
+        course.type,
+        course.style,
+        course.createdAt,
+        course.updatedAt,
+    ]});
+  } 
 
   return res.render("/admin/cursos", opts);
 });
@@ -69,6 +103,8 @@ fastify.get("/admin/adicionar-curso", async (req, res) => {
   opts.styles.push("/static/css/admin.css");
   opts.user = user;
 
+  opts.providers = (await Provider.findAll()).map(provider => provider.dataValues);
+
   return res.render("admin/adicionar-curso/index", opts);
 
 });
@@ -84,14 +120,15 @@ fastify.post("/admin/adicionar-curso", async (req, res) => {
 
   const opts = structuredClone(defOpts); opts.showFooter = false;
   opts.styles.push("/static/css/admin.css");
-  opts.user = user;
-
+  opts.user = user; 
+  
   try {
     let parsed = courseFormSchema.cast(req.body);
     await Course.create(parsed);
 
     return res.redirect("/admin/cursos");
   } catch (err) {
+    opts.providers = (await Provider.findAll()).map(provider => provider.dataValues);
     opts.message = "Ocorreu um erro: " + err;
     return res.render("/admin/adicionar-curso/index", opts);
   }
@@ -139,6 +176,7 @@ fastify.get("/admin/alterar-curso/:id", async (req, res) => {
   opts.styles.push("/static/css/admin.css");
   opts.user = user;
   opts.course = course.dataValues;
+  opts.providers = (await Provider.findAll()).map(provider => provider.dataValues);
 
   return res.render("admin/alterar-curso/index", opts);
 });
@@ -168,6 +206,7 @@ fastify.post("/admin/alterar-curso/:id", async (req, res) => {
   } catch (err) {
     opts.course = course.dataValues;
     opts.message = "Ocorreu um erro: " + err;
+    opts.providers = (await Provider.findAll()).map(provider => provider.dataValues);
     return res.render("/admin/alterar-curso/index", opts);
   }
 });

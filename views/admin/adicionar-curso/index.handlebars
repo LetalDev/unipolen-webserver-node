@@ -13,6 +13,15 @@
       <input class="form-control" name="name" id="name">
     </div>
     <div>
+      <label class="form-label" for="ProviderId">Provedor:</label>
+      <select class="form-select" name="ProviderId" id="ProviderId">
+        <option selected value="">Nenhum</option>
+        {{#each providers}}
+        <option value="{{id}}">{{name}}</option>
+        {{/each}}
+      </select>
+    </div>
+    <div>
       <label class="form-label" for="durationMonths">Duração (meses):</label>
       <input class="form-control" name="durationMonths" id="durationMonths" type="number">
     </div>

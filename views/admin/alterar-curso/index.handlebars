@@ -14,6 +14,16 @@
         <input value="{{name}} " class="form-control" name="name" id="name">
       </div>
       <div>
+        <label class="form-label" for="ProviderId">Provedor:</label>
+        <span id="initialProviderId" hidden>{{ProviderId}}</span>
+        <select class="form-select" name="ProviderId" id="ProviderId">
+          <option value="">Nenhum</option>
+          {{#each ../providers}}
+          <option value="{{id}}">{{name}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <div>
         <label class="form-label" for="durationMonths">Duração (meses):</label>
         <input value="{{durationMonths}} " class="form-control" name="durationMonths" id="durationMonths" type="number">
       </div>
@@ -62,3 +72,14 @@
     </form>
   </div>
 {{/with}}
+<script>
+  const initialProviderId = document.getElementById("initialProviderId").innerHTML;
+  const providerSelect = document.getElementById("ProviderId");
+
+  for (const option of providerSelect.children) {
+    if (option.value == initialProviderId) {
+      option.toggleAttribute("selected");
+      break;
+    }
+  }
+</script>
