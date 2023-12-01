@@ -76,6 +76,9 @@ async function setup() {
   fastify.use(require('hsts')())
   fastify.use(require('ienoopen')())
   fastify.use(require('x-xss-protection')())
+
+  fastify.register(require('@fastify/multipart'))
+
 }
 
 function listen() {

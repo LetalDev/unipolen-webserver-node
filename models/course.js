@@ -62,7 +62,7 @@ const Course = sequelize.define("Course", {
   description: {
     type: DataTypes.TEXT,
     label: "descrição",
-  },
+  }
 });
 
 module.exports = {

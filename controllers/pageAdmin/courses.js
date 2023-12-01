@@ -5,10 +5,16 @@ const { fastify, defOpts } = require("../../config");
 const { Course } = require("../../models/course");
 const { Unit } = require("../../models/unit");
 const { User, findUserByJwt, findUserByEmail, isUserAdmin } = require("../../models/user");
+const { Image } = require("../../models/image");
 const { renderErrorPage, renderErrorPageRes } = require("../pageError");
 const { Model } = require("sequelize");
 const { object, string, boolean, number } = require("yup");
 const { Provider } = require("../../models/provider");
+
+const fs = require('node:fs')
+const util = require('node:util')
+const { pipeline } = require('node:stream')
+const pump = util.promisify(pipeline)
 
 
 
@@ -171,7 +177,7 @@ fastify.get("/admin/alterar-curso/:id", async (req, res) => {
   const { id } = req.params;
 
   const course = await Course.findByPk(id);
-  
+
   const opts = structuredClone(defOpts); opts.showFooter = false;
   opts.styles.push("/static/css/admin.css");
   opts.user = user;
@@ -189,7 +195,6 @@ fastify.post("/admin/alterar-curso/:id", async (req, res) => {
   if (!(await isUserAdmin(user))) {
     return await renderErrorPageRes(res, 403);
   }
-
   const { id } = req.params;
 
   const opts = structuredClone(defOpts); opts.showFooter = false;
@@ -201,7 +206,7 @@ fastify.post("/admin/alterar-curso/:id", async (req, res) => {
   try {
     let parsed = courseFormSchema.cast(req.body);
     await course.update(parsed);
-    
+
     return res.redirect("/admin/cursos");
   } catch (err) {
     opts.course = course.dataValues;
@@ -210,3 +215,60 @@ fastify.post("/admin/alterar-curso/:id", async (req, res) => {
     return res.render("/admin/alterar-curso/index", opts);
   }
 });
+
+//alterar imagem
+
+fastify.get("/admin/alterar-imagem-curso/:id", async (req, res) => {
+  const user = await findUserByJwt(req.cookies.jwt);
+  if (!user) {
+    return await renderErrorPageRes(res, 401);
+  }
+  if (!(await isUserAdmin(user))) {
+    return await renderErrorPageRes(res, 403);
+  }
+
+  const { id } = req.params;
+
+  const course = await Course.findByPk(id);
+
+  const opts = structuredClone(defOpts); opts.showFooter = false;
+  opts.styles.push("/static/css/admin.css");
+  opts.user = user;
+  opts.course = course.dataValues;
+
+  return res.render("admin/alterar-imagem-curso/index", opts);
+});
+
+fastify.post("/admin/alterar-imagem-curso/:id", async (req, res) => {
+  const user = await findUserByJwt(req.cookies.jwt);
+  if (!user) {
+    return await renderErrorPageRes(res, 401);
+  }
+  if (!(await isUserAdmin(user))) {
+    return await renderErrorPageRes(res, 403);
+  }
+  const { id } = req.params;
+
+  const course = await Course.findByPk(id);
+  
+  const data = await req.file();
+  const { fileName } = data;
+
+  var buffers = [];
+  data.file.on('readable', function (buffer) {
+    for (; ;) {
+      let buffer = data.file.read();
+      if (!buffer) { break; }
+      buffers.push(buffer);
+    }
+  });
+  data.file.on('end', async function() {
+    var buffer = Buffer.concat(buffers);
+
+    const savedImage = await course.createImage({
+      image: buffer
+    });
+  });
+  res.redirect("/admin/cursos");
+});
+
