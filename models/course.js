@@ -49,10 +49,10 @@ const Course = sequelize.define("Course", {
     type: DataTypes.TEXT,
     label: "grau",
   },
-  qualification: {
+  type: {
     type: DataTypes.TEXT,
     defaultValue: "curso livre",
-    label: "qualificação",
+    label: "tipo",
   },
   style: {
     type: DataTypes.ENUM("a distância", "presencial", "híbrido"),
