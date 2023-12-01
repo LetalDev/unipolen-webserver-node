@@ -20,7 +20,7 @@ const courseFormSchema = object({
   url: string().nullable().trim(),
   isAvailable: boolean().required().transform(val => (val === 'on' ? true : false)).default(false),
   degree: string().nullable().trim(),
-  qualification: string().nullable().trim(),
+  type: string().nullable().trim(),
   style: string().required().trim(),
   description: string().nullable().trim(),
 });
