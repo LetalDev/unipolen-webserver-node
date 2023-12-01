@@ -3,6 +3,7 @@
 const { User, findUserByEmail } = require("./user");
 const { Unit } = require("./unit");
 const { Course } = require("./course");
+const { Image } = require("./image");
 const { Defaults } = require("./defaults");
 const { CustomerUser } = require("./customerUser");
 const { ADMIN_EMAIL, ADMIN_PASS, PASS_SALTS } = require("../environment");
@@ -21,6 +22,12 @@ async function setupModels() {
     onUpdate: "CASCADE",
   });
   CustomerUser.belongsTo(User);
+
+  Course.hasOne(Image, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  }); 
+  Image.belongsTo(Course);
 }
 
 async function addDefaultAdminAccount() {
