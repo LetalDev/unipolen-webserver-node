@@ -13,9 +13,13 @@ const stage1FormSchema = object({
   fullLegalName: string().required("Insira seu nome completo").trim(),
   displayName: string().nullable().trim().default(null),
   email: string().required("Insira seu email").trim().email("Email inválido"),
-  phone: string().required("Insira seu telefone")
-    .typeError("o telefone inserido é inválido").trim()
-    .transform(val => phone(val)?.phoneNumber),
+  phone: string().required("por favor insira um telefone")
+    .transform(val => {
+      const phoneNumber = phone(val).phoneNumber;
+      if (!phoneNumber) throw "O telefone inserido é inválido";
+      return phoneNumber;
+    }),
+    
 });
 
 const stage2FormSchema = object({

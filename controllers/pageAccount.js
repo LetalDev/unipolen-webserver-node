@@ -22,9 +22,12 @@ const updateInfoFormSchemaCustomer = object({
   postalCode: string().required("CEP não pode estar em branco").trim(),
   specialNeeds: boolean().required().default(false).transform(val => val === "on" ? true : false),
   allowNewsletter: boolean().required().default(false).transform(val => val === "on" ? true : false),
-  phone: string().required("Telefone principal não pode estar em branco").trim()
-    .typeError("O telefone inserido é inváldi")
-    .transform(val => phone(val).phoneNumber),
+  phone: string().required("por favor insira um telefone")
+    .transform(val => {
+      const phoneNumber = phone(val).phoneNumber;
+      if (!phoneNumber) throw "O telefone inserido é inválido";
+      return phoneNumber;
+    }),
   phoneExtra: string().nullable().trim().default(null),
 });
 
