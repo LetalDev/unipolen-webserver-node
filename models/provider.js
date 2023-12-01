@@ -14,6 +14,10 @@ const Provider = sequelize.define("Provider", {
     type: DataTypes.TEXT,
     allowNull: false,
     unique: true,
+  },
+  description: {
+    type: DataTypes.TEXT,
+    allowNull: true,
   }
 });
 

@@ -5,21 +5,13 @@
   form {flex-direction: column; gap: 1rem}
 </style>
 
-{{#with unit}}
+{{#with provider}}
   <div class="container w-50">
-    <h1 style="text-align: center">Alterar Polo</h1>
-    <form class="d-flex" action="/admin/alterar-polo/{{id}}" method="POST">
+    <h1 style="text-align: center">Alterar Provedor</h1>
+    <form class="d-flex" action="/admin/alterar-provedor/{{id}}" method="POST">
       <div>
         <label class="form-label" for="name">Nome:</label>
         <input value="{{name}} " class="form-control" name="name" id="name">
-      </div>
-      <div>
-        <label class="form-label" for="phone">Telefone:</label>
-        <input value="{{phone}} " class="form-control" name="phone" id="phone">
-      </div>
-      <div>
-        <label class="form-label" for="address">Endereço:</label>
-        <input value="{{address}} " class="form-control" name="address" id="address">
       </div>
       <div>
         <label class="form-label" for="description">Descrição</label>

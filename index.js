@@ -31,10 +31,11 @@ async function main() {
   require("./controllers/pageAccount");
   require("./controllers/pageAdmin/components");
   require("./controllers/pageAdmin/courses");
-  require("./controllers/pageAdmin/index")
-  require("./controllers/pageAdmin/sql")
-  require("./controllers/pageAdmin/units")
-  require("./controllers/pageAdmin/users")
+  require("./controllers/pageAdmin/index");
+  require("./controllers/pageAdmin/sql");
+  require("./controllers/pageAdmin/units");
+  require("./controllers/pageAdmin/users");
+  require("./controllers/pageAdmin/providers");
 
   async function routine() {
     updateDefOpts();

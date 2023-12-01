@@ -2,18 +2,18 @@
 	<h1>Admin</h1>
 	<a href="/admin" class="nav-link">Dashboard</a>
 	<a href="/admin/componentes" class="nav-link">Alterar Componentes</a>
-	<a href="/admin/polos" class="nav-link">Gerenciar Polos</a>
+	<a href="/admin/polos" class="nav-link active">Gerenciar Polos</a>
 	<a href="/admin/usuarios" class="nav-link">Gerenciar Usuários</a>
-	<a href="/admin/cursos" class="nav-link active">Gerenciar Cursos</a>
+	<a href="/admin/cursos" class="nav-link">Gerenciar Cursos</a>
   <a href="/admin/provedores" class="nav-link">Gerenciar Parceiros</a>
 	<a href="/admin/sql" class="nav-link">Ferramenta SQL</a>
 	<br><br>
 	<a href="/">Voltar para Home</a>
 </div>
 <div id="content">
-  <section id="manage-courses">
-		<h2>Gerenciar Cursos</h2>
-    <a href="/admin/adicionar-curso">Adicionar novo curso</a>
+  <section id="manage-units">
+		<h2>Gerenciar Polos</h2>
+    <a href="/admin/adicionar-provedor">Adicionar novo polo</a>
     <br><br>
     <table class="table table-striped table-bordered">
       <tr>
@@ -25,9 +25,9 @@
       {{#each rows}}
         <tr>
           <td>
-            <a href="/admin/alterar-curso/{{id}}">Alterar</a><br>
-            <a href="/admin/remover-curso/{{id}}">Remover</a><br>
-            <a href="/curso/{{id}}">Visitar</a><br>
+            <a href="/admin/alterar-provedor/{{id}}">Alterar</a><br>
+            <a href="/admin/remover-provedor/{{id}}">Remover</a><br>
+            <a href="/polo/{{id}}">Visitar</a><br>
           </td>
           {{#each values}}
             <td>{{this}}</td>
