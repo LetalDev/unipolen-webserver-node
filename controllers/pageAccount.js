@@ -6,7 +6,7 @@ const { User, findUserByJwt, findUserByEmail, isUserAdmin } = require("../models
 const { renderErrorPage, renderErrorPageRes } = require("./pageError");
 const bcrypt = require("bcrypt");
 const { object, boolean, string } = require("yup");
-const { NOREPLY_EMAIL, PASS_SALTS } = require("../environment");
+const { NOREPLY_EMAIL, PASS_SALTS, DOMAIN } = require("../environment");
 const randomstring = require("randomstring");
 
 
@@ -38,6 +38,7 @@ const updatePasswordFormSchema = object({
 
 const infoAuthCodeRegistry = {};
 const passAuthCodeRegistry = {};
+const deactivateAuthCodeRegistry = {};
 
 fastify.get("/conta", async (req, res) => {
   const user = await findUserByJwt(req.cookies.jwt);
@@ -232,4 +233,75 @@ fastify.post("/conta/alterar-senha-confirm", async (req, res) => {
   });
 
   return res.render("/conta/alterarSenhaSuccess", opts);
+});
+
+
+fastify.get("/conta/desativar-conta", async (req, res) => {
+  const user = await findUserByJwt(req.cookies.jwt);
+  if (!user) {
+    return renderErrorPageRes(res, 401);
+  }
+
+  const opts = structuredClone(defOpts);
+  opts.email = user.email;
+  opts.user = user;
+
+  const authCode = randomstring.generate({
+    charset: "numeric",
+    length: 8,
+  });
+
+  deactivateAuthCodeRegistry[user.id] = {authCode: authCode};
+
+  setTimeout(() => {
+    if (deactivateAuthCodeRegistry[user.id])
+      deactivateAuthCodeRegistry[user.id] = undefined;
+  }, 1000*60*30); //30 minutes
+
+  await mailTransporter.sendMail({
+    from: NOREPLY_EMAIL,
+    to: user.email,
+    subject: "Desativar Conta na Unipolen",
+    text: "Houve uma tentativa de desativação de sua conta na Unipolen, "+
+    `este é o código de confirmação: ${authCode}\n\nO código é válido por 30 minutos`,
+  });
+
+  return res.render("/conta/desativarContaConfirmar", opts);
+
+});
+
+fastify.post("/conta/desativar-conta-confirmar", async (req, res) => {
+  const user = await findUserByJwt(req.cookies.jwt);
+  if (!user) {
+    return renderErrorPageRes(res, 401);
+  }
+
+  const opts = structuredClone(defOpts);
+  opts.email = user.email;
+  opts.user = user;
+
+  const { authCode } = req.body;
+
+  if (deactivateAuthCodeRegistry[user.id].authCode != authCode) {
+    opts.message = "O código inserido é inválido.";
+    return res.render("/conta/desativarContaConfirmar", opts);
+  }
+
+  await user.update({
+    isActive: false,
+  });
+
+  //DO NOT USE SETTIMEOUT, THE AMOUNT OF MILLISECONDS IS OVER THE 32-BIT LIMIT 
+
+  res.setCookie("jwt", "", {
+    domain: DOMAIN,
+    path: "/",
+    secure: true,
+    httpOnly: true,
+    maxAge: 0,
+    sameSite: "strict"
+  });
+
+  opts.user = undefined
+  return res.render("/conta/desativarContaSuccess", opts);
 });

@@ -33,7 +33,7 @@ fastify.post("/login", async (req, res) => {
 
   user = await findUserByEmail(req.body.email);
 
-  if (!user) {
+  if (!user || !user?.isActive) {
     opts.message = "Email ou senha incorretos";
     return res.render("login/index", opts);
   }

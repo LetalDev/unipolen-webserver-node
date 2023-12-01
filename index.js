@@ -4,6 +4,7 @@ const { updateDefOpts, setup, listen } = require("./config");
 const { setupDatabase, syncDatabase } = require("./database");
 const { NODE_ENV } = require("./environment");
 const { setupModels, addDefaultAdminAccount } = require("./models/setup");
+const { removeLongLastingInactiveUsers } = require("./models/user");
 
 async function main() {
   console.log("Starting unipolen server in " + NODE_ENV);
@@ -37,6 +38,7 @@ async function main() {
 
   async function routine() {
     updateDefOpts();
+    removeLongLastingInactiveUsers();
     setTimeout(routine, 30000);
   }
 

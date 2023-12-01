@@ -1,0 +1,19 @@
+<div class="row justify-content-center my-5">
+  <div class="col-12 col-md-9 col-lg-6 bg-secondary-subtle p-4">
+    <form class="d-flex" style="flex-direction: column; gap: 1rem;" action="/conta/desativar-conta-confirmar" method="POST">
+      <h3>Desativar conta</h3>
+      <p>Foi enviado um email de confirmação para a desativação de sua conta no email: </p>
+      {{email}}
+      <div>
+        <label class="form-label" for="authCode">Insira o código de confirmação:</label>
+        <input class="form-control" name="authCode" id="authCode" required>
+      </div>
+      <div>
+        <input class="btn btn-danger" type="submit" value="Desativar Conta">
+      </div>
+      <div class="text-danger">
+        {{message}}
+      </div>
+    </form>
+  </div>
+</div>

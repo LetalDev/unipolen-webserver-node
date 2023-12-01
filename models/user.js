@@ -1,7 +1,7 @@
 'use strict'
 
 const { sequelize } = require("../database");
-const { DataTypes } = require("sequelize");
+const { DataTypes, Op } = require("sequelize");
 const jwt = require("jsonwebtoken");
 const { JWT_PRIVATE_KEY, JWT_ISS } = require("../environment");
 
@@ -21,6 +21,11 @@ const User = sequelize.define("User", {
     type: DataTypes.TEXT,
     allowNull: false,
   },
+  isActive: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: true,
+  }
 });
 
 async function findUserByJwt(jwtStr) {
@@ -51,9 +56,22 @@ async function isUserAdmin(user) {
   return (await user.getAdminUser()) ? true : false;
 }
 
+async function removeLongLastingInactiveUsers() {
+  const users = await User.findAll({where: {
+    isActive: false,
+    updatedAt: {
+      [Op.lt]: new Date(Date.now() - 1000*60*60*24*30) //30 days
+    }
+  }});
+  for (const user of users) {
+    user.destroy();
+  }
+}
+
 module.exports = {
   User,
   findUserByJwt,
   findUserByEmail,
   isUserAdmin,
+  removeLongLastingInactiveUsers
 };
