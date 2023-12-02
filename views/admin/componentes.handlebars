@@ -1,14 +1,14 @@
 <div id="sidebar">
-	<h1>Admin</h1>
-	<a href="/admin" class="nav-link">Dashboard</a>
-	<a href="/admin/componentes" class="nav-link active">Alterar Componentes</a>
-	<a href="/admin/polos" class="nav-link">Gerenciar Polos</a>
-	<a href="/admin/usuarios" class="nav-link">Gerenciar Usuários</a>
-	<a href="/admin/cursos" class="nav-link">Gerenciar Cursos</a>
+  <h1>Admin</h1>
+  <a href="/admin" class="nav-link">Dashboard</a>
+  <a href="/admin/componentes" class="nav-link active">Alterar Componentes</a>
+  <a href="/admin/polos" class="nav-link">Gerenciar Polos</a>
+  <a href="/admin/usuarios" class="nav-link">Gerenciar Usuários</a>
+  <a href="/admin/cursos" class="nav-link">Gerenciar Cursos</a>
   <a href="/admin/provedores" class="nav-link">Gerenciar Parceiros</a>
-	{{!-- <a href="/admin/sql" class="nav-link">Ferramenta SQL</a> --}}
-	<br><br>
-	<a href="/">Voltar para Home</a>
+  {{!-- <a href="/admin/sql" class="nav-link">Ferramenta SQL</a> --}}
+  <br><br>
+  <a href="/">Voltar para Home</a>
 </div>
 <div id="content">
   <div>
@@ -25,6 +25,29 @@
         <div class="text-danger mt-3">{{message}}</div>
         <input class="btn btn-primary mt-3" type="submit">
         <label class="form-label" for="logo"></label>
+      </form>
+    </div>
+    <div class="container p-3 mx-2 my-4 bg-secondary-subtle">
+      <h3>Imagens</h3>
+      <form class="mt-5" action="/admin/alterar-logo" method="POST" enctype="multipart/form-data">
+        <label class="form-label" for="logo">Logo</label>
+        <input class="form-control" type="file" name="logo" id="logo" accept="image/png, image/jpg, image/jpeg">
+        <input class="btn btn-primary mt-2" type="submit">
+      </form>
+      <form class="mt-2" action="/admin/alterar-carrossel-1" method="POST" enctype="multipart/form-data">
+        <label class="form-label" for="carousel1">Carrossel 1</label>
+        <input class="form-control" type="file" name="carousel1" id="carousel1" accept="image/png, image/jpg, image/jpeg">
+        <input class="btn btn-primary mt-2" type="submit">
+      </form>
+      <form class="mt-2" action="/admin/alterar-carrossel-2" method="POST" enctype="multipart/form-data">
+        <label class="form-label" for="carousel2">Carrossel 1</label>
+        <input class="form-control" type="file" name="carousel2" id="carousel2" accept="image/png, image/jpg, image/jpeg">
+        <input class="btn btn-primary mt-2" type="submit">
+      </form>
+      <form class="mt-2" action="/admin/alterar-carrossel-3" method="POST" enctype="multipart/form-data">
+        <label class="form-label" for="carousel3">Carrossel 1</label>
+        <input class="form-control" type="file" name="carousel3" id="carousel3" accept="image/png, image/jpg, image/jpeg">
+        <input class="btn btn-primary mt-2" type="submit">
       </form>
     </div>
   </div>

@@ -24,7 +24,7 @@ const courseFormSchema = object({
   isHighlighted: boolean().required().transform(val => (val === 'on' ? true : false)).default(false),
   durationMonths: number().positive().integer().nullable().transform(val => (!val ? null : val)),
   hours: number().positive().integer().nullable().transform(val => (!val ? null : val)),
-  url: string().nullable().trim(),
+  url: string().nullable().trim().default(null).transform(val => val == "" ? null : val),
   isAvailable: boolean().required().transform(val => (val === 'on' ? true : false)).default(false),
   degree: string().nullable().trim(),
   type: string().nullable().trim(),
