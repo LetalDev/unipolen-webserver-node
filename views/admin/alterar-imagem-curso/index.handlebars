@@ -1,26 +1,12 @@
-<style>
-    input {
-        font-size: 1rem;
-    }
-
-    #message {
-        color: crimson;
-    }
-
-    input[type=submit] {
-        width: fit-content;
-    }
-
-    form {
-        flex-direction: column;
-        gap: 1rem;
-    }
-</style>
-
-<form class="d-flex" action="/admin/alterar-imagem-curso/{{course.id}}" method="POST" enctype="multipart/form-data">
-    <div>
+<div class="row justify-content-center">
+  <div class="col-12 col-md-9 cold-lg-6 bg-secondary-subtle p-4">
+    <h2 class="text-center">Alterar imagem</h2>
+    <form class="d-flex mt-5" style="flex-direction: column; gap: 1rem" action="/admin/alterar-imagem-curso/{{course.id}}" method="POST" enctype="multipart/form-data">
+      <div>
         <label class="form-label" for="imagemCurso">Imagem do curso: </label>
-        <input type="file" id="imagemCurso" name="imagemCurso" accept="image/png, image/jpg, image/jpeg" /> <br>
+        <input class="form-control" type="file" id="imagemCurso" name="imagemCurso" accept="image/png, image/jpg, image/jpeg" /> <br>
         <input class="btn btn-primary" type="submit" value="Enviar">
-    </div>
-</form>
+      </div>
+    </form>
+  </div>
+</div>

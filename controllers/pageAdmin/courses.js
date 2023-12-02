@@ -5,7 +5,6 @@ const { fastify, defOpts } = require("../../config");
 const { Course } = require("../../models/course");
 const { Unit } = require("../../models/unit");
 const { User, findUserByJwt, findUserByEmail, isUserAdmin } = require("../../models/user");
-const { Image } = require("../../models/image");
 const { renderErrorPage, renderErrorPageRes } = require("../pageError");
 const { Model } = require("sequelize");
 const { object, string, boolean, number } = require("yup");
@@ -73,6 +72,7 @@ fastify.get("/admin/cursos", async (req, res) => {
   for (const course of courses) {
     opts.rows.push({
       id: course.id,
+      hasImage: course.hasImage,
       values: [
         course.id,
         course.name,
@@ -270,7 +270,25 @@ fastify.post("/admin/alterar-imagem-curso/:id", async (req, res) => {
     // });
 
     await fs.writeFile(`./public/img/course-${id}.jpeg`, buffer);
+    await course.update({hasImage: true});
   });
   res.redirect("/admin/cursos");
 });
 
+fastify.get("/admin/remover-imagem-curso/:id", async (req, res) => {
+  const user = await findUserByJwt(req.cookies.jwt);
+  if (!user) {
+    return await renderErrorPageRes(res, 401);
+  }
+  if (!(await isUserAdmin(user))) {
+    return await renderErrorPageRes(res, 403);
+  }
+
+  const { id } = req.params;
+  const course = await Course.findByPk(id);
+  await course.update({hasImage: false});
+
+  await fs.rm(`./public/img/course-${id}.jpeg`);
+
+  return res.redirect("/admin/cursos");
+});
