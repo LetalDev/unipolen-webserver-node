@@ -9,7 +9,7 @@ const { renderErrorPage, renderErrorPageRes } = require("../pageError");
 const { Model } = require("sequelize");
 const { object, string } = require("yup");
 const { uploadFile } = require("../uploadFile");
-
+const fs = require("fs").promises;
 
 const unitFormSchema = object({
   name: string().required().trim(),
@@ -38,6 +38,7 @@ fastify.get("/admin/polos", async (req, res) => {
   opts.rows = units.map(unit => {
     return {
       id: unit.id,
+      hasImage: unit.hasImage,
       values: getValuesArrayFromRowFields(unit, fields)
     }
   });
