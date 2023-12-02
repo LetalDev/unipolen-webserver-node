@@ -8,7 +8,7 @@ const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
   port: DB_PORT,
   dialect: "postgres",
   sync: {
-    force: true,
+    force: false,
     alter: true,
   },
   pool: {
