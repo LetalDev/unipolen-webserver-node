@@ -1,0 +1,36 @@
+<div class="row g-2 mb-5 justify-content-around">
+  <div class="p-4 col-12 col-md-3">
+    <h2 class="ps-3">Dashboard</h2>
+    <hr>
+    <div class="ps-3 d-flex" style="flex-direction: column; gap: 1rem">
+      <div>
+        <a href="/conta" class="btn btn-outline-secondary btn-lg">Dados da Conta</a><br>
+      </div>
+      <div>
+        <a href="/conta/cursos" class="btn btn-secondary btn-lg">Cursos Inscritos</a><br>
+      </div>
+    </div>
+  </div>
+  <div class="p-4 col-12 col-md-8">
+    <h2 class="ps-3">Cursos Inscritos</h2>
+    <hr>
+    {{#each enrollments}}
+    <div class="mx-3 p-3 container bg-secondary-subtle">
+      {{#with course}}
+      <h3>{{name}}</h3>
+      <div>Modalidade: {{style}}{{#unless style}}Indisponível{{/unless}}</div>
+      <div>Grau: {{degree}}{{#unless degree}}Indisponível{{/unless}}</div>
+      <div>Tipo: {{type}}{{#unless type}}Indisponível{{/unless}}</div>
+      <div>Carga Horária: {{hours}}{{#unless hours}}Indisponível{{/unless}}</div>
+      <div>{{#if durationMonths}}Duração: {{durationMonths}} meses{{else}}Duração: Indisponível{{/if}}</div>
+      <div class="mt-4">
+        {{#if url}}
+        <a href="{{url}}" class="btn btn-primary">Site Oficial</a>
+        {{/if}}
+      </div>
+      {{/with}}
+      <div>Status: {{status}}</div>
+    </div>
+    {{/each}}
+  </div>
+</div>

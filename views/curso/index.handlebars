@@ -1,27 +1,31 @@
 {{#with course}}
-  <div class="container">
-    <h3 class="bg-secondary-subtle p-4">{{name}}</h3>
-    <div class="row justify-content-between pb-5">
-      {{#if description}}
-        <div class="col-12 col-lg-6 px-5 pt-3" style="white-space: pre-line">
-          <h4 class="mb-3">Descrição do curso</h4>
-          {{description}}
-        </div>
+<div class="container">
+  <h3 class="bg-secondary-subtle p-4">{{name}}</h3>
+  <div class="row justify-content-between pb-5">
+    {{#if description}}
+    <div class="col-12 col-lg-6 px-5 pt-3" style="white-space: pre-line">
+      <h4 class="mb-3">Descrição do curso</h4>
+      {{description}}
+    </div>
+    {{/if}}
+    <div class="col-12 col-lg-5 pt-3 px-5">
+      {{#if hasImage}}
+      <img src="/static/img/course-{{id}}.jpeg" class="bg-secondary-subtle" width="350" height="350">
       {{/if}}
-      <div class="col-12 col-lg-5 pt-3 px-5">
-        {{#if hasImage}}
-        <img src="/static/img/course-{{id}}.jpeg" class="bg-secondary-subtle" width="350" height="350">
+      <div>Modalidade: {{style}}{{#unless style}}Indisponível{{/unless}}</div>
+      <div>Grau: {{degree}}{{#unless degree}}Indisponível{{/unless}}</div>
+      <div>Tipo: {{type}}{{#unless type}}Indisponível{{/unless}}</div>
+      <div>Carga Horária: {{hours}}{{#unless hours}}Indisponível{{/unless}}</div>
+      <div>{{#if durationMonths}}Duração: {{durationMonths}} meses{{else}}Duração: Indisponível{{/if}}</div>
+      <div class="mt-4">
+        {{#if url}}
+        <a href="{{url}}" class="btn btn-primary">Site Oficial</a>
         {{/if}}
-        <div>Modalidade: {{style}}{{#unless style}}Indisponível{{/unless}}</div>
-        <div>Grau: {{degree}}{{#unless degree}}Indisponível{{/unless}}</div>
-        <div>Tipo: {{type}}{{#unless type}}Indisponível{{/unless}}</div>
-        <div>Carga Horária: {{hours}}{{#unless hours}}Indisponível{{/unless}}</div>
-        <div>{{#if durationMonths}}Duração: {{durationMonths}} meses{{else}}Duração: Indisponível{{/if}}</div>
-        <div class="mt-4">
-          {{#if url}}
-            <a href="{{url}}" class="btn btn-primary">Site Oficial</a>
-          {{/if}}
+        {{#if isAvailable}}
+        <a href="/curso-inscrever/{{id}}" class="btn btn-success">Inscrever-se</a>
+        {{/if}}
       </div>
     </div>
   </div>
+</div>
 {{/with}}

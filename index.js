@@ -38,6 +38,7 @@ async function main() {
   require("./controllers/pageAdmin/units");
   require("./controllers/pageAdmin/users");
   require("./controllers/pageAdmin/providers");
+  require("./controllers/requestCourseEnrollment");
 
   async function routine() {
     updateDefOpts();

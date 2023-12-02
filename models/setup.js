@@ -9,6 +9,8 @@ const { ADMIN_EMAIL, ADMIN_PASS, PASS_SALTS } = require("../environment");
 const bcrypt = require("bcrypt");
 const { AdminUser } = require("./adminUser");
 const { Provider } = require("./provider");
+const { Enrollment } = require("./enrollment");
+// const { EnrollmentRequest } = require("./enrollmentRequest");
 
 async function setupModels() {
   User.hasOne(AdminUser, {
@@ -29,6 +31,11 @@ async function setupModels() {
   });
   Course.belongsTo(Provider);
 
+  Enrollment.hasOne(Course);
+  Course.hasMany(Enrollment);
+  
+  Enrollment.hasOne(CustomerUser);
+  CustomerUser.hasMany(Enrollment);
 }
 
 async function addDefaultAdminAccount() {

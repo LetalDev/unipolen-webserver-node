@@ -8,6 +8,8 @@ const bcrypt = require("bcrypt");
 const { object, boolean, string } = require("yup");
 const { NOREPLY_EMAIL, PASS_SALTS, DOMAIN } = require("../environment");
 const randomstring = require("randomstring");
+const { Enrollment } = require("../models/enrollment");
+const { Course } = require("../models/course");
 
 
 const updateInfoFormSchemaUser = object({
@@ -90,15 +92,15 @@ fastify.post("/conta/atualizar-dados", async (req, res) => {
       length: 8,
     });
 
-    const text = "Houve uma tentativa de alteração no cadastro da sua conta na Unipolen, "+
-      "portanto estamos enviando este código para a confirmação deste ato:\n"+
-      +authCode+"\n\nEste código é válido por 30 minutos";
+    const text = "Houve uma tentativa de alteração no cadastro da sua conta na Unipolen, " +
+      "portanto estamos enviando este código para a confirmação deste ato:\n" +
+      +authCode + "\n\nEste código é válido por 30 minutos";
 
     await mailTransporter.sendMail({
       from: NOREPLY_EMAIL,
       to: parsedUser.email,
       subject: "Alteração no Cadastro em Unipolen",
-      text: text, 
+      text: text,
     });
 
     infoAuthCodeRegistry[user.id] = {
@@ -109,7 +111,7 @@ fastify.post("/conta/atualizar-dados", async (req, res) => {
     setTimeout(() => {
       if (infoAuthCodeRegistry[user.id])
         infoAuthCodeRegistry[user.id] = undefined;
-    }, 1000*60*30); //30 minutes
+    }, 1000 * 60 * 30); //30 minutes
 
     opts.email = user.email;
     return res.render("/conta/alterar", opts);
@@ -136,7 +138,7 @@ fastify.post("/conta/atualizar-dados-confirmar", async (req, res) => {
 
   if (infoAuthCodeRegistry[user.id].authCode != authCode) {
     opts.message = "O código inserido é inválido"
-    return res.render("/conta/alterar", opts) 
+    return res.render("/conta/alterar", opts)
   }
 
   await user.update(infoAuthCodeRegistry[user.id].user);
@@ -193,13 +195,13 @@ fastify.post("/conta/alterar-senha", async (req, res) => {
     setTimeout(() => {
       if (passAuthCodeRegistry[user.id])
         passAuthCodeRegistry[user.id] = undefined;
-    }, 1000*60*30); //30 minutes
+    }, 1000 * 60 * 30); //30 minutes
 
     mailTransporter.sendMail({
       from: NOREPLY_EMAIL,
       to: user.email,
       subject: "Alterar Senha em Unipolen",
-      text: "Houve uma tentativa de alteração de senha no seu cadastro em Unipolen, "+
+      text: "Houve uma tentativa de alteração de senha no seu cadastro em Unipolen, " +
         `este é o código de confirmação: ${authCode}\n\nO código é válido por 30 minutos`,
     });
 
@@ -251,19 +253,19 @@ fastify.get("/conta/desativar-conta", async (req, res) => {
     length: 8,
   });
 
-  deactivateAuthCodeRegistry[user.id] = {authCode: authCode};
+  deactivateAuthCodeRegistry[user.id] = { authCode: authCode };
 
   setTimeout(() => {
     if (deactivateAuthCodeRegistry[user.id])
       deactivateAuthCodeRegistry[user.id] = undefined;
-  }, 1000*60*30); //30 minutes
+  }, 1000 * 60 * 30); //30 minutes
 
   await mailTransporter.sendMail({
     from: NOREPLY_EMAIL,
     to: user.email,
     subject: "Desativar Conta na Unipolen",
-    text: "Houve uma tentativa de desativação de sua conta na Unipolen, "+
-    `este é o código de confirmação: ${authCode}\n\nO código é válido por 30 minutos`,
+    text: "Houve uma tentativa de desativação de sua conta na Unipolen, " +
+      `este é o código de confirmação: ${authCode}\n\nO código é válido por 30 minutos`,
   });
 
   return res.render("/conta/desativarContaConfirmar", opts);
@@ -304,4 +306,36 @@ fastify.post("/conta/desativar-conta-confirmar", async (req, res) => {
 
   opts.user = undefined
   return res.render("/conta/desativarContaSuccess", opts);
+});
+
+
+fastify.get("/conta/cursos", async (req, res) => {
+  const user = await findUserByJwt(req.cookies.jwt);
+  if (!user) {
+    return renderErrorPageRes(res, 401);
+  }
+
+  const opts = structuredClone(defOpts);
+  opts.email = user.email;
+  const enrollments = await Enrollment.findAll({
+    where: {
+      CustomerUserId: (await user.getCustomerUser()).id
+    },
+  });
+
+
+  opts.enrollments = [];
+
+  for (const e of enrollments) {
+    opts.enrollments.push({
+      status: e.status,
+      course: (await Course.findByPk(e.CourseId)).dataValues,
+    });
+  }
+
+  console.log(opts.enrollments);
+
+  opts.user = user;
+
+  return res.render("/conta/cursos", opts);
 });
