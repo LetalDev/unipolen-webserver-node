@@ -8,7 +8,7 @@ const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
   port: DB_PORT,
   dialect: "postgres",
   sync: {
-    force: false,
+    force: true,
     alter: true,
   },
   pool: {
@@ -32,7 +32,7 @@ async function setupDatabase() {
     await sequelize.authenticate();
     console.log("Database connected successfully");
   } catch (err) {
-    console.error("Unable to connect to database: " + err);
+    throw Error("Unable to connect to database: " + err);
   }
 }
 
@@ -41,7 +41,7 @@ async function syncDatabase() {
     await sequelize.sync();
     console.log("Database Synced Successfully");
   } catch (err) {
-    console.error("Unable to sync database: " + err);
+    throw Error("Unable to sync database: " + err);
   }
 }
 
