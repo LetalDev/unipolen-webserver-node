@@ -3,7 +3,8 @@
     <h3 class="text-center mb-4">Continuar Cadastro</h3>
     <form class="d-flex" style="flex-direction: column; gap:1rem" action="/registrar/2/{{token}}" method="post">
       <div>
-        <label class="form-label" for="legalGender" class="bg-unp-red-1">Sexo (como consta no RG/CPF) <span class="text-danger">*</span></label>
+        <label class="form-label" for="legalGender" class="bg-unp-red-1">Sexo (como consta no RG/CPF) <span
+            class="text-danger">*</span></label>
         <select style="width:fit-content" class="form-select" id="legalGender" name="legalGender" required>
           <option selected disabled>Selecione uma opção</option>
           <option value="male">Masculino</option>
@@ -12,20 +13,25 @@
       </div>
       <div class="w-75">
         <label class="form-label" for="phoneExtra" class="bg-unp-red-1">Telefone adicional (opcional)</label>
-        <input class="form-control" type="text" id="phoneExtra" name="phoneExtra">
+        <input class="form-control" type="text" id="phoneExtra">
       </div>
       <div class="row g-3">
         <div class="col-12 col-lg-6">
-          <label class="form-label" for="nationality" class="bg-unp-red-1">Nacionalidade <span class="text-danger">*</span></label>
-          <input class="form-control" type="text" id="nationality" name="nationality" required>
+          <label class="form-label" for="nationality" class="bg-unp-red-1">Nacionalidade <span
+              class="text-danger">*</span></label>
+          <select class="form-control" id="nationality" name="nationality" required>
+
+          </select>
         </div>
         <div class="col-12 col-lg-6">
-          <label class="form-label" for="naturality" class="bg-unp-red-1">Naturalidade <span class="text-danger">*</span></label>
+          <label class="form-label" for="naturality" class="bg-unp-red-1">Naturalidade <span
+              class="text-danger">*</span></label>
           <input class="form-control" type="text" id="naturality" name="naturality" required>
         </div>
       </div>
       <div class="w-75">
-        <label class="form-label" for="birthDate" class="bg-unp-red-1">Data de nascimento <span class="text-danger">*</span></label>
+        <label class="form-label" for="birthDate" class="bg-unp-red-1">Data de nascimento <span
+            class="text-danger">*</span></label>
         <input class="form-control" type="date" id="birthDate" name="birthDate" required>
       </div>
       <div class="w-75">
@@ -38,15 +44,18 @@
       </div>
       <div class="row g-3">
         <div class="col-12 col-lg-6">
-          <label class="form-label" for="country" class="bg-unp-red-1">País de residência <span class="text-danger">*</span></label>
+          <label class="form-label" for="country" class="bg-unp-red-1">País de residência <span
+              class="text-danger">*</span></label>
           <input class="form-control" type="text" id="country" name="country" required>
         </div>
         <div class="col-12 col-lg-6">
-          <label class="form-label" for="state" class="bg-unp-red-1">Estado de residência <span class="text-danger">*</span></label>
+          <label class="form-label" for="state" class="bg-unp-red-1">Estado de residência <span
+              class="text-danger">*</span></label>
           <input class="form-control" type="text" id="state" name="state" required>
         </div>
         <div class="col-12 col-lg-6">
-          <label class="form-label" for="city" class="bg-unp-red-1">Cidade de residência <span class="text-danger">*</span></label>
+          <label class="form-label" for="city" class="bg-unp-red-1">Cidade de residência <span
+              class="text-danger">*</span></label>
           <input class="form-control" type="text" id="city" name="city" required>
         </div>
         <div class="col-12 col-lg-6">
@@ -55,7 +64,8 @@
         </div>
       </div>
       <div class="form-check">
-        <label class="form-check-label" for="allowNewsletter" class="bg-unp-red-1">Deseja receber informações via email ou SMS? <span class="text-danger">*</span></label>
+        <label class="form-check-label" for="allowNewsletter" class="bg-unp-red-1">Deseja receber informações via email
+          ou SMS? <span class="text-danger">*</span></label>
         <input class="form-check-input" type="checkbox" id="allowNewsletter" name="allowNewsletter">
       </div>
       <div>
@@ -63,11 +73,13 @@
         <textarea class="form-control" id="getToKnowCompanyDesc" name="getToKnowCompanyDesc"></textarea>
       </div>
       <div class="form-check">
-        <label class="form-check-label" for="specialNeeds" class="bg-unp-red-1">É portador(a) de necessidades especiais? <span class="text-danger">*</span></label>
+        <label class="form-check-label" for="specialNeeds" class="bg-unp-red-1">É portador(a) de necessidades especiais?
+          <span class="text-danger">*</span></label>
         <input class="form-check-input" type="checkbox" id="specialNeeds" name="specialNeeds">
       </div>
       <div>
-        <label class="form-label" for="doubtsAboutService" class="bg-unp-red-1">Possui alguma dúvida sobre nosso serviço? Se sim, descreva:</label>
+        <label class="form-label" for="doubtsAboutService" class="bg-unp-red-1">Possui alguma dúvida sobre nosso
+          serviço? Se sim, descreva:</label>
         <textarea class="form-control" id="doubtsAboutService" name="doubtsAboutService"></textarea>
       </div>
       <div class="mt-4">
@@ -77,3 +89,42 @@
     </form>
   </div>
 </div>
+
+<!--Script popular nacionalidades-->
+<script>
+
+  async function main() {
+    document.querySelector("#nationality")
+    const res = await fetch(window.location.protocol + "//" + window.location.host + "/static/json/nacionalidades.json")
+    const nacionalidades = JSON.parse(await res.text())["nacionalidade"];
+
+    let select = document.getElementById('nationality');
+
+    for (const nac of nacionalidades) {
+      var opt = document.createElement('option');
+      if (nac == 'brasileiro') {
+        opt.selected = true;
+      }
+      opt.value = nac;
+      opt.innerHTML = nac;
+      select.appendChild(opt)
+    }
+  }
+
+  main();
+</script>
+
+<!--Script checkar Phone-->
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/intlTelInput.min.js"></script>
+<script>
+  const input = document.getElementById("phoneExtra");
+  const iti = intlTelInput(input);
+  const number = iti.getNumber();
+
+  window.intlTelInput(input, {
+    utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js",
+    hiddenInput: "phoneExtra",
+    initialCountry: "br",
+    separateDialCode: true,
+  });
+</script>

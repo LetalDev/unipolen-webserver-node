@@ -2,19 +2,31 @@ main h1 {
   text-align: center;
 }
 
-details{
+details {
   margin-bottom: 0%;
   padding-bottom: 0.1rem;
 }
 
-[role=button], button, input[type=button], input[type=reset], input[type=submit]{
+[role=button],
+button,
+input[type=button],
+input[type=reset],
+input[type=submit] {
   border: none;
 }
 
-[role=button], button, input[type=button], input[type=reset], input[type=submit]{
+[role=button],
+button,
+input[type=button],
+input[type=reset],
+input[type=submit] {
   transition: 0.4s;
 }
 
-[role=button]:focus, button:focus, input[type=button]:focus, input[type=reset]:focus, input[type=submit]:focus{
+[role=button]:focus,
+button:focus,
+input[type=button]:focus,
+input[type=reset]:focus,
+input[type=submit]:focus {
   box-shadow: none;
 }
