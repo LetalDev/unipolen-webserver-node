@@ -128,8 +128,6 @@ fastify.post("/resetar-senha/:token", async (req, res) => {
 
     user = await User.findByPk(resetPassRegistry[token].userId);
 
-    console.log(resetPassRegistry[token]);
-    console.log(user);
 
     if (!user) {
       opts.message = "Este usuário não existe."
