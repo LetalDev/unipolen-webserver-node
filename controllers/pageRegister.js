@@ -17,6 +17,7 @@ const stage1FormSchema = object({
   email: string().required("Insira seu email").trim().email("Email inválido"),
   phone: string().required("por favor insira um telefone")
     .transform(val => {
+      val = val.trim();
       const phoneNumber = phone(val).phoneNumber;
       if (!phoneNumber) throw "O telefone inserido é inválido";
       return phoneNumber;
@@ -27,7 +28,12 @@ const stage1FormSchema = object({
 const stage2FormSchema = object({
   legalGender: string().required("Insira seu sexo (como consta no RG/CPF)")
     .oneOf(["male", "female"]),
-  phoneExtra: string().nullable().trim().default(null),
+  phoneExtra: string().nullable().transform(val => {
+      val = val.trim();
+      const phoneNumber = phone(val).phoneNumber;
+      if (!phoneNumber && val != "") throw "O telefone inserido é inválido";
+      return phoneNumber;
+    }),
   nationality: string().required("Insira sua nacionalidade").trim(),
   naturality: string().required("Insira sua naturalidade").trim(),
   birthDate: string().required("Insira sua data de nascimento")
@@ -174,18 +180,21 @@ fastify.post("/registrar/2/:token", async (req, res) => {
       intermediateRegistry[token][field] = parsed[field];
     }
 
-    if (await CustomerUser.findOne(
+    if (parsed.phoneExtra != "" && await CustomerUser.findOne(
       {
         where: {
           [Op.or]: {
-            phone: parsed.phone,
-            phoneExtra: parsed.phone,
+            phone: parsed.phoneExtra,
+            phoneExtra: parsed.phoneExtra,
           }
         }
     })) {
+      const opts = structuredClone(defOpts);
+      opts.styles.push("/static/css/login.css");
+      opts.styles.push("https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/css/intlTelInput.css");
       opts.message = "Já existe um usuário com este número de telefone."
       opts.token = token;
-      return res.render("/registrar/passo1", opts);
+      return res.render("/registrar/passo2", opts);
     }
 
     return res.redirect(`/registrar/3/${token}`);
