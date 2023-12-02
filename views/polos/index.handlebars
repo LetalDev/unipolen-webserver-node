@@ -6,8 +6,10 @@
     {{#each units}}
       <div class="card bg-secondary-subtle mx-auto mb-4" style="max-width:540px;">
         <div class="row g-0">
-          <div class="col-md-4">
-            <img src="/static/img/unit-{{id}}.jpeg" class="img-fluid rounded-start bg-secondary">
+          <div class="col-md-4 p-3">
+            {{#if hasImage}}
+            <img src="/static/img/unit-{{id}}.jpeg" class="bg-secondary" width="150" height="150">
+            {{/if}}
           </div>
           <div class="col-md-8">
             <div class="card-body">

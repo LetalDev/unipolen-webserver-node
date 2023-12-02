@@ -8,6 +8,7 @@ const { User, findUserByJwt, findUserByEmail, isUserAdmin } = require("../../mod
 const { renderErrorPage, renderErrorPageRes } = require("../pageError");
 const { Model } = require("sequelize");
 const { object, string } = require("yup");
+const { uploadFile } = require("../uploadFile");
 
 
 const unitFormSchema = object({
@@ -160,4 +161,65 @@ fastify.get("/admin/remover-polo/:id", async (req, res) => {
     return res.redirect("/admin/polos");
   }
 
+});
+
+
+fastify.get("/admin/alterar-imagem-polo/:id", async (req, res) => {
+  const user = await findUserByJwt(req.cookies.jwt);
+  if (!user) {
+    return await renderErrorPageRes(res, 401);
+  }
+  if (!(await isUserAdmin(user))) {
+    return await renderErrorPageRes(res, 403);
+  }
+
+  const { id } = req.params;
+
+  const unit = await Unit.findByPk(id);
+
+  const opts = structuredClone(defOpts); opts.showFooter = false;
+  opts.styles.push("/static/css/admin.css");
+  opts.user = user;
+  opts.unit = unit.dataValues;
+
+  return res.render("admin/alterar-imagem-polo/index", opts);
+});
+
+fastify.post("/admin/alterar-imagem-polo/:id", async (req, res) => {
+  const user = await findUserByJwt(req.cookies.jwt);
+  if (!user) {
+    return await renderErrorPageRes(res, 401);
+  }
+  if (!(await isUserAdmin(user))) {
+    return await renderErrorPageRes(res, 403);
+  }
+  const { id } = req.params;
+
+  const unit = await Unit.findByPk(id);
+  
+  const data = await req.file();
+
+  await uploadFile(`./public/img/unit-${id}.jpeg`, data.file);
+  await unit.update({hasImage: true});  
+
+
+  res.redirect("/admin/polos");
+});
+
+fastify.get("/admin/remover-imagem-polo/:id", async (req, res) => {
+  const user = await findUserByJwt(req.cookies.jwt);
+  if (!user) {
+    return await renderErrorPageRes(res, 401);
+  }
+  if (!(await isUserAdmin(user))) {
+    return await renderErrorPageRes(res, 403);
+  }
+
+  const { id } = req.params;
+  const unit = await Unit.findByPk(id);
+  await unit.update({hasImage: false});
+
+  await fs.rm(`./public/img/unit-${id}.jpeg`);
+
+  return res.redirect("/admin/polos");
 });

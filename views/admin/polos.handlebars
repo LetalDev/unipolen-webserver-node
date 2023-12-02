@@ -28,6 +28,10 @@
             <a href="/admin/alterar-polo/{{id}}">Alterar</a><br>
             <a href="/admin/remover-polo/{{id}}">Remover</a><br>
             <a href="/polo/{{id}}">Visitar</a><br>
+            <a href="/admin/alterar-imagem-polo/{{id}}">Alterar imagem</a><br>
+            {{#if hasImage}}
+            <a href="/admin/remover-imagem-polo/{{id}}">Remover imagem</a>
+            {{/if}}
           </td>
           {{#each values}}
             <td>{{this}}</td>

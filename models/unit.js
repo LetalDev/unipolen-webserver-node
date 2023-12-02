@@ -26,6 +26,11 @@ const Unit = sequelize.define("Unit", {
   },
   description: {
     type: DataTypes.TEXT,
+  },
+  hasImage: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+    allowNull: false,
   }
 });
 

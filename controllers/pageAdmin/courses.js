@@ -12,7 +12,8 @@ const { Provider } = require("../../models/provider");
 
 const fs = require('fs').promises
 const util = require('node:util')
-const { pipeline } = require('node:stream')
+const { pipeline } = require('node:stream');
+const { uploadFile } = require("../uploadFile");
 const pump = util.promisify(pipeline)
 
 
@@ -252,26 +253,11 @@ fastify.post("/admin/alterar-imagem-curso/:id", async (req, res) => {
   const course = await Course.findByPk(id);
   
   const data = await req.file();
-  const { fileName } = data;
 
-  var buffers = [];
-  data.file.on('readable', function (buffer) {
-    for (; ;) {
-      let buffer = data.file.read();
-      if (!buffer) { break; }
-      buffers.push(buffer);
-    }
-  });
-  data.file.on('end', async function() {
-    var buffer = Buffer.concat(buffers);
+  await uploadFile(`./public/img/course-${id}.jpeg`, data.file);
+  await course.update({hasImage: true});  
 
-    // const savedImage = await course.createImage({
-    //   image: buffer
-    // });
 
-    await fs.writeFile(`./public/img/course-${id}.jpeg`, buffer);
-    await course.update({hasImage: true});
-  });
   res.redirect("/admin/cursos");
 });
 
