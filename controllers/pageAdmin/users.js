@@ -68,8 +68,8 @@ fastify.get("/admin/usuarios", async (req, res) => {
     const activeEnrollments = [];
 
     for (const e of enrollments) {
-      if (e.status == "em espera") pendingEnrollments.push((await Course.findByPk(e.CourseId)).name);
-      else if (e.status == "aceito") activeEnrollments.push((await Course.findByPk(e.CourseId)).name);
+      if (e.status == "em espera") pendingEnrollments.push((await Course.findByPk(e.CourseId))?.name);
+      else if (e.status == "aceito") activeEnrollments.push((await Course.findByPk(e.CourseId))?.name);
     }
     opts.rows.push({
       id: user.id,

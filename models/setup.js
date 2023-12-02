@@ -32,10 +32,16 @@ async function setupModels() {
   Course.belongsTo(Provider);
 
   Enrollment.hasOne(Course);
-  Course.hasMany(Enrollment);
+  Course.hasMany(Enrollment, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  });
   
   Enrollment.hasOne(CustomerUser);
-  CustomerUser.hasMany(Enrollment);
+  CustomerUser.hasMany(Enrollment, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  });
 }
 
 async function addDefaultAdminAccount() {
