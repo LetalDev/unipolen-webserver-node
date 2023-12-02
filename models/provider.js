@@ -18,7 +18,15 @@ const Provider = sequelize.define("Provider", {
   description: {
     type: DataTypes.TEXT,
     allowNull: true,
-  }
+  },
+  hasImage: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
+  url: {
+    type: DataTypes.TEXT,
+  },
 });
 
 

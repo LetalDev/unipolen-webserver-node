@@ -8,10 +8,13 @@ const { renderErrorPage, renderErrorPageRes } = require("../pageError");
 const { Model } = require("sequelize");
 const { object, string, boolean, number } = require("yup");
 const { Provider } = require("../../models/provider");
+const { uploadFile } = require("../uploadFile");
+const fs = require("fs").promises;
 
 const providerFormSchema = object({
   name: string().required().trim(),
-  description: string().notRequired(),
+  description: string().notRequired().trim(),
+  url: string().notRequired().trim(),
 });
 
 fastify.get("/admin/provedores", async (req, res) => {
@@ -33,6 +36,7 @@ fastify.get("/admin/provedores", async (req, res) => {
   opts.fields = [
     "id",
     "nome",
+    "url",
     "criado em",
     "atualizado em",
   ];
@@ -45,6 +49,7 @@ fastify.get("/admin/provedores", async (req, res) => {
       values: [
         provider.id,
         provider.name,
+        provider.url,
         provider.createdAt,
         provider.updatedAt,
     ]});
@@ -166,4 +171,65 @@ fastify.post("/admin/alterar-provedor/:id", async (req, res) => {
     opts.message = "Ocorreu um erro: " + err;
     return res.render("/admin/alterar-provedores/index", opts);
   }
+});
+
+
+fastify.get("/admin/alterar-imagem-provedor/:id", async (req, res) => {
+  const user = await findUserByJwt(req.cookies.jwt);
+  if (!user) {
+    return await renderErrorPageRes(res, 401);
+  }
+  if (!(await isUserAdmin(user))) {
+    return await renderErrorPageRes(res, 403);
+  }
+
+  const { id } = req.params;
+
+  const provider = await Provider.findByPk(id);
+
+  const opts = structuredClone(defOpts); opts.showFooter = false;
+  opts.styles.push("/static/css/admin.css");
+  opts.user = user;
+  opts.provider = provider.dataValues;
+
+  return res.render("admin/alterar-imagem-provedor/index", opts);
+});
+
+fastify.post("/admin/alterar-imagem-provedor/:id", async (req, res) => {
+  const user = await findUserByJwt(req.cookies.jwt);
+  if (!user) {
+    return await renderErrorPageRes(res, 401);
+  }
+  if (!(await isUserAdmin(user))) {
+    return await renderErrorPageRes(res, 403);
+  }
+  const { id } = req.params;
+
+  const provider = await Provider.findByPk(id);
+  
+  const data = await req.file();
+
+  await uploadFile(`./public/img/provider-${id}.jpeg`, data.file);
+  await provider.update({hasImage: true});  
+
+
+  res.redirect("/admin/provedores");
+});
+
+fastify.get("/admin/remover-imagem-provider/:id", async (req, res) => {
+  const user = await findUserByJwt(req.cookies.jwt);
+  if (!user) {
+    return await renderErrorPageRes(res, 401);
+  }
+  if (!(await isUserAdmin(user))) {
+    return await renderErrorPageRes(res, 403);
+  }
+
+  const { id } = req.params;
+  const provider = await Provider.findByPk(id);
+  await provider.update({hasImage: false});
+
+  await fs.rm(`./public/img/provider-${id}.jpeg`);
+
+  return res.redirect("/admin/provedores");
 });

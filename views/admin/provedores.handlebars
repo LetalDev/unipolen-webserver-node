@@ -27,6 +27,10 @@
           <td>
             <a href="/admin/alterar-provedor/{{id}}">Alterar</a><br>
             <a href="/admin/remover-provedor/{{id}}">Remover</a><br>
+            <a href="/admin/alterar-imagem-provedor/{{id}}">Alterar imagem</a><br>
+            {{#if hasImage}}
+            <a href="/admin/remover-imagem-provedor/{{id}}">Remover imagem</a>
+            {{/if}}
           </td>
           {{#each values}}
             <td>{{this}}</td>
