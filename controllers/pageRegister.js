@@ -7,6 +7,8 @@ const bcrypt = require("bcrypt");
 const { object, string, boolean, date } = require("yup");
 const randomstring = require("randomstring");
 const { phone } = require("phone");
+const { Op } = require("sequelize");
+const { CustomerUser } = require("../models/customerUser");
 
 
 const stage1FormSchema = object({
@@ -77,6 +79,19 @@ fastify.post("/registrar", async (req, res) => {
 
     if (await findUserByEmail(parsed.email)) {
       opts.message = "Já existe um usuário com este email.";
+      return res.render("/registrar/passo1", opts);
+    }
+
+    if (await CustomerUser.findOne(
+      {
+        where: {
+          [Op.or]: {
+            phone: parsed.phone,
+            phoneExtra: parsed.phone,
+          }
+        }
+    })) {
+      opts.message = "Já existe um usuário com este número de telefone."
       return res.render("/registrar/passo1", opts);
     }
 
@@ -156,6 +171,20 @@ fastify.post("/registrar/2/:token", async (req, res) => {
       intermediateRegistry[token][field] = parsed[field];
     }
 
+    if (await CustomerUser.findOne(
+      {
+        where: {
+          [Op.or]: {
+            phone: parsed.phone,
+            phoneExtra: parsed.phone,
+          }
+        }
+    })) {
+      opts.message = "Já existe um usuário com este número de telefone."
+      opts.token = token;
+      return res.render("/registrar/passo1", opts);
+    }
+
     return res.redirect(`/registrar/3/${token}`);
 
   } catch (err) {
@@ -215,8 +244,16 @@ fastify.post("/registrar/3/:token", async (req, res) => {
 
     intermediateRegistry[token]["passwordHash"] = await bcrypt.hash(parsed.password, PASS_SALTS);
 
+    
     const user = await User.create(intermediateRegistry[token]);
-    await user.createCustomerUser(intermediateRegistry[token]);
+    try {
+      await user.createCustomerUser(intermediateRegistry[token]);
+    } catch (err) {
+      await user.destroy();
+      intermediateRegistry[token] = undefined;
+      opts.message = "Ocorreu um erro, tente novamente mais tarde";
+      return res.render("/registra/passo3", opts);
+    }
 
     intermediateRegistry[token] = undefined;
 
