@@ -1,32 +1,36 @@
 <div id="sidebar">
-	<h1>Admin</h1>
-	<a href="/admin" class="nav-link">Dashboard</a>
-	<a href="/admin/componentes" class="nav-link">Alterar Componentes</a>
-	<a href="/admin/polos" class="nav-link">Gerenciar Polos</a>
-	<a href="/admin/usuarios" class="nav-link active">Gerenciar Usuários</a>
-	<a href="/admin/cursos" class="nav-link">Gerenciar Cursos</a>
+  <h1>Admin</h1>
+  <a href="/admin" class="nav-link">Dashboard</a>
+  <a href="/admin/componentes" class="nav-link">Alterar Componentes</a>
+  <a href="/admin/polos" class="nav-link">Gerenciar Polos</a>
+  <a href="/admin/usuarios" class="nav-link active">Gerenciar Usuários</a>
+  <a href="/admin/cursos" class="nav-link">Gerenciar Cursos</a>
   <a href="/admin/provedores" class="nav-link">Gerenciar Parceiros</a>
-	{{!-- <a href="/admin/sql" class="nav-link">Ferramenta SQL</a> --}}
-	<br><br>
-	<a href="/">Voltar para Home</a>
+  {{!-- <a href="/admin/sql" class="nav-link">Ferramenta SQL</a> --}}
+  <br><br>
+  <a href="/">Voltar para Home</a>
 </div>
 <div id="content">
   <section id="manage-users">
-		<h2>Gerenciar Usuários</h2>
+    <h2>Gerenciar Usuários</h2>
     <table class="table table-striped table-bordered">
       <tr>
+        <th>Opções</th>
         {{#each fields}}
-          <th>{{this}}</th>
+        <th>{{this}}</th>
         {{/each}}
       </tr>
       {{#each rows}}
-        <tr>
-          {{#each values}}
-            <td>{{this}}</td>
-          {{/each}}
-        </tr>
+      <tr>
+        <td>
+          <a href="/admin/trocar-ativacao-usuario/{{id}}">{{#if isActive}}Desativar{{else}}Ativar{{/if}}</a>
+        </td>
+        {{#each values}}
+        <td>{{this}}</td>
+        {{/each}}
+      </tr>
       {{/each}}
     </table>
-	</section>
+  </section>
 </div>
 <script src="/static/js/admin.js"></script>

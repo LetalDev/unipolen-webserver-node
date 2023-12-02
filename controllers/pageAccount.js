@@ -315,11 +315,16 @@ fastify.get("/conta/cursos", async (req, res) => {
     return renderErrorPageRes(res, 401);
   }
 
+  const customerUser = await user.getCustomerUser();
+  if (!customerUser) {
+    return await renderErrorPageRes(res, 403);
+  }
+
   const opts = structuredClone(defOpts);
   opts.email = user.email;
   const enrollments = await Enrollment.findAll({
     where: {
-      CustomerUserId: (await user.getCustomerUser()).id
+      CustomerUserId: customerUser.id
     },
   });
 

@@ -67,7 +67,7 @@ fastify.post("/curso-inscrever/:id", async (req, res) => {
     subject: "Novo Pedido de Inscrição em Unipolen",
     html: "<h3>Houve um novo pedido de inscrição para um curso em Unipolen</h3>"+
     `<a href="${NODE_ENV == "development" ? "http" : "https"}://${DOMAIN}:${PORT}/admin/pedidos-matriculas">Ir para Console</a>`+
-    `<br><br>Usuário: ${customerUser.displayName || customerUser.fullLegalName}<br>Curso: ${course.name}`,
+    `<br><br><pre>Usuário: ${JSON.stringify({...user.dataValues, perfilCliente: customerUser.dataValues}, null, 2)}\n\n\nCurso: ${JSON.stringify(course.dataValues, null, 2)}</pre>`,
   });
 
  
