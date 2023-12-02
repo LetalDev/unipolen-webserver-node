@@ -24,6 +24,7 @@ async function main() {
   require("./controllers/pageCourses");
   require("./controllers/pageCourse");
   require("./controllers/pageLogin");
+  require("./controllers/pageForgotPassword");
   require("./controllers/pageRegister");
   require("./controllers/logout");
   require("./controllers/pageUnits");
