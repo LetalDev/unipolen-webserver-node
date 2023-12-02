@@ -11,7 +11,7 @@ const { Model } = require("sequelize");
 const { object, string, boolean, number } = require("yup");
 const { Provider } = require("../../models/provider");
 
-const fs = require('node:fs')
+const fs = require('fs').promises
 const util = require('node:util')
 const { pipeline } = require('node:stream')
 const pump = util.promisify(pipeline)
@@ -265,9 +265,11 @@ fastify.post("/admin/alterar-imagem-curso/:id", async (req, res) => {
   data.file.on('end', async function() {
     var buffer = Buffer.concat(buffers);
 
-    const savedImage = await course.createImage({
-      image: buffer
-    });
+    // const savedImage = await course.createImage({
+    //   image: buffer
+    // });
+
+    await fs.writeFile(`./public/img/course-${id}.jpeg`, buffer);
   });
   res.redirect("/admin/cursos");
 });
