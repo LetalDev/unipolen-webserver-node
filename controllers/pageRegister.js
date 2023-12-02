@@ -19,7 +19,7 @@ const stage1FormSchema = object({
       if (!phoneNumber) throw "O telefone inserido é inválido";
       return phoneNumber;
     }),
-    
+
 });
 
 const stage2FormSchema = object({
@@ -60,6 +60,7 @@ fastify.get("/registrar", async (req, res) => {
 
   const opts = structuredClone(defOpts);
   opts.styles.push("/static/css/login.css");
+  opts.styles.push("https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/css/intlTelInput.css");
   return res.render("registrar/passo1", opts);
 });
 
@@ -71,6 +72,7 @@ fastify.post("/registrar", async (req, res) => {
 
   const opts = structuredClone(defOpts);
   opts.styles.push("/static/css/login.css");
+  opts.styles.push("https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/css/intlTelInput.css");
 
   try {
     const parsed = stage1FormSchema.cast(req.body);
@@ -85,9 +87,9 @@ fastify.post("/registrar", async (req, res) => {
       length: 64,
     });
 
-    const link = `${NODE_ENV=="development"?"http":"https"}`+
-    `://${DOMAIN}:${NODE_ENV=="development"?PORT:""}`+
-    `/registrar/2/${registerToken}`;
+    const link = `${NODE_ENV == "development" ? "http" : "https"}` +
+      `://${DOMAIN}:${NODE_ENV == "development" ? PORT : ""}` +
+      `/registrar/2/${registerToken}`;
 
     await mailTransporter.sendMail({
       from: NOREPLY_EMAIL,
@@ -106,7 +108,7 @@ fastify.post("/registrar", async (req, res) => {
 
     setTimeout(() => {
       if (intermediateRegistry[registerToken]) intermediateRegistry[registerToken] = undefined;
-    }, 1000*60*60*24); //1 day
+    }, 1000 * 60 * 60 * 24); //1 day
 
     return res.render("registrar/passo1Sucesso", opts);
   } catch (err) {
@@ -124,6 +126,7 @@ fastify.get("/registrar/2/:token", async (req, res) => {
 
   const opts = structuredClone(defOpts);
   opts.styles.push("/static/css/login.css");
+  opts.styles.push("https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/css/intlTelInput.css");
 
   const { token } = req.params;
 
@@ -161,11 +164,12 @@ fastify.post("/registrar/2/:token", async (req, res) => {
   } catch (err) {
     const opts = structuredClone(defOpts);
     opts.styles.push("/static/css/login.css");
+    opts.styles.push("https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/css/intlTelInput.css");
     opts.message = err;
     opts.token = token;
     return res.render("/registrar/passo2", opts);
   }
-  
+
 });
 
 fastify.get("/registrar/3/:token", async (req, res) => {
@@ -200,14 +204,14 @@ fastify.post("/registrar/3/:token", async (req, res) => {
   if (!intermediateRegistry[token]) {
     return res.render("/registrar/passo2Erro", opts);
   }
-  
+
   const opts = structuredClone(defOpts);
   opts.styles.push("/static/css/login.css");
   opts.token = token;
 
   try {
     const parsed = stage3FormSchema.cast(req.body);
-    
+
     if (parsed.password != parsed.passwordConfirm) {
       opts.message = "As senhas diferem.";
       return res.render("/registrar/passo3", opts);

@@ -17,6 +17,7 @@
     "@fastify/static": "^6.12.0",
     "@fastify/view": "^8.2.0",
     "bcrypt": "^5.1.1",
+    "cpf": "^2.0.1",
     "dotenv": "^16.3.1",
     "fastify": "^4.24.3",
     "frameguard": "^4.0.0",

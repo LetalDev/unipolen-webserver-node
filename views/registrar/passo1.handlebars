@@ -4,7 +4,8 @@
     <form class="d-flex" style="flex-direction: column; gap:1rem" action="/registrar" method="post">
       <div class="row g-3">
         <div class="col-12 col-xxl-6">
-          <label class="form-label" for="fullLegalName" class="bg-unp-red-1">Nome Completo (como consta no RG/CPF) <span class="text-danger">*</span></label>
+          <label class="form-label" for="fullLegalName" class="bg-unp-red-1">Nome Completo (como consta no RG/CPF) <span
+              class="text-danger">*</span></label>
           <input class="form-control" type="text" id="fullLegalName" name="fullLegalName" required>
         </div>
         <div class="col-12 col-xxl-6">
@@ -18,7 +19,7 @@
       </div>
       <div class="w-75">
         <label class="form-label" for="phone" class="bg-unp-red-1">Telefone <span class="text-danger">*</span></label>
-        <input class="form-control" type="text" id="phone" name="phone" required>
+        <input class="form-control" type="text" id="phone" required>
       </div>
       <div>
         <input class="btn btn-primary btn-lg" type="submit" value="Criar conta">
@@ -32,3 +33,17 @@
     </div>
   </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/intlTelInput.min.js"></script>
+<script>
+  const input = document.querySelector("#phone");
+  const iti = intlTelInput(input);
+  const number = iti.getNumber();
+
+  window.intlTelInput(input, {
+    utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js",
+    hiddenInput: "phone",
+    initialCountry: "br",
+    separateDialCode: true,
+  });
+</script>
