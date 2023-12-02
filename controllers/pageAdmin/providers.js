@@ -46,6 +46,7 @@ fastify.get("/admin/provedores", async (req, res) => {
   for (const provider of providers) {
     opts.rows.push({
       id: provider.id,
+      hasImage: provider.hasImage,
       values: [
         provider.id,
         provider.name,
@@ -216,7 +217,7 @@ fastify.post("/admin/alterar-imagem-provedor/:id", async (req, res) => {
   res.redirect("/admin/provedores");
 });
 
-fastify.get("/admin/remover-imagem-provider/:id", async (req, res) => {
+fastify.get("/admin/remover-imagem-provedor/:id", async (req, res) => {
   const user = await findUserByJwt(req.cookies.jwt);
   if (!user) {
     return await renderErrorPageRes(res, 401);
